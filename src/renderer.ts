@@ -69,7 +69,23 @@ export async function renderBlock(
   }
 
   try {
-    const svg = await satori(element as any, { width, height, fonts });
+    const svg = await satori(element as any, {
+      width,
+      height,
+      fonts,
+      loadAdditionalAsset: async (code: string, segment: string) => {
+        if (code === 'emoji') {
+          const codepoint = [...segment]
+            .map(c => c.codePointAt(0)!.toString(16))
+            .join('-');
+          const url = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${codepoint}.svg`;
+          const res = await fetch(url);
+          const svg = await res.text();
+          return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+        }
+        return '';
+      },
+    });
     return svg;
   } catch (err) {
     throw new Error(
