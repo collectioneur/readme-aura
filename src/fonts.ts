@@ -8,12 +8,16 @@ const require = createRequire(import.meta.url);
 const FONT_EXTENSIONS = ['.ttf', '.otf', '.woff'];
 
 export async function loadDefaultFonts(): Promise<FontConfig[]> {
+  let inter: FontConfig[];
   try {
-    return await loadFontsourceInter();
+    inter = await loadFontsourceInter();
   } catch {
     console.log('  @fontsource/inter not found, fetching from Google Fonts CDN...');
-    return await loadInterFromCDN();
+    inter = await loadInterFromCDN();
   }
+
+  const emoji = await loadEmojiFont();
+  return [...inter, ...emoji];
 }
 
 async function loadFontsourceInter(): Promise<FontConfig[]> {
@@ -48,6 +52,25 @@ async function loadInterFromCDN(): Promise<FontConfig[]> {
     fonts.push({ name: 'Inter', data, weight, style: 'normal' });
   }
   return fonts;
+}
+
+async function loadEmojiFont(): Promise<FontConfig[]> {
+  try {
+    const cssUrl = 'https://fonts.googleapis.com/css2?family=Noto+Emoji&display=swap';
+    const cssResponse = await fetch(cssUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36' },
+    });
+    const css = await cssResponse.text();
+
+    const urls = [...css.matchAll(/src:\s*url\(([^)]+\.woff2?)\)/g)].map(m => m[1]);
+    if (urls.length === 0) return [];
+
+    const response = await fetch(urls[0]);
+    const data = await response.arrayBuffer();
+    return [{ name: 'Noto Emoji', data, weight: 400, style: 'normal' }];
+  } catch {
+    return [];
+  }
 }
 
 export async function loadFontsFromDir(dirPath: string): Promise<FontConfig[]> {
