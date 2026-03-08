@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import { writeFile, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { parseSource } from './parser.js';
 import { renderBlock, createElement } from './renderer.js';
@@ -37,7 +38,7 @@ program
     console.log(`  Assets:  ${resolve(assetsDir)}`);
 
     try {
-      const { markdown, blocks } = await parseSource(sourcePath, assetsDir, outputPath);
+      let { markdown, blocks } = await parseSource(sourcePath, assetsDir, outputPath);
 
       await mkdir(resolve(assetsDir), { recursive: true });
 
@@ -91,9 +92,11 @@ program
 
         // Render blocks to SVG
         console.log(`\n  Rendering ${blocks.length} block(s)...\n`);
+        const svgMap = new Map<number, string>();
         for (const block of blocks) {
           try {
             const svg = await renderBlock(block, fonts, context);
+            svgMap.set(block.index, svg);
             const svgPath = resolve(assetsDir, `component-${block.index}.svg`);
             await writeFile(svgPath, svg, 'utf-8');
             console.log(`    [${block.index}] Rendered -> component-${block.index}.svg`);
@@ -101,6 +104,12 @@ program
             console.error(`\n  Error in block ${block.index}: ${(err as Error).message}\n`);
             process.exit(1);
           }
+        }
+
+        // Append content hash to each SVG URL for GitHub cache busting
+        for (const [index, svg] of svgMap) {
+          const hash = createHash('sha256').update(svg).digest('hex').slice(0, 8);
+          markdown = markdown.replaceAll(`component-${index}.svg`, `component-${index}.svg?v=${hash}`);
         }
       }
 
