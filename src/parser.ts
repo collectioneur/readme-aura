@@ -1,0 +1,59 @@
+import { readFile } from 'node:fs/promises';
+import { resolve, relative, dirname } from 'node:path';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { visit } from 'unist-util-visit';
+import type { Code, Paragraph, Image, Root } from 'mdast';
+import type { Parent } from 'unist';
+import type { ExtractedBlock, ParseResult } from './types.js';
+
+const AURA_LANG = 'aura';
+
+export async function parseSource(sourcePath: string, assetsDir = './assets', outputPath = 'README.md'): Promise<ParseResult> {
+  const source = await readFile(sourcePath, 'utf-8');
+  const blocks: ExtractedBlock[] = [];
+  let blockIndex = 0;
+
+  // Compute asset path relative to the output file
+  const absAssets = resolve(assetsDir);
+  const absOutput = resolve(outputPath);
+  const relAssets = './' + relative(dirname(absOutput), absAssets).replace(/\\/g, '/');
+
+  const file = await unified()
+    .use(remarkParse)
+    .use(() => (tree: Root) => {
+      visit(tree, 'code', (node, index, parent: Parent | undefined) => {
+        const codeNode = node as Code;
+        if (codeNode.lang !== AURA_LANG || index === undefined || !parent) return;
+
+        blocks.push({
+          index: blockIndex,
+          content: codeNode.value,
+          meta: codeNode.meta ?? undefined,
+        });
+
+        const imageNode: Image = {
+          type: 'image',
+          url: `${relAssets}/component-${blockIndex}.svg`,
+          alt: `component-${blockIndex}`,
+          title: null,
+        };
+
+        const paragraphNode: Paragraph = {
+          type: 'paragraph',
+          children: [imageNode],
+        };
+
+        (parent.children as any[])[index] = paragraphNode;
+        blockIndex++;
+      });
+    })
+    .use(remarkStringify)
+    .process(source);
+
+  return {
+    markdown: String(file),
+    blocks,
+  };
+}

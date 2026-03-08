@@ -1,0 +1,77 @@
+# README Aura — Example GitHub Actions Workflow
+#
+# Copy this file to your repo as .github/workflows/readme-aura.yml
+# Then create a readme.source.md in your repo root with ```aura blocks.
+#
+# Triggers:
+#   - On every push to main (regenerates README from source)
+#   - On schedule (daily at 06:00 UTC — keeps GitHub stats fresh)
+#   - Manual dispatch (run anytime via GitHub UI)
+
+name: Generate README
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'readme.source.md'
+      - '.github/workflows/readme-aura.yml'
+  schedule:
+    # Runs daily at 06:00 UTC to keep GitHub stats up-to-date
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Option A: Use as a published GitHub Action ──────────────
+      # Uncomment this block and remove Option B when the action is
+      # published to the GitHub Marketplace.
+      #
+      # - name: Generate README
+      #   uses: your-username/readme-aura@v1
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     # source: readme.source.md      # default
+      #     # output: README.md              # default
+      #     # assets_dir: .github/assets     # default
+
+      # ── Option B: Run CLI directly (before publishing) ──────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install readme-aura
+        run: npm install -g readme-aura
+
+      - name: Generate README
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          readme-aura build \
+            --source readme.source.md \
+            --output README.md \
+            --assets .github/assets \
+            --github-user ${{ github.repository_owner }}
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md .github/assets
+
+          if git diff --cached --quiet; then
+            echo "README is up to date, nothing to commit."
+          else
+            git commit -m "chore: regenerate README via readme-aura"
+            git push
+          fi

@@ -1,0 +1,42 @@
+{
+  "name": "readme-aura",
+  "version": "0.1.0",
+  "description": "Next-Gen README generator for GitHub — render React/JSX components to SVG inside Markdown",
+  "type": "module",
+  "bin": {
+    "readme-aura": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js"
+  },
+  "keywords": [
+    "readme",
+    "github",
+    "markdown",
+    "svg",
+    "react",
+    "cli"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "commander": "^12.1.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "satori": "^0.25.0",
+    "sucrase": "^3.35.1",
+    "unified": "^11.0.0",
+    "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

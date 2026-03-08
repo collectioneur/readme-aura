@@ -1,0 +1,104 @@
+name: 'README Aura'
+description: 'Next-Gen README generator — render React/JSX components to beautiful SVG inside Markdown'
+author: 'readme-aura'
+
+branding:
+  icon: 'feather'
+  color: 'purple'
+
+inputs:
+  source:
+    description: 'Path to the source markdown file'
+    required: false
+    default: 'readme.source.md'
+  output:
+    description: 'Path to the generated README file'
+    required: false
+    default: 'README.md'
+  assets_dir:
+    description: 'Directory to store generated SVG/image assets'
+    required: false
+    default: '.github/assets'
+  github_token:
+    description: 'GitHub token for fetching user/repo stats (defaults to GITHUB_TOKEN)'
+    required: false
+    default: ${{ github.token }}
+  github_user:
+    description: 'GitHub username (auto-detected from repo owner if omitted)'
+    required: false
+    default: ''
+  fonts_dir:
+    description: 'Path to directory with custom font files (.ttf/.otf/.woff)'
+    required: false
+    default: ''
+  commit_message:
+    description: 'Commit message for the auto-commit'
+    required: false
+    default: 'chore: regenerate README via readme-aura'
+  auto_commit:
+    description: 'Whether to auto-commit and push generated files'
+    required: false
+    default: 'true'
+
+outputs:
+  changed:
+    description: 'Whether the README was changed (true/false)'
+    value: ${{ steps.commit.outputs.changed }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install readme-aura
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        npm ci --ignore-scripts
+        npm run build
+
+    - name: Detect GitHub user
+      id: detect-user
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.github_user }}" ]; then
+          echo "user=${{ inputs.github_user }}" >> "$GITHUB_OUTPUT"
+        else
+          echo "user=${{ github.repository_owner }}" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Run readme-aura build
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      run: |
+        node ${{ github.action_path }}/dist/cli.js build \
+          --source "${{ inputs.source }}" \
+          --output "${{ inputs.output }}" \
+          --assets "${{ inputs.assets_dir }}" \
+          --github-user "${{ steps.detect-user.outputs.user }}" \
+          --github-token "$GITHUB_TOKEN" \
+          ${{ inputs.fonts_dir != '' && format('--fonts-dir "{0}"', inputs.fonts_dir) || '' }}
+
+    - name: Commit and push changes
+      id: commit
+      if: inputs.auto_commit == 'true'
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+        git add "${{ inputs.output }}" "${{ inputs.assets_dir }}"
+
+        if git diff --cached --quiet; then
+          echo "No changes to commit."
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+        else
+          git commit -m "${{ inputs.commit_message }}"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "Committed and pushed updated README."
+        fi
