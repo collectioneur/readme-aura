@@ -114,6 +114,21 @@ export async function renderBlock(
       },
     });
 
+    // Unpack nested SVGs encoded by Satori as data:image/svg+xml;utf8,... <image> tags
+    svg = svg.replace(
+      /<image\s+([^>]*?)href="data:image\/svg\+xml;utf8,([^"]+)"([^>]*?)\/>/g,
+      (match, before, encoded, after) => {
+        try {
+          const decoded = decodeURIComponent(encoded);
+          const contentMatch = decoded.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i);
+          const content = contentMatch ? contentMatch[1] : decoded;
+          return `<svg ${before.trim()} ${after.trim()}>${content}</svg>`;
+        } catch {
+          return match;
+        }
+      }
+    );
+
     if (extractedStyles.length > 0) {
       const combinedStyles = extractedStyles.join('\n');
       svg = svg.replace('</svg>', `<style>\n${combinedStyles}\n</style>\n</svg>`);
