@@ -38,7 +38,6 @@ export function transpileJsx(jsxString: string, context?: Record<string, unknown
     production: true,
   });
 
-  // Build argument names and values from context
   const argNames = ['React', ...(context ? Object.keys(context) : [])];
   const argValues = [{ createElement }, ...(context ? Object.values(context) : [])];
 
@@ -50,6 +49,33 @@ export function transpileJsx(jsxString: string, context?: Record<string, unknown
   }
 
   return element;
+}
+
+function extractStyles(node: any, styles: string[]): any {
+  if (!node || typeof node !== 'object') return node;
+
+  if (node.type === 'style') {
+    if (node.props && node.props.children) {
+      styles.push(String(node.props.children));
+    }
+    return null;
+  }
+
+  if (node.props && node.props.children) {
+    if (Array.isArray(node.props.children)) {
+      node.props.children = node.props.children
+        .map((c: any) => extractStyles(c, styles))
+        .filter((c: any) => c !== null);
+    } else {
+      const processed = extractStyles(node.props.children, styles);
+      if (processed === null) {
+        delete node.props.children;
+      } else {
+        node.props.children = processed;
+      }
+    }
+  }
+  return node;
 }
 
 export async function renderBlock(
@@ -68,24 +94,31 @@ export async function renderBlock(
     );
   }
 
+  const extractedStyles: string[] = [];
+  element = extractStyles(element, extractedStyles);
+
   try {
-    const svg = await satori(element as any, {
+    let svg = await satori(element as any, {
       width,
       height,
       fonts,
       loadAdditionalAsset: async (code: string, segment: string) => {
         if (code === 'emoji') {
-          const codepoint = [...segment]
-            .map(c => c.codePointAt(0)!.toString(16))
-            .join('-');
+          const codepoint = [...segment].map(c => c.codePointAt(0)!.toString(16)).join('-');
           const url = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${codepoint}.svg`;
           const res = await fetch(url);
-          const svg = await res.text();
-          return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+          const svgText = await res.text();
+          return `data:image/svg+xml;base64,${Buffer.from(svgText).toString('base64')}`;
         }
         return '';
       },
     });
+
+    if (extractedStyles.length > 0) {
+      const combinedStyles = extractedStyles.join('\n');
+      svg = svg.replace('</svg>', `<style>\n${combinedStyles}\n</style>\n</svg>`);
+    }
+
     return svg;
   } catch (err) {
     throw new Error(
