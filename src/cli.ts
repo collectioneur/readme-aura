@@ -90,27 +90,25 @@ program
         context.StatsCard = makeStatsCard(createElement);
         context.MockupPhone = makeMockupPhone(createElement);
 
-        // Render blocks to SVG
+        // Render blocks to SVG (filename includes content hash for GitHub cache busting)
         console.log(`\n  Rendering ${blocks.length} block(s)...\n`);
         const svgMap = new Map<number, string>();
         for (const block of blocks) {
           try {
             const svg = await renderBlock(block, fonts, context);
             svgMap.set(block.index, svg);
-            const svgPath = resolve(assetsDir, `component-${block.index}.svg`);
+            const hash = createHash('sha256').update(svg).digest('hex').slice(0, 8);
+            const filename = `component-${block.index}-${hash}.svg`;
+            const svgPath = resolve(assetsDir, filename);
             await writeFile(svgPath, svg, 'utf-8');
-            console.log(`    [${block.index}] Rendered -> component-${block.index}.svg`);
+            markdown = markdown.replaceAll(`component-${block.index}.svg`, filename);
+            console.log(`    [${block.index}] Rendered -> ${filename}`);
           } catch (err) {
             console.error(`\n  Error in block ${block.index}: ${(err as Error).message}\n`);
             process.exit(1);
           }
         }
 
-        // Append content hash to each SVG URL for GitHub cache busting
-        for (const [index, svg] of svgMap) {
-          const hash = createHash('sha256').update(svg).digest('hex').slice(0, 8);
-          markdown = markdown.replaceAll(`component-${index}.svg`, `component-${index}.svg?v=${hash}`);
-        }
       }
 
       const footer = '\n\n<br>\n\n<p align="center"><sub>𝔭𝔬𝔴𝔢𝔯𝔢𝔡 𝔟𝔶 <a href="https://github.com/collectioneur/readme-aura">𝔯𝔢𝔞𝔡𝔪𝔢-𝔞𝔲𝔯𝔞</a></sub></p>\n';

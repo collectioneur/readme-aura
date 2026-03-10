@@ -1,4 +1,4 @@
-![component-0](./assets/component-0.svg?v=08ac2ff8)
+![component-0](./assets/component-0-08ac2ff8.svg)
 
 Write custom **React/JSX components** directly inside your Markdown, and readme-aura will render them into beautiful SVGs that work on GitHub.
 
@@ -11,7 +11,7 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 3. Run `readme-aura build` — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
 4. Get a clean `README.md` with embedded SVG images
 
-![component-1](./assets/component-1.svg?v=7d879013)
+![component-1](./assets/component-1-7d879013.svg)
 
 ## Quick Start
 
@@ -94,7 +94,7 @@ jobs:
 
 ## Features
 
-![component-2](./assets/component-2.svg?v=0727f556)
+![component-2](./assets/component-2-0727f556.svg)
 
 * **Write React/JSX** — Use familiar `style={{ }}` syntax with flexbox, gradients, shadows
 * **Powered by Satori** — Vercel's engine converts JSX to SVG without a browser
@@ -104,7 +104,7 @@ jobs:
 
 ## Tech Stack
 
-![component-3](./assets/component-3.svg?v=10b25974)
+![component-3](./assets/component-3-10b25974.svg)
 
 ## License
 
