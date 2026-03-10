@@ -10,7 +10,3 @@ Run with: `npx readme-aura build -s examples/github-profile.source.md -o example
 ## Stats Overview
 
 ![component-1](./assets/component-1.svg)
-
-## Top Languages
-
-![component-2](./assets/component-2.svg)

@@ -42,22 +42,3 @@ Run with: `npx readme-aura build -s examples/github-profile.source.md -o example
   </div>
 </div>
 ```
-
-## Top Languages
-
-```aura width=800 height=120
-<div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', background: '#0d1117', borderRadius: 14, padding: 20, fontFamily: 'Inter, sans-serif', justifyContent: 'center' }}>
-  <span style={{ fontSize: 15, fontWeight: 700, color: '#c9d1d9', marginBottom: 12 }}>Most Used Languages</span>
-  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-    {github.languages.map(function(lang) {
-      return (
-        <div key={lang.name} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', background: '#161b22', borderRadius: 12, border: '1px solid #30363d' }}>
-          <div style={{ width: 10, height: 10, borderRadius: 5, background: lang.color }} />
-          <span style={{ fontSize: 12, color: '#c9d1d9' }}>{lang.name}</span>
-          <span style={{ fontSize: 11, color: '#8b949e' }}>{lang.percentage}%</span>
-        </div>
-      );
-    })}
-  </div>
-</div>
-```
