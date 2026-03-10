@@ -8,29 +8,35 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 
 1. Write a `readme.source.md` with standard Markdown
 2. Add JSX components inside ` ```aura ` code blocks
-3. Run `readme-aura build` — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
+3. Run the build (GitHub Action or `node dist/cli.js build`) — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
 4. Get a clean `README.md` with embedded SVG images
 
 ![readme-aura-component-1](./.github/assets/readme-aura-component-1-7d879013.svg)
 
 ## Quick Start
 
+**Option 1 — GitHub Action (recommended)**\
+Add the workflow below; it uses the [readme-aura action](https://github.com/collectioneur/readme-aura) from this repo (no npm install).
+
+**Option 2 — Local build**\
+Clone this repo, then from the repo root:
+
 ```bash
-npx readme-aura build
+npm ci && npm run build && node dist/cli.js build
 ```
 
 This reads `readme.source.md` from the current directory, renders all ` ```aura ` blocks to SVG, saves them to `.github/assets/`, and outputs a final `README.md`.
 
 ### CLI Options
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `-s, --source` | `readme.source.md` | Source markdown file |
-| `-o, --output` | `README.md` | Output markdown file |
-| `-a, --assets` | `.github/assets` | Directory for generated SVGs |
-| `-f, --fonts-dir` | — | Custom fonts directory |
-| `-g, --github-user` | auto-detect | GitHub username for stats |
-| `-t, --github-token` | `$GITHUB_TOKEN` | Token for GitHub API |
+| Option               | Default            | Description                  |
+| -------------------- | ------------------ | ---------------------------- |
+| `-s, --source`       | `readme.source.md` | Source markdown file         |
+| `-o, --output`       | `README.md`        | Output markdown file         |
+| `-a, --assets`       | `.github/assets`   | Directory for generated SVGs |
+| `-f, --fonts-dir`    | —                  | Custom fonts directory       |
+| `-g, --github-user`  | auto-detect        | GitHub username for stats    |
+| `-t, --github-token` | `$GITHUB_TOKEN`    | Token for GitHub API         |
 
 ## GitHub Actions (Auto-Rebuild)
 
@@ -45,9 +51,9 @@ name: Generate README
 on:
   push:
     branches: [main]
-    paths: ['readme.source.md']
+    paths: ["readme.source.md"]
   schedule:
-    - cron: '0 6 * * *'
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -59,33 +65,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - run: npm install -g readme-aura
-
       - name: Generate README
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          readme-aura build \
-            --source readme.source.md \
-            --output README.md \
-            --assets .github/assets \
-            --github-user ${{ github.repository_owner }}
-
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md .github/assets
-          if git diff --cached --quiet; then
-            echo "No changes."
-          else
-            git commit -m "chore: regenerate README via readme-aura"
-            git push
-          fi
+        uses: collectioneur/readme-aura@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 **3. Push to `main`** — the action runs, generates SVGs, and commits the final `README.md`.
@@ -96,11 +79,11 @@ jobs:
 
 ![readme-aura-component-2](./.github/assets/readme-aura-component-2-0727f556.svg)
 
-* **Write React/JSX** — Use familiar `style={{ }}` syntax with flexbox, gradients, shadows
-* **Powered by Satori** — Vercel's engine converts JSX to SVG without a browser
-* **Custom Fonts** — Inter bundled by default, bring your own via `--fonts-dir`
-* **Meta Syntax** — Control dimensions: ` ```aura width=800 height=400 `
-* **GitHub-Compatible** — Output is pure Markdown + SVG, works everywhere
+- **Write React/JSX** — Use familiar `style={{ }}` syntax with flexbox, gradients, shadows
+- **Powered by Satori** — Vercel's engine converts JSX to SVG without a browser
+- **Custom Fonts** — Inter bundled by default, bring your own via `--fonts-dir`
+- **Meta Syntax** — Control dimensions: ` ```aura width=800 height=400 `
+- **GitHub-Compatible** — Output is pure Markdown + SVG, works everywhere
 
 ## Tech Stack
 
@@ -109,7 +92,6 @@ jobs:
 ## License
 
 MIT
-
 
 <br>
 

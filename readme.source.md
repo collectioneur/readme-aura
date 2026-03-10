@@ -25,7 +25,7 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 
 1. Write a `readme.source.md` with standard Markdown
 2. Add JSX components inside `` ```aura `` code blocks
-3. Run `readme-aura build` — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
+3. Run the build (GitHub Action or `node dist/cli.js build`) — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
 4. Get a clean `README.md` with embedded SVG images
 
 ```aura width=800 height=220
@@ -54,8 +54,14 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 
 ## Quick Start
 
+**Option 1 — GitHub Action (recommended)**  
+Add the workflow below; it uses the [readme-aura action](https://github.com/collectioneur/readme-aura) from this repo (no npm install).
+
+**Option 2 — Local build**  
+Clone this repo, then from the repo root:
+
 ```bash
-npx readme-aura build
+npm ci && npm run build && node dist/cli.js build
 ```
 
 This reads `readme.source.md` from the current directory, renders all `` ```aura `` blocks to SVG, saves them to `.github/assets/`, and outputs a final `README.md`.
@@ -98,33 +104,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - run: npm install -g readme-aura
-
       - name: Generate README
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          readme-aura build \
-            --source readme.source.md \
-            --output README.md \
-            --assets .github/assets \
-            --github-user ${{ github.repository_owner }}
-
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md .github/assets
-          if git diff --cached --quiet; then
-            echo "No changes."
-          else
-            git commit -m "chore: regenerate README via readme-aura"
-            git push
-          fi
+        uses: collectioneur/readme-aura@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 **3. Push to `main`** — the action runs, generates SVGs, and commits the final `README.md`.
