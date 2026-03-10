@@ -32,13 +32,13 @@ jobs:
       - name: Generate README
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node dist/cli.js build --assets ./assets
+        run: node dist/cli.js build --assets .github/assets
 
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md assets/
+          git add README.md .github/assets
           if git diff --cached --quiet; then
             echo "No changes."
           else

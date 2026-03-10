@@ -1,4 +1,4 @@
-![component-0](./assets/component-0-08ac2ff8.svg)
+![readme-aura-component-0](./.github/assets/readme-aura-component-0-08ac2ff8.svg)
 
 Write custom **React/JSX components** directly inside your Markdown, and readme-aura will render them into beautiful SVGs that work on GitHub.
 
@@ -11,7 +11,7 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 3. Run `readme-aura build` — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
 4. Get a clean `README.md` with embedded SVG images
 
-![component-1](./assets/component-1-7d879013.svg)
+![readme-aura-component-1](./.github/assets/readme-aura-component-1-7d879013.svg)
 
 ## Quick Start
 
@@ -19,7 +19,7 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 npx readme-aura build
 ```
 
-This reads `readme.source.md` from the current directory, renders all ` ```aura ` blocks to SVG, saves them to `./assets/`, and outputs a final `README.md`.
+This reads `readme.source.md` from the current directory, renders all ` ```aura ` blocks to SVG, saves them to `.github/assets/`, and outputs a final `README.md`.
 
 ### CLI Options
 
@@ -27,7 +27,7 @@ This reads `readme.source.md` from the current directory, renders all ` ```aura 
 |--------|---------|-------------|
 | `-s, --source` | `readme.source.md` | Source markdown file |
 | `-o, --output` | `README.md` | Output markdown file |
-| `-a, --assets` | `./assets` | Directory for generated SVGs |
+| `-a, --assets` | `.github/assets` | Directory for generated SVGs |
 | `-f, --fonts-dir` | — | Custom fonts directory |
 | `-g, --github-user` | auto-detect | GitHub username for stats |
 | `-t, --github-token` | `$GITHUB_TOKEN` | Token for GitHub API |
@@ -94,7 +94,7 @@ jobs:
 
 ## Features
 
-![component-2](./assets/component-2-0727f556.svg)
+![readme-aura-component-2](./.github/assets/readme-aura-component-2-0727f556.svg)
 
 * **Write React/JSX** — Use familiar `style={{ }}` syntax with flexbox, gradients, shadows
 * **Powered by Satori** — Vercel's engine converts JSX to SVG without a browser
@@ -104,7 +104,7 @@ jobs:
 
 ## Tech Stack
 
-![component-3](./assets/component-3-10b25974.svg)
+![readme-aura-component-3](./.github/assets/readme-aura-component-3-10b25974.svg)
 
 ## License
 

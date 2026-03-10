@@ -58,7 +58,7 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 npx readme-aura build
 ```
 
-This reads `readme.source.md` from the current directory, renders all `` ```aura `` blocks to SVG, saves them to `./assets/`, and outputs a final `README.md`.
+This reads `readme.source.md` from the current directory, renders all `` ```aura `` blocks to SVG, saves them to `.github/assets/`, and outputs a final `README.md`.
 
 ### CLI Options
 
@@ -66,7 +66,7 @@ This reads `readme.source.md` from the current directory, renders all `` ```aura
 |--------|---------|-------------|
 | `-s, --source` | `readme.source.md` | Source markdown file |
 | `-o, --output` | `README.md` | Output markdown file |
-| `-a, --assets` | `./assets` | Directory for generated SVGs |
+| `-a, --assets` | `.github/assets` | Directory for generated SVGs |
 | `-f, --fonts-dir` | — | Custom fonts directory |
 | `-g, --github-user` | auto-detect | GitHub username for stats |
 | `-t, --github-token` | `$GITHUB_TOKEN` | Token for GitHub API |
