@@ -1,51 +1,35 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
-import { writeFile, mkdir, readdir, unlink } from "node:fs/promises";
-import { createHash } from "node:crypto";
-import { resolve } from "node:path";
-import { parseSource } from "./parser.js";
-import { renderBlock, createElement } from "./renderer.js";
-import { loadDefaultFonts, loadFontsFromDir } from "./fonts.js";
-import {
-  fetchGitHubData,
-  detectGitHubUser,
-  createMockGitHubData,
-} from "./github.js";
-import { makeStatsCard, makeMockupPhone } from "./components/index.js";
-import type { FontConfig, GitHubData } from "./types.js";
+import { Command } from 'commander';
+import { writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { resolve } from 'node:path';
+import { parseSource } from './parser.js';
+import { renderBlock, createElement } from './renderer.js';
+import { loadDefaultFonts, loadFontsFromDir } from './fonts.js';
+import { fetchGitHubData, detectGitHubUser, createMockGitHubData } from './github.js';
+import { makeStatsCard, makeMockupPhone } from './components/index.js';
+import type { FontConfig, GitHubData } from './types.js';
 
 const program = new Command();
 
 program
-  .name("readme-aura")
-  .description(
-    "Next-Gen README generator - render React/JSX components to SVG inside Markdown",
-  )
-  .version("0.1.0");
+  .name('readme-aura')
+  .description('Next-Gen README generator - render React/JSX components to SVG inside Markdown')
+  .version('0.1.0');
 
 program
-  .command("build")
-  .description("Parse source markdown, render JSX to SVG, and generate README")
-  .option("-s, --source <path>", "Source markdown file", "readme.source.md")
-  .option("-o, --output <path>", "Output markdown file", "README.md")
+  .command('build')
+  .description('Parse source markdown, render JSX to SVG, and generate README')
+  .option('-s, --source <path>', 'Source markdown file', 'readme.source.md')
+  .option('-o, --output <path>', 'Output markdown file', 'README.md')
+  .option('-a, --assets <path>', 'Assets directory for generated images', '.github/assets')
+  .option('-f, --fonts-dir <path>', 'Directory with custom font files (.ttf/.otf/.woff)')
   .option(
-    "-a, --assets <path>",
-    "Assets directory for generated images",
-    ".github/assets",
+    '-g, --github-user <username>',
+    'GitHub username (auto-detected from git remote if omitted)',
   )
-  .option(
-    "-f, --fonts-dir <path>",
-    "Directory with custom font files (.ttf/.otf/.woff)",
-  )
-  .option(
-    "-g, --github-user <username>",
-    "GitHub username (auto-detected from git remote if omitted)",
-  )
-  .option(
-    "-t, --github-token <token>",
-    "GitHub token (defaults to GITHUB_TOKEN env variable)",
-  )
+  .option('-t, --github-token <token>', 'GitHub token (defaults to GITHUB_TOKEN env variable)')
   .action(async (opts) => {
     const sourcePath = resolve(opts.source);
     const outputPath = resolve(opts.output);
@@ -57,11 +41,9 @@ program
     console.log(`  Assets:  ${resolve(assetsDir)}`);
 
     try {
-      let { markdown, blocks } = await parseSource(
-        sourcePath,
-        assetsDir,
-        outputPath,
-      );
+      const parseResult = await parseSource(sourcePath, assetsDir, outputPath);
+      const { blocks } = parseResult;
+      let { markdown } = parseResult;
 
       await mkdir(resolve(assetsDir), { recursive: true });
 
@@ -74,39 +56,33 @@ program
         console.log(`\n  GitHub:  @${githubUser}`);
         if (githubToken) {
           try {
-            console.log("  Fetching GitHub data...");
+            console.log('  Fetching GitHub data...');
             github = await fetchGitHubData(githubUser, githubToken);
             console.log(
               `  Fetched: ${github.stats.totalRepos} repos, ${github.stats.totalStars} stars, ${github.languages.length} languages`,
             );
           } catch (err) {
-            console.warn(
-              `  Warning: GitHub API failed: ${(err as Error).message}`,
-            );
-            console.warn("  Falling back to mock data.\n");
+            console.warn(`  Warning: GitHub API failed: ${(err as Error).message}`);
+            console.warn('  Falling back to mock data.\n');
             github = createMockGitHubData(githubUser);
           }
         } else {
-          console.log("  No GITHUB_TOKEN found — using mock data for preview.");
+          console.log('  No GITHUB_TOKEN found — using mock data for preview.');
           github = createMockGitHubData(githubUser);
         }
       } else {
-        console.log(
-          "\n  GitHub:  not configured (use --github-user or set git remote)",
-        );
+        console.log('\n  GitHub:  not configured (use --github-user or set git remote)');
       }
 
       if (blocks.length === 0) {
-        console.log("\n  No aura blocks found in source file.");
+        console.log('\n  No aura blocks found in source file.');
       } else {
         // Load fonts
-        console.log("\n  Loading fonts...");
+        console.log('\n  Loading fonts...');
         let fonts: FontConfig[];
         if (opts.fontsDir) {
           fonts = await loadFontsFromDir(opts.fontsDir);
-          console.log(
-            `  Loaded ${fonts.length} font(s) from ${resolve(opts.fontsDir)}`,
-          );
+          console.log(`  Loaded ${fonts.length} font(s) from ${resolve(opts.fontsDir)}`);
         } else {
           fonts = await loadDefaultFonts();
           console.log(`  Loaded ${fonts.length} default font(s)`);
@@ -129,23 +105,15 @@ program
           try {
             const svg = await renderBlock(block, fonts, context);
             svgMap.set(block.index, svg);
-            const hash = createHash("sha256")
-              .update(svg)
-              .digest("hex")
-              .slice(0, 8);
+            const hash = createHash('sha256').update(svg).digest('hex').slice(0, 8);
             const filename = `readme-aura-component-${block.index}-${hash}.svg`;
             const svgPath = resolve(assetsDir, filename);
-            await writeFile(svgPath, svg, "utf-8");
+            await writeFile(svgPath, svg, 'utf-8');
             writtenFiles.push(filename);
-            markdown = markdown.replaceAll(
-              `readme-aura-component-${block.index}.svg`,
-              filename,
-            );
+            markdown = markdown.replaceAll(`readme-aura-component-${block.index}.svg`, filename);
             console.log(`    [${block.index}] Rendered -> ${filename}`);
           } catch (err) {
-            console.error(
-              `\n  Error in block ${block.index}: ${(err as Error).message}\n`,
-            );
+            console.error(`\n  Error in block ${block.index}: ${(err as Error).message}\n`);
             process.exit(1);
           }
         }
@@ -163,11 +131,11 @@ program
 
       const footer =
         '\n\n<br>\n\n<p align="center"><sub>𝔭𝔬𝔴𝔢𝔯𝔢𝔡 𝔟𝔶 <a href="https://github.com/collectioneur/readme-aura">𝔯𝔢𝔞𝔡𝔪𝔢-𝔞𝔲𝔯𝔞</a></sub></p>\n';
-      await writeFile(outputPath, markdown + footer, "utf-8");
+      await writeFile(outputPath, markdown + footer, 'utf-8');
       console.log(`\n  Generated: ${outputPath}`);
       console.log(`  SVGs saved to: ${resolve(assetsDir)}\n`);
     } catch (err) {
-      if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
         console.error(`\n  Error: Source file not found: ${sourcePath}\n`);
         process.exit(1);
       }

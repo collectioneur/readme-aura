@@ -1,0 +1,28 @@
+---
+description: TDD workflow for medium/large code changes
+alwaysApply: true
+---
+
+# TDD Workflow
+
+Medium and large changes MUST follow strict Test-Driven Development:
+
+1. **Red**: Write tests that describe expected behavior. Run `npm test` — they must FAIL.
+2. **Green**: Write the minimum code to make tests pass. Run `npm test` — they must PASS.
+3. **Refactor**: Clean up implementation while keeping tests green.
+
+## What counts as medium/large?
+- New features or commands
+- New modules or components
+- Refactors touching more than one file
+- Changes to public API signatures
+
+## What is exempt?
+- Config changes, dependency bumps
+- Documentation-only edits
+- Cosmetic fixes under 10 lines
+
+## Test structure
+- Tests live in `src/__tests__/`, mirroring `src/` file names
+- Use Vitest: `describe`, `it`, `expect`
+- Run: `npm test` (once) or `npm run test:watch` (continuous)

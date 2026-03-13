@@ -1,6 +1,13 @@
 import satori from 'satori';
 import { transform } from 'sucrase';
-import type { ExtractedBlock, FontConfig, GitHubData, RenderOptions } from './types.js';
+import type { ExtractedBlock, FontConfig, RenderOptions } from './types.js';
+
+interface SatoriElement {
+  type: string;
+  props: Record<string, unknown> & {
+    children?: SatoriElement | SatoriElement[] | string;
+  };
+}
 
 export function parseMeta(meta?: string): RenderOptions {
   const defaults: RenderOptions = { width: 800, height: 400 };
@@ -19,7 +26,7 @@ export function createElement(
   props: Record<string, unknown> | null,
   ...children: unknown[]
 ): unknown {
-  const flat = children.flat().filter(c => c != null && c !== false && c !== true);
+  const flat = children.flat().filter((c) => c != null && c !== false && c !== true);
   return {
     type,
     props: {
@@ -45,37 +52,41 @@ export function transpileJsx(jsxString: string, context?: Record<string, unknown
   const element = fn(...argValues);
 
   if (!element || typeof element !== 'object' || !('type' in element)) {
-    throw new Error('JSX did not produce a valid element. Make sure your code returns a single root element.');
+    throw new Error(
+      'JSX did not produce a valid element. Make sure your code returns a single root element.',
+    );
   }
 
   return element;
 }
 
-function extractStyles(node: any, styles: string[]): any {
+function extractStyles(node: unknown, styles: string[]): unknown {
   if (!node || typeof node !== 'object') return node;
 
-  if (node.type === 'style') {
-    if (node.props && node.props.children) {
-      styles.push(String(node.props.children));
+  const el = node as SatoriElement;
+
+  if (el.type === 'style') {
+    if (el.props?.children) {
+      styles.push(String(el.props.children));
     }
     return null;
   }
 
-  if (node.props && node.props.children) {
-    if (Array.isArray(node.props.children)) {
-      node.props.children = node.props.children
-        .map((c: any) => extractStyles(c, styles))
-        .filter((c: any) => c !== null);
+  if (el.props?.children) {
+    if (Array.isArray(el.props.children)) {
+      el.props.children = el.props.children
+        .map((c) => extractStyles(c, styles))
+        .filter((c): c is SatoriElement => c !== null) as SatoriElement[];
     } else {
-      const processed = extractStyles(node.props.children, styles);
+      const processed = extractStyles(el.props.children, styles);
       if (processed === null) {
-        delete node.props.children;
+        delete el.props.children;
       } else {
-        node.props.children = processed;
+        el.props.children = processed as SatoriElement;
       }
     }
   }
-  return node;
+  return el;
 }
 
 export async function renderBlock(
@@ -89,22 +100,22 @@ export async function renderBlock(
   try {
     element = transpileJsx(block.content, context);
   } catch (err) {
-    throw new Error(
-      `Failed to transpile JSX in block ${block.index}: ${(err as Error).message}`
-    );
+    throw new Error(`Failed to transpile JSX in block ${block.index}: ${(err as Error).message}`, {
+      cause: err,
+    });
   }
 
   const extractedStyles: string[] = [];
   element = extractStyles(element, extractedStyles);
 
   try {
-    let svg = await satori(element as any, {
+    let svg = await satori(element as Parameters<typeof satori>[0], {
       width,
       height,
       fonts,
       loadAdditionalAsset: async (code: string, segment: string) => {
         if (code === 'emoji') {
-          const codepoint = [...segment].map(c => c.codePointAt(0)!.toString(16)).join('-');
+          const codepoint = [...segment].map((c) => (c.codePointAt(0) ?? 0).toString(16)).join('-');
           const url = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${codepoint}.svg`;
           const res = await fetch(url);
           const svgText = await res.text();
@@ -126,7 +137,7 @@ export async function renderBlock(
         } catch {
           return match;
         }
-      }
+      },
     );
 
     if (extractedStyles.length > 0) {
@@ -136,8 +147,8 @@ export async function renderBlock(
 
     return svg;
   } catch (err) {
-    throw new Error(
-      `Failed to render block ${block.index} to SVG: ${(err as Error).message}`
-    );
+    throw new Error(`Failed to render block ${block.index} to SVG: ${(err as Error).message}`, {
+      cause: err,
+    });
   }
 }

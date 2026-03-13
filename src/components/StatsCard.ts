@@ -3,10 +3,30 @@ import type { GitHubData } from '../types.js';
 type H = (type: unknown, props: Record<string, unknown> | null, ...children: unknown[]) => unknown;
 
 const STATS = [
-  { label: 'STARS',   key: 'totalStars'   as const, color: '#ffd700', shadow: '0 0 22px rgba(255,215,0,0.35)'     },
-  { label: 'COMMITS', key: 'totalCommits' as const, color: '#00e5ff', shadow: '0 0 22px rgba(0,229,255,0.35)'    },
-  { label: 'REPOS',   key: 'totalRepos'   as const, color: '#a78bfa', shadow: '0 0 22px rgba(167,139,250,0.35)'  },
-  { label: 'FORKS',   key: 'totalForks'   as const, color: '#f472b6', shadow: '0 0 22px rgba(244,114,182,0.35)'  },
+  {
+    label: 'STARS',
+    key: 'totalStars' as const,
+    color: '#ffd700',
+    shadow: '0 0 22px rgba(255,215,0,0.35)',
+  },
+  {
+    label: 'COMMITS',
+    key: 'totalCommits' as const,
+    color: '#00e5ff',
+    shadow: '0 0 22px rgba(0,229,255,0.35)',
+  },
+  {
+    label: 'REPOS',
+    key: 'totalRepos' as const,
+    color: '#a78bfa',
+    shadow: '0 0 22px rgba(167,139,250,0.35)',
+  },
+  {
+    label: 'FORKS',
+    key: 'totalForks' as const,
+    color: '#f472b6',
+    shadow: '0 0 22px rgba(244,114,182,0.35)',
+  },
 ];
 
 /**
@@ -56,11 +76,7 @@ export function makeStatsCard(h: H) {
         h(
           'div',
           { style: { display: 'flex', flex: 1, justifyContent: 'flex-end' } },
-          h(
-            'span',
-            { style: { fontSize: 11, color: '#33336e' } },
-            github.user.name || '',
-          ),
+          h('span', { style: { fontSize: 11, color: '#33336e' } }, github.user.name || ''),
         ),
       ),
 

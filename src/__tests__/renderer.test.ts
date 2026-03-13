@@ -1,0 +1,138 @@
+import { describe, it, expect } from 'vitest';
+import { parseMeta, createElement, transpileJsx } from '../renderer.js';
+
+interface ElementNode {
+  type: unknown;
+  props: Record<string, unknown> & { children?: unknown };
+}
+
+describe('parseMeta', () => {
+  it('returns defaults when meta is undefined', () => {
+    expect(parseMeta()).toEqual({ width: 800, height: 400 });
+  });
+
+  it('returns defaults when meta is empty string', () => {
+    expect(parseMeta('')).toEqual({ width: 800, height: 400 });
+  });
+
+  it('parses width and height', () => {
+    expect(parseMeta('width=1200 height=600')).toEqual({ width: 1200, height: 600 });
+  });
+
+  it('parses width only, keeps default height', () => {
+    expect(parseMeta('width=1000')).toEqual({ width: 1000, height: 400 });
+  });
+
+  it('parses height only, keeps default width', () => {
+    expect(parseMeta('height=500')).toEqual({ width: 800, height: 500 });
+  });
+
+  it('ignores unknown keys', () => {
+    expect(parseMeta('foo=999 width=300')).toEqual({ width: 300, height: 400 });
+  });
+
+  it('handles meta with no valid pairs', () => {
+    expect(parseMeta('no-pairs-here')).toEqual({ width: 800, height: 400 });
+  });
+});
+
+describe('createElement', () => {
+  it('creates element with type and props', () => {
+    const el = createElement('div', { id: 'test' }) as ElementNode;
+    expect(el.type).toBe('div');
+    expect(el.props.id).toBe('test');
+    expect(el.props.children).toBeUndefined();
+  });
+
+  it('handles null props', () => {
+    const el = createElement('span', null) as ElementNode;
+    expect(el.type).toBe('span');
+    expect(el.props).toEqual({ children: undefined });
+  });
+
+  it('unwraps single child from array', () => {
+    const el = createElement('div', null, 'hello') as ElementNode;
+    expect(el.props.children).toBe('hello');
+  });
+
+  it('keeps multiple children as array', () => {
+    const el = createElement('div', null, 'a', 'b', 'c') as ElementNode;
+    expect(el.props.children).toEqual(['a', 'b', 'c']);
+  });
+
+  it('filters out null, false, and true from children', () => {
+    const el = createElement('div', null, 'keep', null, false, true, 'also') as ElementNode;
+    expect(el.props.children).toEqual(['keep', 'also']);
+  });
+
+  it('flattens nested arrays in children', () => {
+    const el = createElement('div', null, ['a', 'b'], 'c') as ElementNode;
+    expect(el.props.children).toEqual(['a', 'b', 'c']);
+  });
+
+  it('returns undefined children when all are filtered out', () => {
+    const el = createElement('div', null, null, false, true) as ElementNode;
+    expect(el.props.children).toBeUndefined();
+  });
+});
+
+describe('transpileJsx', () => {
+  it('transpiles simple div with text', () => {
+    const el = transpileJsx('<div>hello</div>') as ElementNode;
+    expect(el.type).toBe('div');
+    expect(el.props.children).toBe('hello');
+  });
+
+  it('transpiles nested elements', () => {
+    const el = transpileJsx('<div><span>inner</span></div>') as ElementNode;
+    expect(el.type).toBe('div');
+    const child = el.props.children as ElementNode;
+    expect(child.type).toBe('span');
+    expect(child.props.children).toBe('inner');
+  });
+
+  it('transpiles element with style prop', () => {
+    const el = transpileJsx('<div style={{ color: "red" }}>styled</div>') as ElementNode;
+    expect(el.type).toBe('div');
+    expect(el.props.style).toEqual({ color: 'red' });
+    expect(el.props.children).toBe('styled');
+  });
+
+  it('injects context variables into JSX scope', () => {
+    const el = transpileJsx('<div>{name}</div>', { name: 'world' }) as ElementNode;
+    expect(el.type).toBe('div');
+    expect(el.props.children).toBe('world');
+  });
+
+  it('injects multiple context variables', () => {
+    const ctx = { title: 'Hello', count: 42 };
+    const el = transpileJsx(
+      '<div><span>{title}</span><span>{count}</span></div>',
+      ctx,
+    ) as ElementNode;
+    expect(el.type).toBe('div');
+    const children = el.props.children as ElementNode[];
+    expect(children).toHaveLength(2);
+    expect(children[0].props.children).toBe('Hello');
+    expect(children[1].props.children).toBe(42);
+  });
+
+  it('throws on invalid JSX syntax', () => {
+    expect(() => transpileJsx('<div><unclosed')).toThrow();
+  });
+
+  it('throws when JSX produces no valid element', () => {
+    expect(() => transpileJsx('"just a string"')).toThrow('JSX did not produce a valid element');
+  });
+
+  it('handles JSX with whitespace and newlines', () => {
+    const jsx = `
+      <div>
+        <span>line1</span>
+        <span>line2</span>
+      </div>
+    `;
+    const el = transpileJsx(jsx) as ElementNode;
+    expect(el.type).toBe('div');
+  });
+});

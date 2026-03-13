@@ -97,11 +97,7 @@ export function makeMockupPhone(h: H) {
               { style: { fontSize: 14, fontWeight: 700, color: '#e2e8f0' } },
               github.user.name || github.user.login,
             ),
-            h(
-              'span',
-              { style: { fontSize: 11, color: '#4a5568' } },
-              '@' + github.user.login,
-            ),
+            h('span', { style: { fontSize: 11, color: '#4a5568' } }, '@' + github.user.login),
           ),
         ),
 
@@ -120,9 +116,9 @@ export function makeMockupPhone(h: H) {
             },
           },
           ...[
-            { label: 'STARS',   value: github.stats.totalStars,   color: '#ffd700' },
+            { label: 'STARS', value: github.stats.totalStars, color: '#ffd700' },
             { label: 'COMMITS', value: github.stats.totalCommits, color: '#00e5ff' },
-            { label: 'REPOS',   value: github.stats.totalRepos,   color: '#a78bfa' },
+            { label: 'REPOS', value: github.stats.totalRepos, color: '#a78bfa' },
           ].flatMap((stat, i, arr) => {
             const tile = h(
               'div',
@@ -148,9 +144,7 @@ export function makeMockupPhone(h: H) {
             );
             // Divider between tiles
             const divider =
-              i < arr.length - 1
-                ? h('div', { style: { width: 1, background: '#1a2332' } })
-                : null;
+              i < arr.length - 1 ? h('div', { style: { width: 1, background: '#1a2332' } }) : null;
             return divider ? [tile, divider] : [tile];
           }),
         ),

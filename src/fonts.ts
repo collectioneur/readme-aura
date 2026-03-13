@@ -35,7 +35,7 @@ async function loadInterFromCDN(): Promise<FontConfig[]> {
   });
   const css = await cssResponse.text();
 
-  const urls = [...css.matchAll(/src:\s*url\(([^)]+\.woff)\)/g)].map(m => m[1]);
+  const urls = [...css.matchAll(/src:\s*url\(([^)]+\.woff)\)/g)].map((m) => m[1]);
   if (urls.length === 0) {
     throw new Error('Could not extract font URL from Google Fonts CSS');
   }
@@ -53,7 +53,7 @@ async function loadInterFromCDN(): Promise<FontConfig[]> {
 export async function loadFontsFromDir(dirPath: string): Promise<FontConfig[]> {
   const absDir = resolve(dirPath);
   const files = await readdir(absDir);
-  const fontFiles = files.filter(f => FONT_EXTENSIONS.includes(extname(f).toLowerCase()));
+  const fontFiles = files.filter((f) => FONT_EXTENSIONS.includes(extname(f).toLowerCase()));
 
   if (fontFiles.length === 0) {
     throw new Error(`No font files (${FONT_EXTENSIONS.join(', ')}) found in ${absDir}`);
@@ -62,7 +62,10 @@ export async function loadFontsFromDir(dirPath: string): Promise<FontConfig[]> {
   const fonts: FontConfig[] = [];
   for (const file of fontFiles) {
     const data = await readFile(resolve(absDir, file));
-    const name = basename(file, extname(file)).replace(/[-_](Regular|Bold|Italic|Light|Medium|SemiBold|ExtraBold|Black|\d+)/gi, '');
+    const name = basename(file, extname(file)).replace(
+      /[-_](Regular|Bold|Italic|Light|Medium|SemiBold|ExtraBold|Black|\d+)/gi,
+      '',
+    );
     fonts.push({ name, data: data.buffer as ArrayBuffer, weight: 400, style: 'normal' });
   }
   return fonts;

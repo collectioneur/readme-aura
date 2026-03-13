@@ -1,11 +1,5 @@
 import { execSync } from 'node:child_process';
-import type {
-  GitHubData,
-  GitHubUser,
-  GitHubStats,
-  GitHubLanguage,
-  GitHubRepo,
-} from './types.js';
+import type { GitHubData, GitHubUser, GitHubStats, GitHubLanguage, GitHubRepo } from './types.js';
 
 // ── GraphQL Query ────────────────────────────────────────────────
 
@@ -87,7 +81,11 @@ interface GraphQLRepo {
   } | null;
 }
 
-async function graphql(token: string, query: string, variables: Record<string, unknown>): Promise<GraphQLResponse> {
+async function graphql(
+  token: string,
+  query: string,
+  variables: Record<string, unknown>,
+): Promise<GraphQLResponse> {
   const res = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
@@ -203,7 +201,7 @@ export async function fetchGitHubData(username: string, token: string): Promise<
   const response = await graphql(token, USER_QUERY, { login: username });
 
   if (response.errors?.length) {
-    throw new Error(`GitHub GraphQL error: ${response.errors.map(e => e.message).join(', ')}`);
+    throw new Error(`GitHub GraphQL error: ${response.errors.map((e) => e.message).join(', ')}`);
   }
 
   if (!response.data?.user) {
@@ -249,9 +247,30 @@ export function createMockGitHubData(username: string): GitHubData {
       { name: 'Go', percentage: 5, color: '#00ADD8' },
     ],
     repos: [
-      { name: 'awesome-project', description: 'My best project', url: `https://github.com/${username}/awesome-project`, stars: 64, forks: 12, language: 'TypeScript' },
-      { name: 'cool-lib', description: 'A cool library', url: `https://github.com/${username}/cool-lib`, stars: 32, forks: 8, language: 'JavaScript' },
-      { name: 'rust-tool', description: 'Fast CLI tool', url: `https://github.com/${username}/rust-tool`, stars: 18, forks: 5, language: 'Rust' },
+      {
+        name: 'awesome-project',
+        description: 'My best project',
+        url: `https://github.com/${username}/awesome-project`,
+        stars: 64,
+        forks: 12,
+        language: 'TypeScript',
+      },
+      {
+        name: 'cool-lib',
+        description: 'A cool library',
+        url: `https://github.com/${username}/cool-lib`,
+        stars: 32,
+        forks: 8,
+        language: 'JavaScript',
+      },
+      {
+        name: 'rust-tool',
+        description: 'Fast CLI tool',
+        url: `https://github.com/${username}/rust-tool`,
+        stars: 18,
+        forks: 5,
+        language: 'Rust',
+      },
     ],
   };
 }

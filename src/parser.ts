@@ -10,7 +10,11 @@ import type { ExtractedBlock, ParseResult } from './types.js';
 
 const AURA_LANG = 'aura';
 
-export async function parseSource(sourcePath: string, assetsDir = '.github/assets', outputPath = 'README.md'): Promise<ParseResult> {
+export async function parseSource(
+  sourcePath: string,
+  assetsDir = '.github/assets',
+  outputPath = 'README.md',
+): Promise<ParseResult> {
   const source = await readFile(sourcePath, 'utf-8');
   const blocks: ExtractedBlock[] = [];
   let blockIndex = 0;
@@ -45,7 +49,7 @@ export async function parseSource(sourcePath: string, assetsDir = '.github/asset
           children: [imageNode],
         };
 
-        (parent.children as any[])[index] = paragraphNode;
+        (parent.children as unknown[])[index] = paragraphNode;
         blockIndex++;
       });
     })
