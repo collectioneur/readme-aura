@@ -23,10 +23,10 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 
 ## How It Works
 
-1. Write a `readme.source.md` with standard Markdown
-2. Add JSX components inside `` ```aura `` code blocks
-3. Run the build (GitHub Action or `node dist/cli.js build`) — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
-4. Get a clean `README.md` with embedded SVG images
+1. Run `npx readme-aura init` in your repo — creates workflow, source template, and audits `.gitignore`
+2. Edit `readme.source.md` — add JSX components inside `` ```aura `` code blocks
+3. Preview locally with `npx readme-aura build` — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
+4. Push to `main` — the GitHub Action auto-generates your `README.md`
 
 ```aura width=800 height=220
 <div style={{ display: 'flex', width: '100%', height: '100%', background: '#0d1117', borderRadius: 16, padding: 24, gap: 16, fontFamily: 'Inter, sans-serif' }}>
@@ -54,19 +54,30 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 
 ## Quick Start
 
-**Option 1 — GitHub Action (recommended)**  
-Add the workflow below; it uses the [readme-aura action](https://github.com/collectioneur/readme-aura) from this repo (no npm install).
-
-**Option 2 — Local build**  
-Clone this repo, then from the repo root:
+Run one command in your repo — it creates the GitHub Actions workflow, a starter `readme.source.md`, and ensures `.gitignore` won't block generated files:
 
 ```bash
-npm ci && npm run build && node dist/cli.js build
+npx readme-aura init
 ```
 
-This reads `readme.source.md` from the current directory, renders all `` ```aura `` blocks to SVG, saves them to `.github/assets/`, and outputs a final `README.md`.
+Then preview locally:
 
-### CLI Options
+```bash
+npx readme-aura build
+```
+
+That's it. Push to `main` and the workflow will auto-generate your `README.md` on every push.
+
+> `init` auto-detects profile repos (`username/username`) and picks the right template.
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `npx readme-aura init` | Scaffold workflow, source template, audit `.gitignore` |
+| `npx readme-aura build` | Render `` ```aura `` blocks to SVG and generate `README.md` |
+
+### Build Options
 
 | Option | Default | Description |
 |--------|---------|-------------|
@@ -77,13 +88,18 @@ This reads `readme.source.md` from the current directory, renders all `` ```aura
 | `-g, --github-user` | auto-detect | GitHub username for stats |
 | `-t, --github-token` | `$GITHUB_TOKEN` | Token for GitHub API |
 
-## GitHub Actions (Auto-Rebuild)
+### Init Options
 
-Add this workflow to your repo and your README will regenerate automatically on every push and on a daily schedule (to keep GitHub stats fresh).
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--template` | auto-detect | Template: `profile` or `project` |
+| `--force` | `false` | Overwrite existing files |
 
-**1. Create** `readme.source.md` in your repo root with `` ```aura `` blocks.
+## What `init` Creates
 
-**2. Add** `.github/workflows/readme-aura.yml`:
+The `init` command sets up everything you need:
+
+**`.github/workflows/readme-aura.yml`** — GitHub Action that rebuilds your README on every push to `main` and on a daily schedule (to keep GitHub stats fresh):
 
 ```yaml
 name: Generate README
@@ -110,9 +126,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-**3. Push to `main`** — the action runs, generates SVGs, and commits the final `README.md`.
+**`readme.source.md`** — Starter template with example `` ```aura `` blocks, customized for your repo type.
 
-> Works for both profile repos (`username/username`) and regular repos.
+**`.gitignore` audit** — Ensures `.github/assets/`, `.github/workflows/`, `README.md`, and `readme.source.md` are not ignored.
 
 ## Features
 

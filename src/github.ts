@@ -104,29 +104,39 @@ async function graphql(
   return res.json() as Promise<GraphQLResponse>;
 }
 
-// ── Auto-detect username from git remote ─────────────────────────
+// ── Auto-detect owner/repo from git remote ──────────────────────
 
-export function detectGitHubUser(): string | null {
+export interface GitHubRemote {
+  owner: string;
+  repo: string;
+}
+
+export function parseGitHubRemote(url: string): GitHubRemote | null {
+  // https://github.com/user/repo.git  or  https://github.com/user/repo
+  const httpsMatch = url.match(/github\.com\/([^/]+)\/([^/.]+)/);
+  if (httpsMatch) return { owner: httpsMatch[1], repo: httpsMatch[2] };
+
+  // git@github.com:user/repo.git  or  git@github.com:user/repo
+  const sshMatch = url.match(/github\.com:([^/]+)\/([^/.]+)/);
+  if (sshMatch) return { owner: sshMatch[1], repo: sshMatch[2] };
+
+  return null;
+}
+
+export function detectGitHubRemote(): GitHubRemote | null {
   try {
     const remote = execSync('git remote get-url origin', {
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
     }).trim();
-
-    // Supports:
-    //   https://github.com/user/repo.git
-    //   git@github.com:user/repo.git
-    //   https://github.com/user/repo
-    const httpsMatch = remote.match(/github\.com\/([^/]+)\//);
-    if (httpsMatch) return httpsMatch[1];
-
-    const sshMatch = remote.match(/github\.com:([^/]+)\//);
-    if (sshMatch) return sshMatch[1];
-
-    return null;
+    return parseGitHubRemote(remote);
   } catch {
     return null;
   }
+}
+
+export function detectGitHubUser(): string | null {
+  return detectGitHubRemote()?.owner ?? null;
 }
 
 // ── Data Transformation ──────────────────────────────────────────

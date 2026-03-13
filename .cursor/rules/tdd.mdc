@@ -23,6 +23,6 @@ Medium and large changes MUST follow strict Test-Driven Development:
 - Cosmetic fixes under 10 lines
 
 ## Test structure
-- Tests live in `src/__tests__/`, mirroring `src/` file names
+- Tests live in `src/tests/`, mirroring `src/` file names
 - Use Vitest: `describe`, `it`, `expect`
 - Run: `npm test` (once) or `npm run test:watch` (continuous)

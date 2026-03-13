@@ -25,9 +25,14 @@ Medium and large changes (new features, refactors touching multiple files, new m
 
 **Exempt**: small changes (<10 lines), config tweaks, documentation-only edits.
 
-Test framework: **Vitest**. Tests live in `src/__tests__/`, mirroring `src/` structure.
+Test framework: **Vitest**. Tests live in `src/tests/`, mirroring `src/` structure.
 
-### 3. Reflection & Decision Logging
+### 3. Clarification Policy
+
+When implementing any feature or change, always ask the user for clarification
+on ambiguous details before proceeding. Never assume — ask first, implement second.
+
+### 4. Reflection & Decision Logging
 
 After completing a medium or large change, reflect on it and append an entry
 to `docs/decisions.md` using the ADR-lite format:
@@ -42,7 +47,7 @@ to `docs/decisions.md` using the ADR-lite format:
 
 Keep entries concise (5-10 lines each).
 
-### 4. Code Quality Checks
+### 5. Code Quality Checks
 
 After any medium or large change, run and verify zero errors from:
 
@@ -61,11 +66,12 @@ via `.vscode/settings.json`, but always verify before committing.
 
 | File | Role |
 |------|------|
-| `cli.ts` | CLI entry point (Commander). Orchestrates parsing, rendering, file output. |
+| `cli.ts` | CLI entry point (Commander). Registers `init` and `build` subcommands. |
+| `init.ts` | Scaffolding logic for `init` command (workflow, source template, gitignore audit). |
 | `parser.ts` | Parses source Markdown via remark, extracts `aura` code blocks, replaces them with image nodes. |
 | `renderer.ts` | Transpiles JSX (Sucrase) and renders to SVG (Satori). Contains `createElement`, `parseMeta`, `transpileJsx`, `renderBlock`. |
 | `fonts.ts` | Loads Inter from `@fontsource/inter` or Google Fonts CDN. Supports custom font directories. |
-| `github.ts` | Fetches GitHub user/repo data via GraphQL API. Auto-detects username from git remote. Provides mock data fallback. |
+| `github.ts` | Fetches GitHub user/repo data via GraphQL API. Auto-detects owner/repo from git remote. Provides mock data fallback. |
 | `types.ts` | All shared TypeScript interfaces (`ExtractedBlock`, `ParseResult`, `FontConfig`, `RenderOptions`, `GitHubData`, etc.). |
 
 ### Components (`src/components/`)
@@ -76,12 +82,23 @@ via `.vscode/settings.json`, but always verify before committing.
 | `StatsCard.ts` | Neon/cyberpunk stats card (stars, commits, repos, forks + languages). |
 | `MockupPhone.ts` | Phone-frame mockup showing profile info, mini stats, top repos. |
 
-### Tests (`src/__tests__/`)
+### Templates (`src/templates/`)
+
+| File | Role |
+|------|------|
+| `workflow.ts` | Generates GitHub Actions workflow YAML for readme-aura. |
+| `source-profile.ts` | Profile repo (`username/username`) starter `readme.source.md` template. |
+| `source-project.ts` | Project repo starter `readme.source.md` template. |
+
+### Tests (`src/tests/`)
 
 | File | Covers |
 |------|--------|
 | `renderer.test.ts` | `parseMeta`, `createElement`, `transpileJsx` |
 | `parser.test.ts` | `parseSource` (block extraction, image replacement, relative paths) |
+| `github.test.ts` | `parseGitHubRemote` (URL parsing for HTTPS, SSH, edge cases) |
+| `templates.test.ts` | `generateWorkflow`, `generateSourceProfile`, `generateSourceProject` |
+| `init.test.ts` | `initProject` (file creation, skip/force, gitignore audit, template detection) |
 
 ### Documentation (`docs/`)
 
@@ -125,6 +142,8 @@ via `.vscode/settings.json`, but always verify before committing.
 | `npm run format:check` | Check formatting without writing |
 | `npm run dev` | Run CLI from source (`tsx src/cli.ts`) |
 | `npm start` | Run compiled CLI (`node dist/cli.js`) |
+| `npx readme-aura init` | Scaffold workflow, source template, audit `.gitignore` |
+| `npx readme-aura build` | Render aura blocks to SVG and generate `README.md` |
 
 ---
 
@@ -142,6 +161,9 @@ via `.vscode/settings.json`, but always verify before committing.
 ## Pipeline Overview
 
 ```
+npx readme-aura init
+    │ creates workflow + readme.source.md + audits .gitignore
+    ▼
 *.source.md
     │
     ▼

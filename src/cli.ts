@@ -9,6 +9,7 @@ import { renderBlock, createElement } from './renderer.js';
 import { loadDefaultFonts, loadFontsFromDir } from './fonts.js';
 import { fetchGitHubData, detectGitHubUser, createMockGitHubData } from './github.js';
 import { makeStatsCard, makeMockupPhone } from './components/index.js';
+import { initProject } from './init.js';
 import type { FontConfig, GitHubData } from './types.js';
 
 const program = new Command();
@@ -17,6 +18,40 @@ program
   .name('readme-aura')
   .description('Next-Gen README generator - render React/JSX components to SVG inside Markdown')
   .version('0.1.0');
+
+program
+  .command('init')
+  .description('Scaffold readme-aura in your project (workflow, source template, gitignore audit)')
+  .option('--template <type>', 'Template: profile or project (auto-detected from git remote)')
+  .option('--force', 'Overwrite existing files', false)
+  .action(async (opts) => {
+    console.log('\n  readme-aura init\n');
+
+    const result = await initProject({
+      template: opts.template,
+      force: opts.force,
+    });
+
+    if (result.remote) {
+      console.log(`  Detected:  ${result.remote.owner}/${result.remote.repo}`);
+    }
+    console.log(`  Template:  ${result.template}\n`);
+
+    for (const file of result.created) {
+      console.log(`  + Created  ${file}`);
+    }
+    for (const file of result.skipped) {
+      console.log(`  - Skipped  ${file} (already exists, use --force to overwrite)`);
+    }
+    for (const rule of result.gitignoreFixed) {
+      console.log(`  ~ Added to .gitignore: ${rule}`);
+    }
+
+    console.log('\n  Next steps:');
+    console.log('    1. Edit readme.source.md to customize your README');
+    console.log('    2. Test locally:  npx readme-aura build');
+    console.log('    3. Push to main — the workflow will auto-generate your README\n');
+  });
 
 program
   .command('build')

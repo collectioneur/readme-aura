@@ -32,3 +32,10 @@ Each entry follows the ADR-lite format.
 - **Decision**: Use ESLint 9 (flat config) with `typescript-eslint` strict rules + Prettier for formatting. ESLint handles logic errors and best practices; Prettier handles formatting. `eslint-config-prettier` disables ESLint rules that conflict with Prettier. IDE auto-formats/fixes on save via `.vscode/settings.json`.
 - **Alternatives**: ESLint alone with stylistic rules (mixing concerns — linter doing formatter's job), Biome (newer all-in-one tool but smaller ecosystem and less mature TypeScript support), dprint (fast formatter but less IDE integration).
 - **Avoid**: Don't use `eslint-plugin-prettier` (runs Prettier as an ESLint rule — slow, noisy). Don't add heavy presets like `eslint-config-airbnb`. Keep the config minimal and let TypeScript strict mode handle type safety.
+
+## 2026-03-13: Add `init` scaffolding command
+
+- **Context**: Users had to manually create a workflow file, `readme.source.md`, and check `.gitignore` — a 3-4 step process that could easily go wrong. Needed a zero-friction onboarding path via `npx readme-aura init`.
+- **Decision**: Implement `init` as a CLI subcommand that auto-detects the git remote to choose between `profile` and `project` templates, creates `.github/workflows/readme-aura.yml` and `readme.source.md`, and audits `.gitignore` using `git check-ignore`. Templates are embedded as TypeScript template literal functions (no external resource files). URL parsing extracted into a pure `parseGitHubRemote()` function for testability.
+- **Alternatives**: Interactive prompts via `@inquirer/prompts` (adds a dependency, overkill for v1), external template files copied at runtime (fragile path resolution with `npx`), separate `create-readme-aura` package (unnecessary complexity).
+- **Avoid**: Don't add interactive prompt libraries until there's a clear need beyond two template choices. Don't store templates as external files — keep them as TypeScript functions for type safety and bundling simplicity.
