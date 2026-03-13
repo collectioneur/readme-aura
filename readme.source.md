@@ -174,8 +174,19 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
     {`
       @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
       @keyframes float { 0%, 100% { transform: translateX(0) translateY(0); } 50% { transform: translateX(15px) translateY(-10px); } }
+      @keyframes drift1 { 0%, 100% { transform: translate(0, 0); opacity: 0.4; } 50% { transform: translate(8px, -6px); opacity: 0.9; } }
+      @keyframes drift2 { 0%, 100% { transform: translate(0, 0); opacity: 0.5; } 50% { transform: translate(-6px, 8px); opacity: 0.85; } }
+      @keyframes drift3 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; } 50% { transform: translate(5px, 5px) scale(1.3); opacity: 1; } }
+      @keyframes ringPulse { 0%, 100% { opacity: 0.15; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.08); } }
+      @keyframes dashDraw { 0% { stroke-dashoffset: 200; } 100% { stroke-dashoffset: 0; } }
       #orb1 { animation: pulse 2s ease-in-out infinite; }
       #orb2 { animation: float 3s ease-in-out infinite; }
+      #part1 { animation: drift1 4s ease-in-out infinite; }
+      #part2 { animation: drift2 5s ease-in-out infinite 0.5s; }
+      #part3 { animation: drift3 3.5s ease-in-out infinite 1s; }
+      #part4 { animation: drift1 4.5s ease-in-out infinite reverse 0.3s; }
+      #ring { animation: ringPulse 2.5s ease-in-out infinite; }
+      #line { animation: dashDraw 2s ease-in-out infinite; }
     `}
   </style>
   <svg width="400" height="120" style={{ position: 'absolute', top: 0, left: 0 }}>
@@ -188,9 +199,23 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
         <stop offset="0%" stopColor="rgba(118,75,162,0.6)" />
         <stop offset="70%" stopColor="rgba(118,75,162,0)" />
       </radialGradient>
+      <radialGradient id="ag3" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(0,200,220,0.5)" />
+        <stop offset="70%" stopColor="rgba(0,200,220,0)" />
+      </radialGradient>
+      <radialGradient id="ag4" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(255,180,200,0.6)" />
+        <stop offset="70%" stopColor="rgba(255,180,200,0)" />
+      </radialGradient>
     </defs>
     <ellipse id="orb1" cx="120" cy="60" rx="70" ry="50" fill="url(#ag1)" />
     <ellipse id="orb2" cx="280" cy="60" rx="60" ry="45" fill="url(#ag2)" />
+    <circle id="ring" cx="200" cy="60" r="52" fill="none" stroke="rgba(150,100,255,0.5)" strokeWidth="1" strokeDasharray="8 4" />
+    <circle id="part1" cx="60" cy="40" r="6" fill="url(#ag3)" />
+    <circle id="part2" cx="340" cy="85" r="5" fill="url(#ag4)" />
+    <circle id="part3" cx="75" cy="95" r="4" fill="rgba(255,200,220,0.8)" />
+    <circle id="part4" cx="355" cy="30" r="5" fill="rgba(100,200,255,0.6)" />
+    <path id="line" d="M 80 60 Q 200 20 320 60" fill="none" stroke="rgba(180,140,255,0.4)" strokeWidth="2" strokeDasharray="60 140" strokeLinecap="round" />
   </svg>
   <span style={{ fontSize: 15, fontWeight: 700, background: 'linear-gradient(90deg, #ffffff, #ffe4ec, #ffb6c1)', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', fontFamily: 'Inter, sans-serif' }}>CSS @keyframes + SVG</span>
 </div>
