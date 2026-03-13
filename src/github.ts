@@ -1,7 +1,14 @@
 import { execSync } from 'node:child_process';
-import type { GitHubData, GitHubUser, GitHubStats, GitHubLanguage, GitHubRepo } from './types.js';
+import type {
+  GitHubData,
+  GitHubUser,
+  GitHubStats,
+  GitHubLanguage,
+  GitHubRepo,
+  RepositoryData,
+} from './types.js';
 
-// ── GraphQL Query ────────────────────────────────────────────────
+// ── GraphQL Queries ──────────────────────────────────────────────
 
 const USER_QUERY = `
 query ($login: String!) {
@@ -35,6 +42,26 @@ query ($login: String!) {
               history { totalCount }
             }
           }
+        }
+      }
+    }
+  }
+}
+`;
+
+const REPO_QUERY = `
+query ($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    name
+    description
+    url
+    stargazerCount
+    forkCount
+    primaryLanguage { name color }
+    defaultBranchRef {
+      target {
+        ... on Commit {
+          history { totalCount }
         }
       }
     }
@@ -81,11 +108,18 @@ interface GraphQLRepo {
   } | null;
 }
 
-async function graphql(
+interface RepoGraphQLResponse {
+  data?: {
+    repository: GraphQLRepo;
+  };
+  errors?: Array<{ message: string }>;
+}
+
+async function graphql<T>(
   token: string,
   query: string,
   variables: Record<string, unknown>,
-): Promise<GraphQLResponse> {
+): Promise<T> {
   const res = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
@@ -101,7 +135,7 @@ async function graphql(
     throw new Error(`GitHub API returned ${res.status}: ${text}`);
   }
 
-  return res.json() as Promise<GraphQLResponse>;
+  return res.json() as Promise<T>;
 }
 
 // ── Auto-detect owner/repo from git remote ──────────────────────
@@ -208,7 +242,7 @@ function transformRepos(raw: GraphQLUser): GitHubRepo[] {
 // ── Public API ───────────────────────────────────────────────────
 
 export async function fetchGitHubData(username: string, token: string): Promise<GitHubData> {
-  const response = await graphql(token, USER_QUERY, { login: username });
+  const response = await graphql<GraphQLResponse>(token, USER_QUERY, { login: username });
 
   if (response.errors?.length) {
     throw new Error(`GitHub GraphQL error: ${response.errors.map((e) => e.message).join(', ')}`);
@@ -282,5 +316,51 @@ export function createMockGitHubData(username: string): GitHubData {
         language: 'Rust',
       },
     ],
+  };
+}
+
+// ── Repository API ───────────────────────────────────────────────
+
+export async function fetchRepositoryData(
+  owner: string,
+  repo: string,
+  token: string,
+): Promise<RepositoryData> {
+  const response = await graphql<RepoGraphQLResponse>(token, REPO_QUERY, {
+    owner,
+    name: repo,
+  });
+
+  if (response.errors?.length) {
+    throw new Error(`GitHub GraphQL error: ${response.errors.map((e) => e.message).join(', ')}`);
+  }
+
+  const r = response.data?.repository;
+  if (!r) {
+    throw new Error(`Repository "${owner}/${repo}" not found.`);
+  }
+
+  return {
+    name: r.name,
+    description: r.description,
+    url: r.url,
+    stars: r.stargazerCount,
+    forks: r.forkCount,
+    language: r.primaryLanguage?.name ?? null,
+    languageColor: r.primaryLanguage?.color ?? null,
+    commits: r.defaultBranchRef?.target?.history?.totalCount ?? 0,
+  };
+}
+
+export function createMockRepoData(owner: string, repo: string): RepositoryData {
+  return {
+    name: repo,
+    description: 'A great project',
+    url: `https://github.com/${owner}/${repo}`,
+    stars: 42,
+    forks: 8,
+    language: 'TypeScript',
+    languageColor: '#3178c6',
+    commits: 256,
   };
 }

@@ -7,10 +7,17 @@ import { resolve } from 'node:path';
 import { parseSource } from './parser.js';
 import { renderBlock, createElement } from './renderer.js';
 import { loadDefaultFonts, loadFontsFromDir } from './fonts.js';
-import { fetchGitHubData, detectGitHubUser, createMockGitHubData } from './github.js';
+import {
+  fetchGitHubData,
+  fetchRepositoryData,
+  detectGitHubUser,
+  detectGitHubRemote,
+  createMockGitHubData,
+  createMockRepoData,
+} from './github.js';
 import { makeStatsCard, makeMockupPhone } from './components/index.js';
 import { initProject } from './init.js';
-import type { FontConfig, GitHubData } from './types.js';
+import type { FontConfig, GitHubData, RepositoryData } from './types.js';
 
 const program = new Command();
 
@@ -65,6 +72,8 @@ program
     'GitHub username (auto-detected from git remote if omitted)',
   )
   .option('-t, --github-token <token>', 'GitHub token (defaults to GITHUB_TOKEN env variable)')
+  .option('--owner <owner>', 'Repository owner (auto-detected from git remote if omitted)')
+  .option('--repo <repo>', 'Repository name (auto-detected from git remote if omitted)')
   .action(async (opts) => {
     const sourcePath = resolve(opts.source);
     const outputPath = resolve(opts.output);
@@ -109,6 +118,33 @@ program
         console.log('\n  GitHub:  not configured (use --github-user or set git remote)');
       }
 
+      // ── Resolve repository data ────────────────────────────────
+      let repoData: RepositoryData | null = null;
+      const remote = detectGitHubRemote();
+      const owner = opts.owner ?? remote?.owner ?? null;
+      const repo = opts.repo ?? remote?.repo ?? null;
+
+      if (owner && repo) {
+        if (githubToken) {
+          try {
+            console.log(`  Fetching repo: ${owner}/${repo}...`);
+            repoData = await fetchRepositoryData(owner, repo, githubToken);
+            console.log(
+              `  Fetched repo: ${owner}/${repo} — ${repoData.stars} stars, ${repoData.forks} forks`,
+            );
+          } catch (err) {
+            console.warn(`  Warning: Repo API failed: ${(err as Error).message}`);
+            console.warn('  Falling back to mock repo data.\n');
+            repoData = createMockRepoData(owner, repo);
+          }
+        } else {
+          console.log('  No GITHUB_TOKEN — using mock repo data for preview.');
+          repoData = createMockRepoData(owner, repo);
+        }
+      } else {
+        console.log('  Repo:  not configured (use --owner/--repo or set git remote)');
+      }
+
       if (blocks.length === 0) {
         console.log('\n  No aura blocks found in source file.');
       } else {
@@ -127,6 +163,9 @@ program
         const context: Record<string, unknown> = {};
         if (github) {
           context.github = github;
+        }
+        if (repoData) {
+          context.repo = repoData;
         }
         // Inject built-in components (available in every aura block)
         context.StatsCard = makeStatsCard(createElement);

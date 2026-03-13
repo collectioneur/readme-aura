@@ -60,3 +60,10 @@ Each entry follows the ADR-lite format.
 - **Decision**: Define a canonical palette (background `#08080c`, purple/blue/magenta radial gradients), 10–12 animated ellipses per block using float/pulse/diagonal keyframes, and glassmorphism cards (`rgba(12,10,20,0.6)` with `rgba(120,80,220,0.2)` borders). Applied to `yehor.source.md` (profile, stats, tech stack) and `readme.source.md` (Features, Animations, Tech Stack blocks). SVG `filter`/`feGaussianBlur` was considered but deferred due to Satori/renderer compatibility unknowns.
 - **Alternatives**: Reusable shared JSX component for liquid background (would require renderer context injection); CSS-only blur (Satori does not support `filter: blur()` reliably).
 - **Avoid**: Don't rely on `z-index` for stacking — Satori does not support it; use element order in the DOM instead. Don't add `feGaussianBlur` without validating GitHub's SVG renderer first.
+
+## 2026-03-13: Repository data in JSX context
+
+- **Context**: Users needed repository-specific data (stars, forks, description, language, commits) in aura blocks, not just user-level stats. The existing `github` object provides user data; the current repo was not exposed.
+- **Decision**: Add `fetchRepositoryData(owner, repo, token)` via GitHub GraphQL `repository` query. Expose `repo` object in JSX context with `RepositoryData` (name, description, url, stars, forks, language, languageColor, commits). Add `--owner`/`--repo` CLI overrides for builds outside git or with non-GitHub remotes. Use `createMockRepoData` when no token, same fallback pattern as `github`.
+- **Alternatives**: Embed repo data inside `github` (would mix user and repo concerns; separate `repo` is clearer). Fetch repo only when blocks use it (deferred — simpler to always fetch when owner/repo known).
+- **Avoid**: Don't conflate user repos list (`github.repos`) with current repo (`repo`). They serve different purposes.

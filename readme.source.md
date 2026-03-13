@@ -1,4 +1,4 @@
-```aura width=800 height=180
+```aura width=800 height=210
 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: '#08080c', borderRadius: 20, padding: 30, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', border: '1px solid rgba(110,80,220,0.18)' }}>
   <style>
     {`
@@ -79,6 +79,21 @@
     <span style={{ padding: '4px 12px', background: 'rgba(12,10,20,0.6)', color: '#e8c8ff', borderRadius: 12, fontSize: 12, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>SVG Rendering</span>
     <span style={{ padding: '4px 12px', background: 'rgba(12,10,20,0.6)', color: '#a0a0ff', borderRadius: 12, fontSize: 12, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>GitHub Actions</span>
   </div>
+  {repo && (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginTop: 16, zIndex: 10, lineHeight: 1 }}>
+      <span style={{ fontSize: 13, fontWeight: 300, color: '#b8860b' }}>{repo.stars} stars</span>
+      <span style={{ fontSize: 12, color: '#3d3d5c', fontWeight: 500 }}> | </span>
+      <span style={{ fontSize: 13, fontWeight: 300, color: '#8b7ec8' }}>{repo.forks} forks</span>
+      <span style={{ fontSize: 12, color: '#3d3d5c', fontWeight: 500 }}> | </span>
+      <span style={{ fontSize: 13, fontWeight: 300, color: '#5a9ca8' }}>{repo.commits} commits</span>
+      <span style={{ fontSize: 12, color: '#3d3d5c', fontWeight: 500 }}> | </span>
+      {repo.language && (
+        <>
+          <span style={{ fontSize: 13, fontWeight: 300, color: '#9ca3af', padding: '3px 10px', background: 'rgba(12,10,20,0.5)', borderRadius: 6, border: '1px solid rgba(100,80,180,0.15)' }}>{repo.language}</span>
+        </>
+      )}
+    </div>
+  )}
 </div>
 ```
 

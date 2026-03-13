@@ -71,3 +71,14 @@ export interface GitHubData {
   languages: GitHubLanguage[];
   repos: GitHubRepo[];
 }
+
+export interface RepositoryData {
+  name: string;
+  description: string | null;
+  url: string;
+  stars: number;
+  forks: number;
+  language: string | null;
+  languageColor: string | null;
+  commits: number;
+}

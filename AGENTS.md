@@ -66,13 +66,13 @@ via `.vscode/settings.json`, but always verify before committing.
 
 | File | Role |
 |------|------|
-| `cli.ts` | CLI entry point (Commander). Registers `init` and `build` subcommands. |
+| `cli.ts` | CLI entry point (Commander). Registers `init` and `build` subcommands. Injects `github` (user) and `repo` (current repository) into JSX context. Supports `--owner`/`--repo` overrides. |
 | `init.ts` | Scaffolding logic for `init` command (workflow, source template, gitignore audit). |
 | `parser.ts` | Parses source Markdown via remark, extracts `aura` code blocks, replaces them with image nodes. |
 | `renderer.ts` | Transpiles JSX (Sucrase) and renders to SVG (Satori). Contains `createElement`, `parseMeta`, `transpileJsx`, `renderBlock`. |
 | `fonts.ts` | Loads Inter from `@fontsource/inter` or Google Fonts CDN. Supports custom font directories. |
-| `github.ts` | Fetches GitHub user/repo data via GraphQL API. Auto-detects owner/repo from git remote. Provides mock data fallback. |
-| `types.ts` | All shared TypeScript interfaces (`ExtractedBlock`, `ParseResult`, `FontConfig`, `RenderOptions`, `GitHubData`, etc.). |
+| `github.ts` | Fetches GitHub user data and repository data via GraphQL API. Auto-detects owner/repo from git remote. Provides mock data fallback for both. |
+| `types.ts` | All shared TypeScript interfaces (`ExtractedBlock`, `ParseResult`, `FontConfig`, `RenderOptions`, `GitHubData`, `RepositoryData`, etc.). |
 
 ### Components (`src/components/`)
 
@@ -96,7 +96,7 @@ via `.vscode/settings.json`, but always verify before committing.
 |------|--------|
 | `renderer.test.ts` | `parseMeta`, `createElement`, `transpileJsx` |
 | `parser.test.ts` | `parseSource` (block extraction, image replacement, relative paths) |
-| `github.test.ts` | `parseGitHubRemote` (URL parsing for HTTPS, SSH, edge cases) |
+| `github.test.ts` | `parseGitHubRemote`, `fetchRepositoryData`, `createMockRepoData` |
 | `templates.test.ts` | `generateWorkflow`, `generateSourceProfile`, `generateSourceProject` |
 | `init.test.ts` | `initProject` (file creation, skip/force, gitignore audit, template detection) |
 
