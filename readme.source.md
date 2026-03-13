@@ -158,6 +158,46 @@ jobs:
 - **Meta Syntax** — Control dimensions: `` ```aura width=800 height=400 ``
 - **GitHub-Compatible** — Output is pure Markdown + SVG, works everywhere
 
+## Animations
+
+You can add **CSS-based SVG animations** using the `<style>` injection mechanism. Satori renders a static frame at build time; the browser animates the SVG when it is displayed (e.g. on GitHub).
+
+**How it works:** Add a `<style>` block in your JSX. Define `@keyframes` and apply them to elements by `#id` or `.class`. The renderer extracts and injects the CSS into the final SVG.
+
+**Animatable properties:** `transform` (translate, scale, rotate), `opacity`, `fill`, and `stroke-dasharray`/`stroke-dashoffset`. Layout properties (`width`, `height`, `margin`) are unreliable.
+
+**Targeting:** Use `id` on SVG elements (`<ellipse id="glow">`, `<g id="group">`) and reference them in CSS: `#glow { animation: pulse 2s infinite; }`. Raw SVG elements preserve `id`; Satori-rendered HTML may not always preserve `className`.
+
+```aura width=400 height=120
+<div style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '100%', background: '#0a0a12', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>
+  <style>
+    {`
+      @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+      @keyframes float { 0%, 100% { transform: translateX(0) translateY(0); } 50% { transform: translateX(15px) translateY(-10px); } }
+      #orb1 { animation: pulse 2s ease-in-out infinite; }
+      #orb2 { animation: float 3s ease-in-out infinite; }
+    `}
+  </style>
+  <svg width="400" height="120" style={{ position: 'absolute', top: 0, left: 0 }}>
+    <defs>
+      <radialGradient id="ag1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(102,126,234,0.8)" />
+        <stop offset="70%" stopColor="rgba(102,126,234,0)" />
+      </radialGradient>
+      <radialGradient id="ag2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(118,75,162,0.6)" />
+        <stop offset="70%" stopColor="rgba(118,75,162,0)" />
+      </radialGradient>
+    </defs>
+    <ellipse id="orb1" cx="120" cy="60" rx="70" ry="50" fill="url(#ag1)" />
+    <ellipse id="orb2" cx="280" cy="60" rx="60" ry="45" fill="url(#ag2)" />
+  </svg>
+  <span style={{ fontSize: 15, fontWeight: 700, background: 'linear-gradient(90deg, #ffffff, #ffe4ec, #ffb6c1)', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', fontFamily: 'Inter, sans-serif' }}>CSS @keyframes + SVG</span>
+</div>
+```
+
+**Limitations:** No JavaScript, no SMIL. GitHub strips scripts but supports CSS animations. Prefer `transform` and `opacity` for best compatibility.
+
 ## Tech Stack
 
 ```aura width=700 height=60
