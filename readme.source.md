@@ -170,6 +170,11 @@ jobs:
 </div>
 ```
 
+## If You Use readme-aura
+
+- **Add the topic:** Consider adding the [readme-aura](https://github.com/topics/readme-aura) topic to your repository so others can discover it.
+- **Keep the footer:** I would appreciate it if you keep the "powered by readme-aura" footer in your README. It helps others find and try the tool.
+
 ## License
 
 MIT
