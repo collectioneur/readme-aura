@@ -1,8 +1,75 @@
 ```aura width=800 height=180
-<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)', borderRadius: 20, padding: 30, fontFamily: 'Inter, sans-serif' }}>
-  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-    <div style={{ display: 'flex', width: 48, height: 48, borderRadius: 12, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', alignItems: 'center', justifyContent: 'center' }}>
-      <span style={{ fontSize: 28, color: 'white' }}>A</span>
+<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: '#08080c', borderRadius: 20, padding: 30, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', border: '1px solid rgba(110,80,220,0.18)' }}>
+  <style>
+    {`
+      @keyframes bn-drift-r { 0% { transform: translate(0, 0); opacity: 0.8; } 100% { transform: translate(1056px, 0); opacity: 1.05; } }
+      @keyframes bn-drift-l { 0% { transform: translate(0, 0); opacity: 0.75; } 100% { transform: translate(-1003px, 0); opacity: 1; } }
+      @keyframes bn-drift-u { 0% { transform: translate(0, 0); opacity: 0.85; } 100% { transform: translate(1000px, 0); opacity: 1; } }
+      @keyframes bn-pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: translate(-1044px, 0); opacity: 0.5; } }
+      #bn-tl1 { animation: bn-drift-r 0.8s infinite; }
+      #bn-tl2 { animation: bn-drift-l 1.0s  infinite; }
+      #bn-tr1 { animation: bn-drift-l 0.9s infinite 0.3s; }
+      #bn-tr2 { animation: bn-drift-r 1.0s  infinite 0.1s; }
+      #bn-br1 { animation: bn-drift-r 1.2s infinite 0.5s; }
+      #bn-br2 { animation: bn-pulse 1s infinite; }
+      #bn-bl1 { animation: bn-drift-l 1.3s infinite 0.2s; }
+      #bn-bl2 { animation: bn-drift-u 0.7s infinite 0.4s; }
+    `}
+  </style>
+  <svg width="800" height="180" style={{ position: 'absolute', top: 0, left: 0 }}>
+    <defs>
+      <radialGradient id="bng1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(110,20,210,0.65)" />
+        <stop offset="70%" stopColor="rgba(110,20,210,0)" />
+      </radialGradient>
+      <radialGradient id="bng2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(40,70,255,0.55)" />
+        <stop offset="70%" stopColor="rgba(40,70,255,0)" />
+      </radialGradient>
+      <radialGradient id="bng3" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(255,50,180,0.5)" />
+        <stop offset="70%" stopColor="rgba(255,50,180,0)" />
+      </radialGradient>
+      <radialGradient id="bng4" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(160,30,255,0.5)" />
+        <stop offset="70%" stopColor="rgba(160,30,255,0)" />
+      </radialGradient>
+      <radialGradient id="bng5" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(0,140,255,0.45)" />
+        <stop offset="70%" stopColor="rgba(0,140,255,0)" />
+      </radialGradient>
+      <radialGradient id="bng6" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(200,30,200,0.45)" />
+        <stop offset="70%" stopColor="rgba(200,30,200,0)" />
+      </radialGradient>
+      <radialGradient id="bng7" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(100,25,205,0.42)" />
+        <stop offset="70%" stopColor="rgba(100,25,205,0)" />
+      </radialGradient>
+      <radialGradient id="bng8" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(60,80,255,0.38)" />
+        <stop offset="70%" stopColor="rgba(60,80,255,0)" />
+      </radialGradient>
+    </defs>
+    <ellipse id="bn-tl1" cx="-100" cy="60" rx="140" ry="10" fill="url(#bng1)" />
+    <ellipse id="bn-tl2" cx="840" cy="50" rx="120" ry="20" fill="url(#bng2)" />
+    <ellipse id="bn-tr1" cx="720" cy="55" rx="130" ry="25" fill="url(#bng3)" />
+    <ellipse id="bn-tr2" cx="660" cy="65" rx="110" ry="15" fill="url(#bng4)" />
+    <ellipse id="bn-br1" cx="700" cy="130" rx="140" ry="10" fill="url(#bng5)" />
+    <ellipse id="bn-br2" cx="740" cy="140" rx="100" ry="10" fill="url(#bng6)" />
+    <ellipse id="bn-bl1" cx="100" cy="125" rx="130" ry="15" fill="url(#bng7)" />
+    <ellipse id="bn-bl2" cx="60" cy="135" rx="110" ry="15" fill="url(#bng8)" />
+    <ellipse id="bn-tl1" cx="-50" cy="60" rx="140" ry="10" fill="url(#bng1)" />
+    <ellipse id="bn-tl2" cx="800" cy="50" rx="120" ry="10" fill="url(#bng2)" />
+    <ellipse id="bn-tr1" cx="230" cy="55" rx="130" ry="25" fill="url(#bng3)" />
+    <ellipse id="bn-tr2" cx="400" cy="65" rx="110" ry="15" fill="url(#bng4)" />
+    <ellipse id="bn-br1" cx="500" cy="130" rx="140" ry="20" fill="url(#bng5)" />
+    <ellipse id="bn-br2" cx="40" cy="140" rx="100" ry="10" fill="url(#bng6)" />
+    <ellipse id="bn-bl1" cx="100" cy="125" rx="130" ry="15" fill="url(#bng7)" />
+    <ellipse id="bn-bl2" cx="240" cy="135" rx="110" ry="15" fill="url(#bng8)" />
+  </svg>
+  <div style={{ display: 'flex', alignItems: 'center', gap: 16, zIndex: 10 }}>
+    <div style={{ display: 'flex', width: 48, height: 48, borderRadius: 12, background: 'rgba(12,10,20,0.6)', border: '1px solid rgba(120,80,220,0.2)', alignItems: 'center', justifyContent: 'center' }}>
     </div>
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <span style={{ fontSize: 32, fontWeight: 700, color: 'white', margin: 0 }}>readme-aura</span>
@@ -10,9 +77,9 @@
     </div>
   </div>
   <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
-    <span style={{ padding: '4px 12px', background: '#667eea', color: 'white', borderRadius: 12, fontSize: 12 }}>React/JSX</span>
-    <span style={{ padding: '4px 12px', background: '#764ba2', color: 'white', borderRadius: 12, fontSize: 12 }}>SVG Rendering</span>
-    <span style={{ padding: '4px 12px', background: '#302b63', color: '#a0a0ff', borderRadius: 12, fontSize: 12, border: '1px solid #667eea' }}>GitHub Actions</span>
+    <span style={{ padding: '4px 12px', background: 'rgba(12,10,20,0.6)', color: '#7eb8ff', borderRadius: 12, fontSize: 12, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>React/JSX</span>
+    <span style={{ padding: '4px 12px', background: 'rgba(12,10,20,0.6)', color: '#e8c8ff', borderRadius: 12, fontSize: 12, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>SVG Rendering</span>
+    <span style={{ padding: '4px 12px', background: 'rgba(12,10,20,0.6)', color: '#a0a0ff', borderRadius: 12, fontSize: 12, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>GitHub Actions</span>
   </div>
 </div>
 ```
