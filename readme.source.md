@@ -29,25 +29,85 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 4. Push to `main` — the GitHub Action auto-generates your `README.md`
 
 ```aura width=800 height=220
-<div style={{ display: 'flex', width: '100%', height: '100%', background: '#0d1117', borderRadius: 16, padding: 24, gap: 16, fontFamily: 'Inter, sans-serif' }}>
-  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: '#161b22', borderRadius: 12, padding: 20, border: '1px solid #30363d' }}>
-    <span style={{ fontSize: 11, color: '#8b949e', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>Step 1</span>
-    <span style={{ fontSize: 16, fontWeight: 700, color: '#c9d1d9', marginBottom: 8 }}>Write JSX</span>
-    <span style={{ fontSize: 12, color: '#58a6ff', fontFamily: 'monospace' }}>{'```aura'}</span>
-    <span style={{ fontSize: 12, color: '#8b949e', fontFamily: 'monospace' }}>{'<Card />'}</span>
-    <span style={{ fontSize: 12, color: '#58a6ff', fontFamily: 'monospace' }}>{'```'}</span>
+<div style={{ display: 'flex', width: '100%', height: '100%', gap: 12, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', background: '#08080c', borderRadius: 16, padding: 24, border: '1px solid rgba(110,80,220,0.18)' }}>
+  <style>
+    {`
+      @keyframes hiw-drift-r { 0%, 100% { transform: translate(0, 0); opacity: 0.8; } 50% { transform: translate(20px, -10px); opacity: 1.05; } }
+      @keyframes hiw-drift-l { 0%, 100% { transform: translate(0, 0); opacity: 0.75; } 50% { transform: translate(-15px, 8px); opacity: 1; } }
+      @keyframes hiw-drift-u { 0%, 100% { transform: translate(0, 0); opacity: 0.85; } 50% { transform: translate(12px, -12px); opacity: 1; } }
+      @keyframes hiw-pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 0.5; } }
+      #hiw-g1 { animation: hiw-drift-r 8s ease-in-out infinite; }
+      #hiw-g2 { animation: hiw-drift-l 10s ease-in-out infinite; }
+      #hiw-g3 { animation: hiw-drift-r 9s ease-in-out infinite 0.3s; }
+      #hiw-g4 { animation: hiw-drift-u 11s ease-in-out infinite 0.1s; }
+      #hiw-g5 { animation: hiw-drift-l 7s ease-in-out infinite 0.5s; }
+      #hiw-g6 { animation: hiw-pulse 6s ease-in-out infinite; }
+      #hiw-g7 { animation: hiw-drift-r 10s ease-in-out infinite 0.2s; }
+      #hiw-g8 { animation: hiw-drift-l 8s ease-in-out infinite 0.4s; }
+    `}
+  </style>
+  <svg width="800" height="220" style={{ position: 'absolute', top: 0, left: 0 }}>
+    <defs>
+      <radialGradient id="hiwg1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(0,180,200,0.6)" />
+        <stop offset="70%" stopColor="rgba(0,180,200,0)" />
+      </radialGradient>
+      <radialGradient id="hiwg2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(40,120,220,0.55)" />
+        <stop offset="70%" stopColor="rgba(40,120,220,0)" />
+      </radialGradient>
+      <radialGradient id="hiwg3" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(0,200,180,0.45)" />
+        <stop offset="70%" stopColor="rgba(0,200,180,0)" />
+      </radialGradient>
+      <radialGradient id="hiwg4" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(100,200,255,0.5)" />
+        <stop offset="70%" stopColor="rgba(100,200,255,0)" />
+      </radialGradient>
+      <radialGradient id="hiwg5" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(255,180,100,0.4)" />
+        <stop offset="70%" stopColor="rgba(255,180,100,0)" />
+      </radialGradient>
+      <radialGradient id="hiwg6" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(180,140,255,0.45)" />
+        <stop offset="70%" stopColor="rgba(180,140,255,0)" />
+      </radialGradient>
+      <radialGradient id="hiwg7" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(80,220,200,0.4)" />
+        <stop offset="70%" stopColor="rgba(80,220,200,0)" />
+      </radialGradient>
+      <radialGradient id="hiwg8" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(255,150,120,0.35)" />
+        <stop offset="70%" stopColor="rgba(255,150,120,0)" />
+      </radialGradient>
+    </defs>
+    <ellipse id="hiw-g1" cx="120" cy="180" rx="160" ry="120" fill="url(#hiwg1)" />
+    <ellipse id="hiw-g2" cx="180" cy="200" rx="140" ry="110" fill="url(#hiwg2)" />
+    <ellipse id="hiw-g3" cx="90" cy="160" rx="150" ry="100" fill="url(#hiwg3)" />
+    <ellipse id="hiw-g4" cx="150" cy="170" rx="110" ry="90" fill="url(#hiwg4)" />
+    <ellipse id="hiw-g5" cx="70" cy="190" rx="100" ry="80" fill="url(#hiwg5)" />
+    <ellipse id="hiw-g6" cx="200" cy="185" rx="80" ry="70" fill="url(#hiwg6)" />
+    <ellipse id="hiw-g7" cx="130" cy="210" rx="90" ry="75" fill="url(#hiwg7)" />
+    <ellipse id="hiw-g8" cx="160" cy="150" rx="70" ry="60" fill="url(#hiwg8)" />
+  </svg>
+  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'rgba(12,10,20,0.6)', borderRadius: 14, padding: 20, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10, justifyContent: 'center' }}>
+    <span style={{ fontSize: 11, color: 'rgba(220,210,255,0.7)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>Step 1</span>
+    <span style={{ fontSize: 16, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>Write JSX</span>
+    <span style={{ fontSize: 12, color: '#7ee7ff', fontFamily: 'monospace' }}>{'```aura'}</span>
+    <span style={{ fontSize: 12, color: 'rgba(220,210,255,0.85)', fontFamily: 'monospace' }}>{'<Card />'}</span>
+    <span style={{ fontSize: 12, color: '#7ee7ff', fontFamily: 'monospace' }}>{'```'}</span>
   </div>
-  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: '#161b22', borderRadius: 12, padding: 20, border: '1px solid #30363d' }}>
-    <span style={{ fontSize: 11, color: '#8b949e', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>Step 2</span>
-    <span style={{ fontSize: 16, fontWeight: 700, color: '#c9d1d9', marginBottom: 8 }}>Build</span>
-    <span style={{ fontSize: 13, color: '#7ee787', fontFamily: 'monospace' }}>$ readme-aura build</span>
-    <span style={{ fontSize: 12, color: '#8b949e', marginTop: 8 }}>Satori renders JSX to SVG</span>
+  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'rgba(12,10,20,0.6)', borderRadius: 14, padding: 20, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10, justifyContent: 'center' }}>
+    <span style={{ fontSize: 11, color: 'rgba(220,210,255,0.7)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>Step 2</span>
+    <span style={{ fontSize: 16, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>Build</span>
+    <span style={{ fontSize: 13, color: '#9ee79e', fontFamily: 'monospace' }}>$ readme-aura build</span>
+    <span style={{ fontSize: 12, color: 'rgba(220,210,255,0.85)', marginTop: 8 }}>Satori renders JSX to SVG</span>
   </div>
-  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: '#161b22', borderRadius: 12, padding: 20, border: '1px solid #30363d' }}>
-    <span style={{ fontSize: 11, color: '#8b949e', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>Step 3</span>
-    <span style={{ fontSize: 16, fontWeight: 700, color: '#c9d1d9', marginBottom: 8 }}>Deploy</span>
-    <span style={{ fontSize: 13, color: '#c9d1d9' }}>README.md with images</span>
-    <span style={{ fontSize: 12, color: '#8b949e', marginTop: 8 }}>Works on any GitHub repo</span>
+  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'rgba(12,10,20,0.6)', borderRadius: 14, padding: 20, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10, justifyContent: 'center' }}>
+    <span style={{ fontSize: 11, color: 'rgba(220,210,255,0.7)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>Step 3</span>
+    <span style={{ fontSize: 16, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>Deploy</span>
+    <span style={{ fontSize: 13, color: '#ffffff' }}>README.md with images</span>
+    <span style={{ fontSize: 12, color: 'rgba(220,210,255,0.85)', marginTop: 8 }}>Works on any GitHub repo</span>
   </div>
 </div>
 ```
@@ -133,21 +193,96 @@ jobs:
 ## Features
 
 ```aura width=800 height=160
-<div style={{ display: 'flex', width: '100%', height: '100%', gap: 12, fontFamily: 'Inter, sans-serif' }}>
-  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'linear-gradient(180deg, #1a1a2e 0%, #16213e 100%)', borderRadius: 14, padding: 20, justifyContent: 'center' }}>
-    <span style={{ fontSize: 24, marginBottom: 8 }}>JSX</span>
-    <span style={{ fontSize: 15, fontWeight: 700, color: '#e0e0ff' }}>React Components</span>
-    <span style={{ fontSize: 12, color: '#8888aa', marginTop: 4 }}>Write real JSX with style objects</span>
+<div style={{ display: 'flex', width: '100%', height: '100%', gap: 12, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', background: '#08080c', borderRadius: 16, padding: 20, border: '1px solid rgba(110,80,220,0.18)' }}>
+  <style>
+    {`
+      @keyframes br-drift-right { 0%, 100% { transform: translate(0, 0); opacity: 0.8; } 50% { transform: translate(25px, -12px); opacity: 1.1; } }
+      @keyframes br-drift-left { 0%, 100% { transform: translate(0, 0); opacity: 0.75; } 50% { transform: translate(-20px, 10px); opacity: 1.05; } }
+      @keyframes br-drift-up { 0%, 100% { transform: translate(0, 0); opacity: 0.85; } 50% { transform: translate(15px, -15px); opacity: 1; } }
+      @keyframes br-pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 0.5; } }
+      #feat-glow-1 { animation: br-drift-right 8s ease-in-out infinite; }
+      #feat-glow-2 { animation: br-drift-left 10s ease-in-out infinite; }
+      #feat-glow-3 { animation: br-drift-right 9s ease-in-out infinite 0.3s; }
+      #feat-glow-4 { animation: br-drift-up 11s ease-in-out infinite 0.1s; }
+      #feat-glow-5 { animation: br-drift-left 7s ease-in-out infinite 0.5s; }
+      #feat-glow-6 { animation: br-pulse 6s ease-in-out infinite; }
+      #feat-glow-7 { animation: br-drift-right 10s ease-in-out infinite 0.2s; }
+      #feat-glow-8 { animation: br-drift-left 8s ease-in-out infinite 0.4s; }
+      #feat-glow-9 { animation: br-drift-up 9s ease-in-out infinite 0.15s; }
+      #feat-glow-10 { animation: br-pulse 7s ease-in-out infinite 0.35s; }
+    `}
+  </style>
+  <svg width="800" height="160" style={{ position: 'absolute', top: 0, left: 0 }}>
+    <defs>
+      <radialGradient id="fg1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(110,20,210,0.65)" />
+        <stop offset="45%" stopColor="rgba(80,15,170,0.28)" />
+        <stop offset="70%" stopColor="rgba(80,15,170,0)" />
+      </radialGradient>
+      <radialGradient id="fg2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(40,70,255,0.55)" />
+        <stop offset="45%" stopColor="rgba(20,50,200,0.22)" />
+        <stop offset="70%" stopColor="rgba(20,50,200,0)" />
+      </radialGradient>
+      <radialGradient id="fg3" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(0,140,255,0.42)" />
+        <stop offset="70%" stopColor="rgba(0,140,255,0)" />
+      </radialGradient>
+      <radialGradient id="fg4" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(0,190,230,0.35)" />
+        <stop offset="70%" stopColor="rgba(0,190,230,0)" />
+      </radialGradient>
+      <radialGradient id="fg5" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(160,30,255,0.5)" />
+        <stop offset="70%" stopColor="rgba(160,30,255,0)" />
+      </radialGradient>
+      <radialGradient id="fg6" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(255,50,180,0.5)" />
+        <stop offset="45%" stopColor="rgba(200,30,200,0.25)" />
+        <stop offset="70%" stopColor="rgba(200,30,200,0)" />
+      </radialGradient>
+      <radialGradient id="fg7" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(200,30,200,0.45)" />
+        <stop offset="70%" stopColor="rgba(200,30,200,0)" />
+      </radialGradient>
+      <radialGradient id="fg8" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(255,60,200,0.35)" />
+        <stop offset="70%" stopColor="rgba(255,60,200,0)" />
+      </radialGradient>
+      <radialGradient id="fg9" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(100,25,205,0.42)" />
+        <stop offset="70%" stopColor="rgba(100,25,205,0)" />
+      </radialGradient>
+      <radialGradient id="fg10" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(60,80,255,0.38)" />
+        <stop offset="70%" stopColor="rgba(60,80,255,0)" />
+      </radialGradient>
+    </defs>
+    <ellipse id="feat-glow-1" cx="620" cy="160" rx="180" ry="120" fill="url(#fg1)" />
+    <ellipse id="feat-glow-2" cx="720" cy="170" rx="160" ry="110" fill="url(#fg2)" />
+    <ellipse id="feat-glow-3" cx="580" cy="150" rx="170" ry="115" fill="url(#fg3)" />
+    <ellipse id="feat-glow-4" cx="650" cy="140" rx="120" ry="90" fill="url(#fg4)" />
+    <ellipse id="feat-glow-5" cx="750" cy="155" rx="100" ry="80" fill="url(#fg5)" />
+    <ellipse id="feat-glow-6" cx="680" cy="165" rx="80" ry="70" fill="url(#fg6)" />
+    <ellipse id="feat-glow-7" cx="600" cy="135" rx="90" ry="75" fill="url(#fg7)" />
+    <ellipse id="feat-glow-8" cx="690" cy="145" rx="110" ry="85" fill="url(#fg8)" />
+    <ellipse id="feat-glow-9" cx="640" cy="170" rx="70" ry="60" fill="url(#fg9)" />
+    <ellipse id="feat-glow-10" cx="730" cy="130" rx="75" ry="65" fill="url(#fg10)" />
+  </svg>
+  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'rgba(12,10,20,0.6)', borderRadius: 14, padding: 20, justifyContent: 'center', border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>
+    <span style={{ fontSize: 24, marginBottom: 8, color: '#ffffff' }}>JSX</span>
+    <span style={{ fontSize: 15, fontWeight: 700, color: '#ffffff' }}>React Components</span>
+    <span style={{ fontSize: 12, color: 'rgba(220,210,255,0.85)', marginTop: 4 }}>Write real JSX with style objects</span>
   </div>
-  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'linear-gradient(180deg, #1a2e1a 0%, #162e16 100%)', borderRadius: 14, padding: 20, justifyContent: 'center' }}>
-    <span style={{ fontSize: 24, marginBottom: 8 }}>SVG</span>
-    <span style={{ fontSize: 15, fontWeight: 700, color: '#e0ffe0' }}>Pixel-Perfect Output</span>
-    <span style={{ fontSize: 12, color: '#88aa88', marginTop: 4 }}>Gradients, shadows, rounded corners</span>
+  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'rgba(12,10,20,0.6)', borderRadius: 14, padding: 20, justifyContent: 'center', border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>
+    <span style={{ fontSize: 24, marginBottom: 8, color: '#ffffff' }}>SVG</span>
+    <span style={{ fontSize: 15, fontWeight: 700, color: '#ffffff' }}>Pixel-Perfect Output</span>
+    <span style={{ fontSize: 12, color: 'rgba(220,210,255,0.85)', marginTop: 4 }}>Gradients, shadows, rounded corners</span>
   </div>
-  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'linear-gradient(180deg, #2e1a1a 0%, #2e1616 100%)', borderRadius: 14, padding: 20, justifyContent: 'center' }}>
-    <span style={{ fontSize: 24, marginBottom: 8 }}>CI</span>
-    <span style={{ fontSize: 15, fontWeight: 700, color: '#ffe0e0' }}>GitHub Actions</span>
-    <span style={{ fontSize: 12, color: '#aa8888', marginTop: 4 }}>Auto-rebuild on push</span>
+  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: 'rgba(12,10,20,0.6)', borderRadius: 14, padding: 20, justifyContent: 'center', border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>
+    <span style={{ fontSize: 24, marginBottom: 8, color: '#ffffff' }}>CI</span>
+    <span style={{ fontSize: 15, fontWeight: 700, color: '#ffffff' }}>GitHub Actions</span>
+    <span style={{ fontSize: 12, color: 'rgba(220,210,255,0.85)', marginTop: 4 }}>Auto-rebuild on push</span>
   </div>
 </div>
 ```
@@ -174,19 +309,8 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
     {`
       @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
       @keyframes float { 0%, 100% { transform: translateX(0) translateY(0); } 50% { transform: translateX(15px) translateY(-10px); } }
-      @keyframes drift1 { 0%, 100% { transform: translate(0, 0); opacity: 0.4; } 50% { transform: translate(8px, -6px); opacity: 0.9; } }
-      @keyframes drift2 { 0%, 100% { transform: translate(0, 0); opacity: 0.5; } 50% { transform: translate(-6px, 8px); opacity: 0.85; } }
-      @keyframes drift3 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; } 50% { transform: translate(5px, 5px) scale(1.3); opacity: 1; } }
-      @keyframes ringPulse { 0%, 100% { opacity: 0.15; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.08); } }
-      @keyframes dashDraw { 0% { stroke-dashoffset: 200; } 100% { stroke-dashoffset: 0; } }
       #orb1 { animation: pulse 2s ease-in-out infinite; }
       #orb2 { animation: float 3s ease-in-out infinite; }
-      #part1 { animation: drift1 4s ease-in-out infinite; }
-      #part2 { animation: drift2 5s ease-in-out infinite 0.5s; }
-      #part3 { animation: drift3 3.5s ease-in-out infinite 1s; }
-      #part4 { animation: drift1 4.5s ease-in-out infinite reverse 0.3s; }
-      #ring { animation: ringPulse 2.5s ease-in-out infinite; }
-      #line { animation: dashDraw 2s ease-in-out infinite; }
     `}
   </style>
   <svg width="400" height="120" style={{ position: 'absolute', top: 0, left: 0 }}>
@@ -199,23 +323,9 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
         <stop offset="0%" stopColor="rgba(118,75,162,0.6)" />
         <stop offset="70%" stopColor="rgba(118,75,162,0)" />
       </radialGradient>
-      <radialGradient id="ag3" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="rgba(0,200,220,0.5)" />
-        <stop offset="70%" stopColor="rgba(0,200,220,0)" />
-      </radialGradient>
-      <radialGradient id="ag4" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="rgba(255,180,200,0.6)" />
-        <stop offset="70%" stopColor="rgba(255,180,200,0)" />
-      </radialGradient>
     </defs>
     <ellipse id="orb1" cx="120" cy="60" rx="70" ry="50" fill="url(#ag1)" />
     <ellipse id="orb2" cx="280" cy="60" rx="60" ry="45" fill="url(#ag2)" />
-    <circle id="ring" cx="200" cy="60" r="52" fill="none" stroke="rgba(150,100,255,0.5)" strokeWidth="1" strokeDasharray="8 4" />
-    <circle id="part1" cx="60" cy="40" r="6" fill="url(#ag3)" />
-    <circle id="part2" cx="340" cy="85" r="5" fill="url(#ag4)" />
-    <circle id="part3" cx="75" cy="95" r="4" fill="rgba(255,200,220,0.8)" />
-    <circle id="part4" cx="355" cy="30" r="5" fill="rgba(100,200,255,0.6)" />
-    <path id="line" d="M 80 60 Q 200 20 320 60" fill="none" stroke="rgba(180,140,255,0.4)" strokeWidth="2" strokeDasharray="60 140" strokeLinecap="round" />
   </svg>
   <span style={{ fontSize: 15, fontWeight: 700, background: 'linear-gradient(90deg, #ffffff, #ffe4ec, #ffb6c1)', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', fontFamily: 'Inter, sans-serif' }}>CSS @keyframes + SVG</span>
 </div>
@@ -226,12 +336,59 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
 ## Tech Stack
 
 ```aura width=700 height=60
-<div style={{ display: 'flex', gap: 10, padding: '12px 20px', width: '100%', height: '100%', background: '#0d1117', borderRadius: 30, alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>
-  <span style={{ padding: '4px 14px', background: '#3178c6', color: 'white', borderRadius: 16, fontSize: 13, fontWeight: 600 }}>TypeScript</span>
-  <span style={{ padding: '4px 14px', background: '#2b2b2b', color: '#7ee787', borderRadius: 16, fontSize: 13, fontWeight: 600 }}>Node.js</span>
-  <span style={{ padding: '4px 14px', background: '#764ba2', color: 'white', borderRadius: 16, fontSize: 13, fontWeight: 600 }}>Satori</span>
-  <span style={{ padding: '4px 14px', background: '#1a1a2e', color: '#61dafb', borderRadius: 16, fontSize: 13, fontWeight: 600, border: '1px solid #30363d' }}>React JSX</span>
-  <span style={{ padding: '4px 14px', background: '#1a1a2e', color: '#f0883e', borderRadius: 16, fontSize: 13, fontWeight: 600, border: '1px solid #30363d' }}>Unified/Remark</span>
+<div style={{ display: 'flex', gap: 10, padding: '12px 20px', width: '100%', height: '100%', background: '#08080c', borderRadius: 30, alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', border: '1px solid rgba(110,80,220,0.18)' }}>
+  <style>
+    {`
+      @keyframes ts-drift-right { 0%, 100% { transform: translate(0, 0); opacity: 0.8; } 50% { transform: translate(18px, -6px); opacity: 1.1; } }
+      @keyframes ts-drift-left { 0%, 100% { transform: translate(0, 0); opacity: 0.75; } 50% { transform: translate(-15px, 8px); opacity: 1; } }
+      @keyframes ts-pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 0.5; } }
+      #ts-glow-1 { animation: ts-drift-right 9s ease-in-out infinite; }
+      #ts-glow-2 { animation: ts-drift-left 10s ease-in-out infinite; }
+      #ts-glow-3 { animation: ts-pulse 7s ease-in-out infinite; }
+      #ts-glow-4 { animation: ts-drift-right 8s ease-in-out infinite 0.2s; }
+      #ts-glow-5 { animation: ts-drift-left 11s ease-in-out infinite 0.3s; }
+      #ts-glow-6 { animation: ts-pulse 6s ease-in-out infinite 0.4s; }
+    `}
+  </style>
+  <svg width="700" height="60" style={{ position: 'absolute', top: 0, left: 0 }}>
+    <defs>
+      <radialGradient id="tsg1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(110,20,210,0.6)" />
+        <stop offset="70%" stopColor="rgba(110,20,210,0)" />
+      </radialGradient>
+      <radialGradient id="tsg2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(40,70,255,0.5)" />
+        <stop offset="70%" stopColor="rgba(40,70,255,0)" />
+      </radialGradient>
+      <radialGradient id="tsg3" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(255,50,180,0.45)" />
+        <stop offset="70%" stopColor="rgba(255,50,180,0)" />
+      </radialGradient>
+      <radialGradient id="tsg4" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(0,150,255,0.4)" />
+        <stop offset="70%" stopColor="rgba(0,150,255,0)" />
+      </radialGradient>
+      <radialGradient id="tsg5" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(160,30,255,0.45)" />
+        <stop offset="70%" stopColor="rgba(160,30,255,0)" />
+      </radialGradient>
+      <radialGradient id="tsg6" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="rgba(200,30,200,0.4)" />
+        <stop offset="70%" stopColor="rgba(200,30,200,0)" />
+      </radialGradient>
+    </defs>
+    <ellipse id="ts-glow-1" cx="450" cy="80" rx="140" ry="70" fill="url(#tsg1)" />
+    <ellipse id="ts-glow-2" cx="550" cy="75" rx="130" ry="65" fill="url(#tsg2)" />
+    <ellipse id="ts-glow-3" cx="620" cy="85" rx="120" ry="60" fill="url(#tsg3)" />
+    <ellipse id="ts-glow-4" cx="480" cy="65" rx="80" ry="50" fill="url(#tsg4)" />
+    <ellipse id="ts-glow-5" cx="590" cy="95" rx="90" ry="55" fill="url(#tsg5)" />
+    <ellipse id="ts-glow-6" cx="530" cy="70" rx="70" ry="45" fill="url(#tsg6)" />
+  </svg>
+  <span style={{ padding: '4px 14px', background: 'rgba(12,10,20,0.6)', color: '#7eb8ff', borderRadius: 16, fontSize: 13, fontWeight: 600, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>TypeScript</span>
+  <span style={{ padding: '4px 14px', background: 'rgba(12,10,20,0.6)', color: '#9ee79e', borderRadius: 16, fontSize: 13, fontWeight: 600, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>Node.js</span>
+  <span style={{ padding: '4px 14px', background: 'rgba(12,10,20,0.6)', color: '#e8c8ff', borderRadius: 16, fontSize: 13, fontWeight: 600, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>Satori</span>
+  <span style={{ padding: '4px 14px', background: 'rgba(12,10,20,0.6)', color: '#7ee7ff', borderRadius: 16, fontSize: 13, fontWeight: 600, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>React JSX</span>
+  <span style={{ padding: '4px 14px', background: 'rgba(12,10,20,0.6)', color: '#ffb088', borderRadius: 16, fontSize: 13, fontWeight: 600, border: '1px solid rgba(120,80,220,0.2)', zIndex: 10 }}>Unified/Remark</span>
 </div>
 ```
 
