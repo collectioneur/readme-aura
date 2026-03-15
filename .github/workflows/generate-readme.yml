@@ -48,6 +48,8 @@ jobs:
 
       - name: Bump version, commit & publish
         if: steps.changes.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -61,3 +63,5 @@ jobs:
           git push --follow-tags
 
           npm publish --provenance
+
+          gh release create "v${VERSION}" --title "Release v${VERSION}" --generate-notes
