@@ -1,32 +1,32 @@
-# README Aura — Example GitHub Actions Workflow
-#
-# Copy this file to your repo as .github/workflows/readme-aura.yml
-# Then create a readme.source.md in your repo root with ```aura blocks.
-#
-# Uses the readme-aura action from this repo (no npm publish required).
+# # README Aura — Example GitHub Actions Workflow
+# #
+# # Copy this file to your repo as .github/workflows/readme-aura.yml
+# # Then create a readme.source.md in your repo root with ```aura blocks.
+# #
+# # Uses the readme-aura action from this repo (no npm publish required).
 
-name: Generate README
+# name: Generate README
 
-on:
-  push:
-    branches: [main]
-    paths:
-      - 'readme.source.md'
-      - '.github/workflows/readme-aura.yml'
-  schedule:
-    - cron: '0 6 * * *'
-  workflow_dispatch:
+# on:
+#   push:
+#     branches: [main]
+#     paths:
+#       - 'readme.source.md'
+#       - '.github/workflows/readme-aura.yml'
+#   schedule:
+#     - cron: '0 6 * * *'
+#   workflow_dispatch:
 
-permissions:
-  contents: write
+# permissions:
+#   contents: write
 
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+# jobs:
+#   generate:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
 
-      - name: Generate README
-        uses: collectioneur/readme-aura@main
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Generate README
+#         uses: collectioneur/readme-aura@main
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
