@@ -1,5 +1,7 @@
 import satori from 'satori';
 import { transform } from 'sucrase';
+import { readFile } from 'node:fs/promises';
+import { resolve, extname, isAbsolute } from 'node:path';
 import type { ExtractedBlock, FontConfig, RenderOptions } from './types.js';
 
 interface SatoriElement {
@@ -89,10 +91,49 @@ function extractStyles(node: unknown, styles: string[]): unknown {
   return el;
 }
 
+const MIME_TYPES: Record<string, string> = {
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  gif: 'image/gif',
+  webp: 'image/webp',
+  svg: 'image/svg+xml',
+};
+
+export async function resolveLocalImages(element: unknown, basePath: string): Promise<unknown> {
+  if (!element || typeof element !== 'object') return element;
+
+  const el = element as SatoriElement;
+
+  if (el.type === 'img' && typeof el.props?.src === 'string') {
+    const src = el.props.src;
+    if (!src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:')) {
+      const fullPath = isAbsolute(src) ? src : resolve(basePath, src);
+      const data = await readFile(fullPath);
+      const ext = extname(fullPath).slice(1).toLowerCase();
+      const mime = MIME_TYPES[ext] ?? `image/${ext}`;
+      el.props.src = `data:${mime};base64,${data.toString('base64')}`;
+    }
+  }
+
+  if (el.props?.children) {
+    if (Array.isArray(el.props.children)) {
+      el.props.children = (await Promise.all(
+        el.props.children.map((c) => resolveLocalImages(c, basePath)),
+      )) as SatoriElement[];
+    } else if (typeof el.props.children === 'object') {
+      el.props.children = (await resolveLocalImages(el.props.children, basePath)) as SatoriElement;
+    }
+  }
+
+  return el;
+}
+
 export async function renderBlock(
   block: ExtractedBlock,
   fonts: FontConfig[],
   context?: Record<string, unknown>,
+  basePath?: string,
 ): Promise<string> {
   const { width, height } = parseMeta(block.meta);
 
@@ -103,6 +144,10 @@ export async function renderBlock(
     throw new Error(`Failed to transpile JSX in block ${block.index}: ${(err as Error).message}`, {
       cause: err,
     });
+  }
+
+  if (basePath) {
+    element = await resolveLocalImages(element, basePath);
   }
 
   const extractedStyles: string[] = [];

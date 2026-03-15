@@ -68,7 +68,10 @@
     <ellipse id="bn-bl1" cx="100" cy="125" rx="130" ry="15" fill="url(#bng7)" />
     <ellipse id="bn-bl2" cx="240" cy="135" rx="110" ry="15" fill="url(#bng8)" />
   </svg>
-  <div style={{ display: 'flex', alignItems: 'center', gap: 16, zIndex: 10 }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: 10, zIndex: 10 }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 80, height: 60}}>
+      <img src="assets/readme-aura-logo.png" width={120} height={120} />
+    </div>
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <span style={{ fontSize: 32, fontWeight: 700, color: 'white', margin: 0 }}>readme-aura</span>
       <span style={{ fontSize: 16, color: '#a0a0b8', marginTop: 4 }}>Next-Gen README generator for GitHub</span>

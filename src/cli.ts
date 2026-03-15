@@ -177,7 +177,7 @@ program
         const writtenFiles: string[] = [];
         for (const block of blocks) {
           try {
-            const svg = await renderBlock(block, fonts, context);
+            const svg = await renderBlock(block, fonts, context, process.cwd());
             svgMap.set(block.index, svg);
             const hash = createHash('sha256').update(svg).digest('hex').slice(0, 8);
             const filename = `readme-aura-component-${block.index}-${hash}.svg`;

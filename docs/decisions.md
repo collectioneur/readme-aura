@@ -67,3 +67,10 @@ Each entry follows the ADR-lite format.
 - **Decision**: Add `fetchRepositoryData(owner, repo, token)` via GitHub GraphQL `repository` query. Expose `repo` object in JSX context with `RepositoryData` (name, description, url, stars, forks, language, languageColor, commits). Add `--owner`/`--repo` CLI overrides for builds outside git or with non-GitHub remotes. Use `createMockRepoData` when no token, same fallback pattern as `github`.
 - **Alternatives**: Embed repo data inside `github` (would mix user and repo concerns; separate `repo` is clearer). Fetch repo only when blocks use it (deferred — simpler to always fetch when owner/repo known).
 - **Avoid**: Don't conflate user repos list (`github.repos`) with current repo (`repo`). They serve different purposes.
+
+## 2026-03-15: Local image resolution for aura blocks
+
+- **Context**: Needed to embed a PNG logo inside a JSX aura block. Satori requires images as fetchable URLs or data URIs; local file paths don't work. Embedding ~143KB base64 inline in the source file is impractical.
+- **Decision**: Added `resolveLocalImages(element, basePath)` in `renderer.ts`. It walks the element tree before Satori, finds `<img>` elements with local `src` paths, reads files from disk, and converts to base64 data URIs. Called from `renderBlock` with `process.cwd()` as base path. This keeps source files clean (just `src="assets/logo.png"`) while the build handles resolution.
+- **Alternatives**: Hosting images on a CDN (doesn't work for local preview). Embedding base64 directly in source (bloats file, hard to maintain).
+- **Avoid**: Don't embed large base64 strings in `readme.source.md`. Always use relative file paths and let the renderer resolve them.
