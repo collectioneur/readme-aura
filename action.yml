@@ -1,9 +1,9 @@
-name: 'README Aura'
-description: 'Next-Gen README generator — render React/JSX components to beautiful SVG inside Markdown'
-author: 'readme-aura'
+name: 'readme-aura'
+description: 'Next-Gen README generator - render React/JSX components to beautiful SVG inside Markdown'
+author: 'collectioneur'
 
 branding:
-  icon: 'feather'
+  icon: 'image'
   color: 'purple'
 
 inputs:
