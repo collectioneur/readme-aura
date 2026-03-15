@@ -1,21 +1,21 @@
-# Dogfooding: readme-aura generates its own README
-name: Generate Project README
+name: Generate Project README & Publish
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
     paths:
       - 'readme.source.md'
       - 'src/**'
   schedule:
-    - cron: '0 6 * * 1'
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
-  generate:
+  generate-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies & build
         run: |
@@ -34,14 +35,27 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node dist/cli.js build --assets .github/assets
 
-      - name: Commit changes
+      - name: Check for changes
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain README.md .github/assets)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump version, commit & publish
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md .github/assets
-          if git diff --cached --quiet; then
-            echo "No changes."
-          else
-            git commit -m "chore: regenerate README"
-            git push
-          fi
+
+          npm version patch --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+
+          git add README.md .github/assets package.json package-lock.json
+          git commit -m "release v${VERSION} via readme-aura"
+          git tag "v${VERSION}"
+          git push --follow-tags
+
+          npm publish --provenance

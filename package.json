@@ -25,6 +25,10 @@
     "react",
     "cli"
   ],
+  "files": [
+    "dist/",
+    "action.yml"
+  ],
   "license": "MIT",
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
