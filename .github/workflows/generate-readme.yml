@@ -60,7 +60,9 @@ jobs:
           git add README.md .github/assets package.json package-lock.json
           git commit -m "release v${VERSION} via readme-aura"
           git tag "v${VERSION}"
-          git push --follow-tags
+
+          git push origin HEAD:${GITHUB_REF_NAME}
+          git push origin "v${VERSION}"
 
           npm publish --provenance
 
