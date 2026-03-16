@@ -5,3 +5,5 @@ dist/
 *.tsbuildinfo
 
 yehor.source.md
+
+.DS_Store

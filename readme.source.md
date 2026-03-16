@@ -106,10 +106,10 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 
 ## How It Works
 
-1. Run `npx readme-aura init` in your repo — creates workflow, source template, and audits `.gitignore`
-2. Edit `readme.source.md` — add JSX components inside `` ```aura `` code blocks
-3. Preview locally with `npx readme-aura build` — JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
-4. Push to `main` — the GitHub Action auto-generates your `README.md`
+1. Run `npx readme-aura init` in your repo – creates workflow, source template, and audits `.gitignore`
+2. Edit `readme.source.md` – add JSX components inside `` ```aura `` code blocks
+3. Preview locally with `npx readme-aura build` – JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
+4. Push to `main` – the GitHub Action auto-generates your `README.md`
 
 ```aura width=800 height=220
 <div style={{ display: 'flex', width: '100%', height: '100%', gap: 12, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', background: '#08080c', borderRadius: 16, padding: 24, border: '1px solid rgba(110,80,220,0.18)' }}>
@@ -197,7 +197,7 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 
 ## Quick Start
 
-Run one command in your repo — it creates the GitHub Actions workflow, a starter `readme.source.md`, and ensures `.gitignore` won't block generated files:
+Run one command in your repo – it creates the GitHub Actions workflow, a starter `readme.source.md`, and ensures `.gitignore` won't block generated files:
 
 ```bash
 npx readme-aura init
@@ -227,7 +227,7 @@ That's it. Push to `main` and the workflow will auto-generate your `README.md` o
 | `-s, --source` | `readme.source.md` | Source markdown file |
 | `-o, --output` | `README.md` | Output markdown file |
 | `-a, --assets` | `.github/assets` | Directory for generated SVGs |
-| `-f, --fonts-dir` | — | Custom fonts directory |
+| `-f, --fonts-dir` | – | Custom fonts directory |
 | `-g, --github-user` | auto-detect | GitHub username for stats |
 | `-t, --github-token` | `$GITHUB_TOKEN` | Token for GitHub API |
 
@@ -242,7 +242,7 @@ That's it. Push to `main` and the workflow will auto-generate your `README.md` o
 
 The `init` command sets up everything you need:
 
-**`.github/workflows/readme-aura.yml`** — GitHub Action that rebuilds your README on every push to `main` and on a daily schedule (to keep GitHub stats fresh):
+**`.github/workflows/readme-aura.yml`** – GitHub Action that rebuilds your README on every push to `main` and on a daily schedule (to keep GitHub stats fresh):
 
 ```yaml
 name: Generate README
@@ -269,9 +269,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-**`readme.source.md`** — Starter template with example `` ```aura `` blocks, customized for your repo type.
+**`readme.source.md`** – Starter template with example `` ```aura `` blocks, customized for your repo type.
 
-**`.gitignore` audit** — Ensures `.github/assets/`, `.github/workflows/`, `README.md`, and `readme.source.md` are not ignored.
+**`.gitignore` audit** – Ensures `.github/assets/`, `.github/workflows/`, `README.md`, and `readme.source.md` are not ignored.
 
 ## Features
 
@@ -370,11 +370,11 @@ jobs:
 </div>
 ```
 
-- **Write React/JSX** — Use familiar `style={{ }}` syntax with flexbox, gradients, shadows
-- **Powered by Satori** — Vercel's engine converts JSX to SVG without a browser
-- **Custom Fonts** — Inter bundled by default, bring your own via `--fonts-dir`
-- **Meta Syntax** — Control dimensions: `` ```aura width=800 height=400 ``
-- **GitHub-Compatible** — Output is pure Markdown + SVG, works everywhere
+- **Write React/JSX** – Use familiar `style={{ }}` syntax with flexbox, gradients, shadows
+- **Powered by Satori** – Vercel's engine converts JSX to SVG without a browser
+- **Custom Fonts** – Inter bundled by default, bring your own via `--fonts-dir`
+- **Meta Syntax** – Control dimensions: `` ```aura width=800 height=400 ``
+- **GitHub-Compatible** – Output is pure Markdown + SVG, works everywhere
 
 ## Animations
 
@@ -494,7 +494,6 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
 ## If You Use readme-aura
 
 - **Add the topic:** Consider adding the [readme-aura](https://github.com/topics/readme-aura) topic to your repository so others can discover it.
-- **Keep the footer:** I would appreciate it if you keep the "powered by readme-aura" footer in your README. It helps others find and try the tool.
 
 ## License
 
