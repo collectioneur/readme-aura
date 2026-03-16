@@ -34,7 +34,7 @@ inputs:
   commit_message:
     description: 'Commit message for the auto-commit'
     required: false
-    default: 'chore: regenerate README via readme-aura'
+    default: 'regenerate README via readme-aura'
   auto_commit:
     description: 'Whether to auto-commit and push generated files'
     required: false
