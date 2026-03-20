@@ -20,6 +20,12 @@ export function parseMeta(meta?: string): RenderOptions {
     if (key === 'width') defaults.width = parseInt(value, 10);
     if (key === 'height') defaults.height = parseInt(value, 10);
   }
+
+  const linkMatch = meta.match(/link=["']([^"']+)["']/);
+  if (linkMatch) {
+    defaults.link = linkMatch[1];
+  }
+
   return defaults;
 }
 

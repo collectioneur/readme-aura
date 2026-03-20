@@ -1,4 +1,4 @@
-```aura width=800 height=210
+```aura width=800 height=210 link="https://www.npmjs.com/package/readme-aura"
 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: '#08080c', borderRadius: 20, padding: 30, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', border: '1px solid rgba(110,80,220,0.18)' }}>
   <style>
     {`
@@ -111,7 +111,7 @@ GitHub strips all JS and CSS from README files. This tool lets you bypass that l
 3. Preview locally with `npx readme-aura build` – JSX gets rendered to SVG via [Vercel Satori](https://github.com/vercel/satori)
 4. Push to `main` – the GitHub Action auto-generates your `README.md`
 
-```aura width=800 height=220
+```aura width=800 height=220 link="https://www.npmjs.com/package/readme-aura"
 <div style={{ display: 'flex', width: '100%', height: '100%', gap: 12, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', background: '#08080c', borderRadius: 16, padding: 24, border: '1px solid rgba(110,80,220,0.18)' }}>
   <style>
     {`
@@ -275,7 +275,7 @@ jobs:
 
 ## Features
 
-```aura width=800 height=160
+```aura width=800 height=160 link="https://www.npmjs.com/package/readme-aura"
 <div style={{ display: 'flex', width: '100%', height: '100%', gap: 12, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', background: '#08080c', borderRadius: 16, padding: 20, border: '1px solid rgba(110,80,220,0.18)' }}>
   <style>
     {`
@@ -374,6 +374,7 @@ jobs:
 - **Powered by Satori** – Vercel's engine converts JSX to SVG without a browser
 - **Custom Fonts** – Inter bundled by default, bring your own via `--fonts-dir`
 - **Meta Syntax** – Control dimensions: `` ```aura width=800 height=400 ``
+- **Clickable Images** – Add a link: `` ```aura link="https://example.com" `` – clicking the image opens the URL
 - **GitHub-Compatible** – Output is pure Markdown + SVG, works everywhere
 
 ## Animations
@@ -386,7 +387,7 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
 
 **Targeting:** Use `id` on SVG elements (`<ellipse id="glow">`, `<g id="group">`) and reference them in CSS: `#glow { animation: pulse 2s infinite; }`. Raw SVG elements preserve `id`; Satori-rendered HTML may not always preserve `className`.
 
-```aura width=400 height=140
+```aura width=400 height=140 link="https://www.npmjs.com/package/readme-aura"
 <div style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '100%', background: '#0a0a12', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>
   <style>
     {`
@@ -434,7 +435,7 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
 
 ## Tech Stack
 
-```aura width=700 height=60
+```aura width=700 height=60 link="https://www.npmjs.com/package/readme-aura"
 <div style={{ display: 'flex', gap: 10, padding: '12px 20px', width: '100%', height: '100%', background: '#08080c', borderRadius: 30, alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden', border: '1px solid rgba(110,80,220,0.18)' }}>
   <style>
     {`

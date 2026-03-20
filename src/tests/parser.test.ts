@@ -115,6 +115,33 @@ describe('parseSource', () => {
     expect(result.markdown).toContain('../custom/assets/readme-aura-component-0.svg');
   });
 
+  it('wraps image in link when link meta is present', async () => {
+    const source = [
+      '```aura link="https://example.com"',
+      '<div>Linked</div>',
+      '```',
+    ].join('\n');
+    const filePath = await createFixture('source.md', source);
+    const assetsDir = join(tempDir, '.github/assets');
+
+    const result = await parseSource(filePath, assetsDir, join(tempDir, 'README.md'));
+
+    expect(result.blocks).toHaveLength(1);
+    expect(result.markdown).toContain('[![readme-aura-component-0]');
+    expect(result.markdown).toContain('](https://example.com)');
+  });
+
+  it('does not wrap image in link when link meta is absent', async () => {
+    const source = ['```aura', '<div>No link</div>', '```'].join('\n');
+    const filePath = await createFixture('source.md', source);
+    const assetsDir = join(tempDir, '.github/assets');
+
+    const result = await parseSource(filePath, assetsDir, join(tempDir, 'README.md'));
+
+    expect(result.markdown).not.toContain('[![');
+    expect(result.markdown).toContain('![readme-aura-component-0]');
+  });
+
   it('handles aura block among mixed code blocks', async () => {
     const source = [
       '```js',

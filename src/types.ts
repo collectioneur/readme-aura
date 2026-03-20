@@ -27,6 +27,7 @@ export interface FontConfig {
 export interface RenderOptions {
   width: number;
   height: number;
+  link?: string;
 }
 
 // ── GitHub API Types ─────────────────────────────────────────────

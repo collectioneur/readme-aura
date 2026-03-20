@@ -44,6 +44,35 @@ describe('parseMeta', () => {
   it('handles meta with no valid pairs', () => {
     expect(parseMeta('no-pairs-here')).toEqual({ width: 800, height: 400 });
   });
+
+  it('parses link with double quotes', () => {
+    expect(parseMeta('link="https://example.com"')).toEqual({
+      width: 800,
+      height: 400,
+      link: 'https://example.com',
+    });
+  });
+
+  it('parses link with single quotes', () => {
+    expect(parseMeta("link='https://example.com'")).toEqual({
+      width: 800,
+      height: 400,
+      link: 'https://example.com',
+    });
+  });
+
+  it('parses link together with width and height', () => {
+    expect(parseMeta('width=1000 link="https://x.com/path?q=1" height=500')).toEqual({
+      width: 1000,
+      height: 500,
+      link: 'https://x.com/path?q=1',
+    });
+  });
+
+  it('returns no link when not specified', () => {
+    const result = parseMeta('width=800');
+    expect(result.link).toBeUndefined();
+  });
 });
 
 describe('createElement', () => {
