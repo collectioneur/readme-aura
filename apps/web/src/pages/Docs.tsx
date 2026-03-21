@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import BlurGlassTitle from '../components/BlurGlassTitle';
 import { MorphingCrystal } from '../components/MorphingCrystal';
 
 const sections = [
@@ -78,8 +77,35 @@ function Table({ headers, rows }: { headers: string[]; rows: string[][] }) {
   );
 }
 
+function getActiveSection(): string | null {
+  const scrollBottom = window.scrollY + window.innerHeight;
+  const pageHeight = document.documentElement.scrollHeight;
+  if (pageHeight - scrollBottom < 80) {
+    return sections[sections.length - 1].id;
+  }
+  const threshold = window.innerHeight * 0.3;
+  let best: string | null = null;
+  let bestDist = Infinity;
+  for (const { id } of sections) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const top = el.getBoundingClientRect().top;
+    if (top <= threshold) {
+      const dist = threshold - top;
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = id;
+      }
+    }
+  }
+  return best;
+}
+
 export default function Docs() {
-  const [active, setActive] = useState('how-it-works');
+  const [active, setActive] = useState(() => {
+    const hash = window.location.hash.slice(1);
+    return sections.find((s) => s.id === hash)?.id ?? 'how-it-works';
+  });
   const [wide500, setWide500] = useState(window.innerWidth > 500);
 
   useEffect(() => {
@@ -90,35 +116,10 @@ export default function Docs() {
 
   useEffect(() => {
     const onScroll = () => {
-      // If near the bottom of the page, activate last section
-      const scrollBottom = window.scrollY + window.innerHeight;
-      const pageHeight = document.documentElement.scrollHeight;
-      if (pageHeight - scrollBottom < 80) {
-        setActive(sections[sections.length - 1].id);
-        return;
-      }
-
-      // Find the section whose top is closest to 30% from the top of the viewport
-      const threshold = window.innerHeight * 0.3;
-      let best: string | null = null;
-      let bestDist = Infinity;
-      for (const { id } of sections) {
-        const el = document.getElementById(id);
-        if (!el) continue;
-        const top = el.getBoundingClientRect().top;
-        if (top <= threshold) {
-          const dist = threshold - top;
-          if (dist < bestDist) {
-            bestDist = dist;
-            best = id;
-          }
-        }
-      }
-      if (best) setActive(best);
+      const a = getActiveSection();
+      if (a) setActive(a);
     };
-
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 

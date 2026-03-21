@@ -114,7 +114,8 @@ export default function Home() {
               thickness={0.1}
               edgeSoftness={3.0}
               parallaxIntensity={0.1}
-              distortionStrength={2.0}
+              distortionStrength={4.0}
+              noiseScale={1.0}
               padding={{
                 paddingTop: 0,
                 paddingLeft: 0,
@@ -250,13 +251,13 @@ export default function Home() {
       </section>
 
       {/* Features grid */}
-      <section id="features" className="px-6 pb-24">
+      <section id="features" className="px-6 pb-24 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <p className="font-grotesk text-xs tracking-[0.22em] uppercase text-teal-400 mb-3">
               Capabilities
             </p>
-            <h2 className="font-sans font-bold text-4xl md:text-5xl text-gradient-bright tracking-tight">
+            <h2 className="font-sans font-bold text-4xl md:text-5xl text-gradient-bright tracking-tight pb-1">
               Everything you need
             </h2>
           </div>
@@ -265,9 +266,7 @@ export default function Home() {
             {features.map((f, i) => (
               <div
                 key={i}
-                className={`card-glass rounded-2xl p-6 hover:border-white/[0.12] transition-all duration-200 group relative overflow-hidden ${
-                  i === features.length - 1 ? 'border-gradient-accent' : ''
-                }`}
+                className="card-glass rounded-2xl p-6 hover:border-white/[0.12] transition-all duration-200 group relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-24 h-24 bg-teal-500/[0.04] rounded-full blur-xl pointer-events-none group-hover:bg-teal-500/[0.08] transition-all duration-300" />
                 <p className="font-grotesk text-xs tracking-widest uppercase text-teal-400 mb-2">
