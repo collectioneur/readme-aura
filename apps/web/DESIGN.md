@@ -2,15 +2,13 @@
 
 
 
-## 1. Overview & Creative North Star: "The Luminous Architect"
+## 1. Overview & Creative North Star: "The Deep Signal"
 
 
 
-This design system is built to elevate a technical utility into a premium editorial experience. Moving away from the cluttered, "boxy" nature of traditional developer tools, our Creative North Star is **"The Luminous Architect."**
+This design system builds a premium developer tool experience rooted in **depth, luminance, and precision**. The Creative North Star is **"The Deep Signal"** — a visual language borrowed from deep-sea bioluminescence and neon-lit data terminals.
 
-
-
-This system treats the interface not as a flat grid, but as a three-dimensional environment where light, depth, and clarity coexist. We break the "template" look through intentional asymmetry, high-contrast typography scales, and a departure from structural lines. By using "aura-like" gradients and glassmorphism, we mirror the core function of the library: rendering beautiful, light-weight visual elements within a structured environment.
+The interface lives in a very dark navy space where teal/cyan light sources pierce through the darkness, giving everything a sense of depth and active energy. Typography adopts the **liquid glass** aesthetic — text that feels cast from light rather than painted on. Layout is editorial: generous whitespace, bold type scales, and deliberate asymmetry.
 
 
 
@@ -22,37 +20,33 @@ This system treats the interface not as a flat grid, but as a three-dimensional 
 
 
 
-The color strategy is anchored in deep indigos and vibrant violets, creating a high-contrast, "dark mode" default that feels sophisticated and professional.
+The palette is anchored in **deep navy blues** with **teal/cyan** as the primary luminance accent and **emerald green** for success/positive states.
 
 
 
-### Surface Hierarchy & Nesting
+### Surface Hierarchy
 
-We reject the concept of flat backgrounds. Depth is achieved by stacking the `surface-container` tiers to guide the eye toward information density:
+- **Base Layer:** `surface.base` (#060d1c) — deepest background, near-black navy
+- **Secondary Sections:** `surface.low` (#0c1929) — subtle step up
+- **Nested Content/Cards:** `surface.DEFAULT` (#0f1f35) or `surface.high` (#162540)
+- **Focal Points/Code Blocks:** `surface.highest` (#1e2e4a)
 
-- **Base Layer:** `surface` (#0f1419)
+### Accent Colors
 
-- **Secondary Sections:** `surface_container_low` (#171c22)
+- **Primary (Teal/Cyan):** `teal-500` (#06b6d4) — CTAs, glow orbs, active states
+- **Teal Light:** `teal-300` (#67e8f9) — code highlights, active nav links
+- **Secondary (Emerald):** `emerald-400` (#34d399) — success states, check marks, build output
+- **Accent Border:** `linear-gradient(teal → indigo → purple → pink)` — for special/featured cards
 
-- **Nested Content/Cards:** `surface_container` (#1b2026) or `surface_container_high` (#252a30)
+### Glow & Atmosphere
 
-- **Focal Points/Code Blocks:** `surface_container_highest` (#30353b)
+Large radial gradient orbs placed behind hero sections and key content areas simulate light sources:
+- Primary orb: `teal-500` at 7% opacity, 120px blur
+- Secondary orb: `teal-400` at 6% opacity, 80px blur
 
+### The "No Harsh Line" Rule
 
-
-### The "No-Line" Rule
-
-**Explicit Instruction:** Prohibit the use of 1px solid borders for sectioning. Boundaries must be defined solely through background color shifts. A `surface_container_low` section sitting on a `surface` background provides enough contrast to be felt without being seen as a harsh "box."
-
-
-
-### Signature Textures & Glassmorphism
-
-To move beyond a generic "out-of-the-box" UI, utilize the **Glass & Gradient Rule**:
-
-- **CTAs & Heroes:** Use subtle gradients transitioning from `primary` (#c0c1ff) to `primary_container` (#8083ff).
-
-- **Floating Overlays:** Use semi-transparent versions of `surface_variant` with a 12px to 20px backdrop-blur to create a "frosted glass" effect. This ensures the vibrant mesh gradients in the background bleed through the UI, creating a sense of "soul" and integration.
+Do not use solid 1px borders for structural layout. Use `border border-white/[0.06]` (6% white) for card glass containers. Active/hover states can use `border-white/[0.12]`.
 
 
 
@@ -60,19 +54,39 @@ To move beyond a generic "out-of-the-box" UI, utilize the **Glass & Gradient Rul
 
 
 
-## 3. Typography: Editorial Precision
+## 3. Typography: Liquid Glass & Precision
 
 
 
-The typography system balances the approachable clarity of **Inter** with the technical, developer-centric edge of **Space Grotesk**.
+### Display (Inter, font-black)
 
+Hero headings use **Inter** at maximum weight (`font-black`, 900) with tight tracking (`tracking-tight`). The signature `.text-liquid-glass` utility applies:
 
+```css
+background: linear-gradient(
+  180deg,
+  rgba(255,255,255,0.97) 0%,
+  rgba(200,238,255,0.88) 28%,
+  rgba(140,215,255,0.70) 58%,
+  rgba(80,190,255,0.45) 100%
+);
+-webkit-background-clip: text;
+filter: drop-shadow(0 0 24px rgba(6,182,212,0.35));
+```
 
-- **Display & Headlines (Inter):** Large-scale headers (e.g., `display-lg` at 3.5rem) should use tight letter-spacing and high contrast. This creates a "magazine" feel that commands attention.
+This creates the illusion of text molded from ice or glass — solid white at the top, dissolving into teal-blue light at the bottom.
 
-- **Labels & Metadata (Space Grotesk):** Use `label-md` and `label-sm` for technical details, version numbers, and tag markers. This font’s geometric nature signals "code" and "innovation" without requiring a monospace block.
+### Section Headings (Inter, font-bold)
 
-- **Body (Inter):** Optimized for readability at `body-md` (0.875rem) with a generous line-height to ensure documentation is scannable and professional.
+H2 and H3 use `.text-gradient-bright` (white to cyan gradient) with `font-bold` (700) and `tracking-tight`.
+
+### Labels & Metadata (Space Grotesk)
+
+Uppercase eyebrow labels use `font-grotesk`, `tracking-[0.22em]` to `tracking-[0.28em]`, `text-xs`, and `text-teal-400`.
+
+### Body (Inter)
+
+Body text at `text-sm` or `text-base` with `leading-relaxed`. Color: `text-ink-secondary` (#7a98b8).
 
 
 
@@ -80,18 +94,24 @@ The typography system balances the approachable clarity of **Inter** with the te
 
 
 
-## 4. Elevation & Depth: Tonal Layering
+## 4. Glassmorphism & Card System
 
+All cards use the `.card-glass` utility:
+```css
+background: rgba(15, 31, 53, 0.80);
+backdrop-filter: blur(8px);
+border: 1px solid rgba(255, 255, 255, 0.06);
+```
 
-Traditional drop shadows are too heavy for a minimalist library. We use **Tonal Layering** to convey hierarchy.
+Navbar uses `.surface-glass` (darker, heavier blur):
+```css
+background: rgba(9, 20, 40, 0.72);
+backdrop-filter: blur(14px);
+```
 
+Cards have a subtle ambient teal glow in the top-right corner (small blurred radial) that intensifies on hover.
 
-
-- **The Layering Principle:** Instead of a shadow, place a `surface_container_lowest` card on a `surface_container_low` background to create a soft, natural "recessed" look.
-
-- **Ambient Shadows:** For floating elements (like tooltips or dropdowns), use extra-diffused shadows (Blur: 32px, Y: 16px) at 6% opacity. The shadow color should be a tinted version of the `primary` token rather than black, mimicking the glow of an "aura."
-
-- **The "Ghost Border" Fallback:** If a border is required for accessibility, use the `outline_variant` token at **15% opacity**. Never use a 100% opaque border. This maintains the "luminous" quality of the system.
+Featured/accent cards use `.border-gradient-accent` — a CSS mask trick that renders a gradient border (teal → indigo → purple → pink) without affecting the card background.
 
 
 
@@ -105,41 +125,27 @@ Traditional drop shadows are too heavy for a minimalist library. We use **Tonal 
 
 ### Buttons
 
-- **Primary:** High-contrast `primary` background with `on_primary` text. Use `xl` (1.5rem) or `full` roundedness. Add a soft outer glow using a 10% opacity `surface_tint` shadow.
+- **Primary:** `bg-teal-500 hover:bg-teal-400` + `.glow-teal` box-shadow, `rounded-full`, white text
+- **Secondary (Ghost):** `bg-surface-high hover:bg-surface-highest` + `border border-white/[0.08]`, `rounded-full`
 
-- **Secondary:** Use the `ghost-border` technique (outline-variant at 20%) with a subtle `surface_bright` hover state.
+### Code Blocks
 
-- **Tertiary:** Text-only, using the `primary` color token.
+- Background: `.card-glass` (navy glass)
+- Monospace font: system `font-mono`
+- Syntax colors: `text-teal-300` for commands, `text-emerald-400` for keywords/success
+- Check marks: `text-emerald-400`
 
+### Step Cards (How It Works)
 
+Three-column grid of `.card-glass` cards. Each has:
+- Eyebrow in `text-teal-400/70` at `tracking-[0.25em]`
+- Bold Inter title (`font-sans font-bold`)
+- Optional inline code pill with `bg-surface-base/60`
+- Ambient teal orb top-right corner via `bg-teal-500/[0.05] blur-2xl`
 
-### Code Blocks (The Signature Component)
+### Feature Cards
 
-As a developer-focused library, code is the hero.
-
-- **Style:** Use `surface_container_highest` background. No borders.
-
-- **Spacing:** Use `spacing-6` (1.5rem) internal padding.
-
-- **Typography:** Use `ui-monospace` for the code itself, ensuring high-contrast syntax highlighting against the dark background.
-
-
-
-### Cards & Lists
-
-- **Prohibition:** Divider lines are strictly forbidden.
-
-- **Execution:** Separate list items using `spacing-4` (1rem) vertical gaps or by alternating between `surface_container` and `surface_container_low` background shades.
-
-- **Corners:** Use `lg` (1rem) roundedness for large containers and `md` (0.75rem) for internal elements.
-
-
-
-### Chips & Tags
-
-- **Style:** Small, `label-sm` (Space Grotesk) text inside a `secondary_container` background.
-
-- **Interaction:** Hovering should trigger a slight "lift" through a color shift to `secondary_fixed`.
+Six-column (3×2) grid. Last card uses `.border-gradient-accent` as a visual accent.
 
 
 
@@ -147,32 +153,28 @@ As a developer-focused library, code is the hero.
 
 
 
-## 6. Do’s and Don’ts
+## 6. Do's and Don'ts
 
 
 
 ### Do:
-
-- **Embrace White Space:** Use the `spacing-16` and `spacing-24` tokens to separate major sections. Let the UI breathe.
-
-- **Use Color for Intent:** Use `tertiary` (#89ceff) for secondary actions that still need high visibility without competing with the main `primary` flow.
-
-- **Animate Transitions:** Subtle 200ms fades for hover states to maintain the "aura" feel.
-
-
+- **Use Inter at font-black for all hero text.** This is non-negotiable for the liquid glass effect.
+- **Layer glow orbs behind key sections.** They create the bioluminescent atmosphere.
+- **Use `text-liquid-glass` for all display-size headings.** The gradient dissolve is the signature visual.
+- **Use `text-teal-400` for all eyebrow labels.** Consistency is key.
+- **Animate glow intensities on hover** with 200–300ms transitions.
 
 ### Don't:
-
-- **Don't use pure black (#000000):** Use `surface` or `surface_container_lowest` to keep the palette rich and deep.
-
-- **Don't use default "Drop Shadows":** They break the glassmorphism effect. Use backdrop blurs and tonal shifts instead.
-
-- **Don't crowd the layout:** If three elements feel tight, move to a vertical, asymmetrical stack. This system rewards "premium" spacing.
-
-- **Don't use high-contrast dividers:** If you think you need a line, use a 1px gap of `surface` color between two `surface_container` blocks.
+- **Don't use Playfair Display or italic serif for main headings.** The new system is Inter-first.
+- **Don't use violet/purple as primary accent.** Teal/cyan is the signal; violet appears only in gradient borders.
+- **Don't use pure black (#000000).** Use `surface.base` (#060d1c).
+- **Don't add opaque borders.** Use `border-white/[0.06]` maximum for card edges.
+- **Don't crowd the layout.** Each section needs breathing room; use `pb-24` or `pb-28` between sections.
 
 
 
 ---
 
-**Director's Final Note:** This design system is about the *absence* of noise. Every element should feel like it was placed with surgical precision. If an element doesn't serve a functional or atmospheric purpose, remove it. Allow the "aura" of the gradients to do the heavy lifting.
+
+
+**Director's Final Note:** Every luminance source in this system should feel like it's *emitting* rather than *reflecting*. The teal glows should look like circuit traces or ocean bioluminescence — alive and precise. The liquid glass typography should feel like the text itself is made of light.

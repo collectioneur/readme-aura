@@ -2,46 +2,42 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-const Sparkle = ({ className = '' }: { className?: string }) => (
-  <span className={`text-violet-400 select-none ${className}`} aria-hidden>✦</span>
-)
-
 const features = [
   {
     icon: '⬡',
-    label: 'JSX in Markdown',
-    title: 'Write React / JSX',
-    desc: 'Use familiar style={{ }} syntax with flexbox, gradients, and shadows — right inside your README.',
+    label: 'JSX',
+    title: 'React Components',
+    desc: 'Write real JSX with style objects - flexbox, gradients, shadows - right inside your README.',
   },
   {
     icon: '◈',
-    label: 'No Browser Needed',
-    title: 'Powered by Satori',
-    desc: "Vercel's JSX-to-SVG engine renders your components at build time without spinning up a browser.",
+    label: 'SVG',
+    title: 'Pixel-Perfect Output',
+    desc: "Vercel's Satori renders JSX to crisp SVG at build time. Gradients, shadows, rounded corners.",
   },
   {
     icon: '✺',
-    label: 'Typography',
-    title: 'Custom Fonts',
+    label: 'Fonts',
+    title: 'Custom Typography',
     desc: 'Inter is bundled by default. Bring your own typefaces via --fonts-dir for full editorial control.',
   },
   {
     icon: '◎',
     label: 'Zero Runtime',
     title: 'GitHub-Compatible',
-    desc: 'Output is pure Markdown + SVG. No scripts, no iframes — works anywhere Markdown renders.',
+    desc: 'Output is pure Markdown + SVG. No scripts, no iframes - works anywhere Markdown renders.',
   },
   {
     icon: '⟳',
     label: 'Motion',
     title: 'CSS Animations',
-    desc: 'Add @keyframes via <style> injection. Satori renders a static frame; browsers animate the SVG on GitHub.',
+    desc: 'Add @keyframes via <style> injection. Satori renders a static frame; browsers animate the SVG.',
   },
   {
-    icon: '⬚',
-    label: 'Dimensions',
-    title: 'Meta Syntax',
-    desc: 'Control width and height per component block: ```aura width=800 height=400.',
+    icon: '◼',
+    label: 'CI',
+    title: 'GitHub Actions',
+    desc: 'Auto-rebuild on push. The included workflow regenerates your README.md on every commit.',
   },
 ]
 
@@ -51,37 +47,33 @@ export default function Home() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative pt-40 pb-32 px-6">
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-violet-glow pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-violet-600/5 blur-3xl pointer-events-none" />
-
-        {/* Floating sparkles */}
-        <Sparkle className="absolute top-28 left-[12%] text-3xl opacity-60 animate-pulse" />
-        <Sparkle className="absolute top-44 right-[8%] text-5xl opacity-40" />
-        <Sparkle className="absolute bottom-32 left-[6%] text-xl opacity-30" />
+      <section className="relative pt-44 pb-32 px-6">
+        {/* Background orbs */}
+        <div className="absolute inset-0 bg-teal-glow pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full bg-teal-500/[0.07] blur-[120px] pointer-events-none" />
+        <div className="absolute top-20 left-[20%] w-[300px] h-[300px] rounded-full bg-teal-400/[0.06] blur-[80px] pointer-events-none" />
 
         <div className="relative max-w-4xl mx-auto text-center">
           {/* Eyebrow */}
-          <p className="font-grotesk text-xs tracking-[0.25em] uppercase text-violet-400 mb-8">
+          <p className="font-grotesk text-xs tracking-[0.28em] uppercase text-teal-400 mb-8">
             Elevate your documentation
           </p>
 
-          {/* Main heading */}
-          <h1 className="font-serif italic font-black text-[clamp(4rem,14vw,10rem)] leading-[0.9] mb-8 text-gradient-bright">
+          {/* Main heading — Inter, liquid glass */}
+          <h1 className="font-sans font-black text-[clamp(4rem,13vw,9rem)] leading-[0.9] tracking-tight mb-8 text-liquid-glass">
             readme-aura
           </h1>
 
           {/* Subtitle */}
           <p className="text-ink-secondary text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-12">
-            A celestial documentation framework for the modern developer. Where code meets editorial elegance.
+            Write JSX, compile to SVG, ship beautiful README files - with a single CLI command.
           </p>
 
           {/* CTA buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/docs"
-              className="px-7 py-3 bg-violet-500 hover:bg-violet-400 text-white font-grotesk font-500 text-sm rounded-full transition-all duration-200 glow-violet"
+              className="px-7 py-3 bg-teal-500 hover:bg-teal-400 text-white font-grotesk font-medium text-sm rounded-full transition-all duration-200 glow-teal"
             >
               Get Started
             </Link>
@@ -89,7 +81,7 @@ export default function Home() {
               href="https://github.com/collectioneur/readme-aura"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-7 py-3 bg-surface-high hover:bg-surface-highest text-ink-bright font-grotesk font-500 text-sm rounded-full transition-all duration-200"
+              className="px-7 py-3 bg-surface-high hover:bg-surface-highest text-ink-bright font-grotesk font-medium text-sm rounded-full transition-all duration-200 border border-white/[0.08]"
             >
               View GitHub
             </a>
@@ -100,7 +92,7 @@ export default function Home() {
       {/* Code block */}
       <section className="px-6 pb-24">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-surface-high rounded-2xl p-6 font-mono text-sm leading-7">
+          <div className="card-glass rounded-2xl p-6 font-mono text-sm leading-7">
             <div className="flex gap-1.5 mb-5">
               <span className="w-3 h-3 rounded-full bg-surface-highest" />
               <span className="w-3 h-3 rounded-full bg-surface-highest" />
@@ -109,27 +101,27 @@ export default function Home() {
             <div className="space-y-1">
               <div>
                 <span className="text-ink-muted select-none">$ </span>
-                <span className="text-violet-300">npx</span>
+                <span className="text-teal-300">npx</span>
                 <span className="text-ink-bright"> readme-aura </span>
-                <span className="text-violet-400">init</span>
+                <span className="text-emerald-400">init</span>
               </div>
               <div className="text-ink-muted text-xs pl-4">
-                ✓ Created .github/workflows/readme-aura.yml
+                <span className="text-emerald-400">✓</span> Created .github/workflows/readme-aura.yml
               </div>
               <div className="text-ink-muted text-xs pl-4">
-                ✓ Created readme.source.md
+                <span className="text-emerald-400">✓</span> Created readme.source.md
               </div>
               <div className="mt-3">
                 <span className="text-ink-muted select-none">$ </span>
-                <span className="text-violet-300">npx</span>
+                <span className="text-teal-300">npx</span>
                 <span className="text-ink-bright"> readme-aura </span>
-                <span className="text-violet-400">build</span>
+                <span className="text-emerald-400">build</span>
               </div>
               <div className="text-ink-muted text-xs pl-4">
-                ✓ Rendered 3 components → .github/assets/
+                <span className="text-emerald-400">✓</span> Rendered 3 components → .github/assets/
               </div>
               <div className="text-ink-muted text-xs pl-4">
-                ✓ Generated README.md
+                <span className="text-emerald-400">✓</span> Generated README.md
               </div>
             </div>
           </div>
@@ -138,39 +130,60 @@ export default function Home() {
 
       {/* How it works */}
       <section className="px-6 pb-24">
-        <div className="max-w-3xl mx-auto">
-          <p className="font-grotesk text-xs tracking-[0.2em] uppercase text-violet-400 mb-3">Foundation</p>
-          <h2 className="font-serif italic text-4xl md:text-5xl text-ink-bright mb-6">How It Works</h2>
-          <p className="text-ink-secondary mb-10 text-base leading-relaxed max-w-lg">
-            GitHub strips all JS and CSS from README files. readme-aura bypasses that by compiling your designs into static SVG images at build time.
-          </p>
-          <ol className="space-y-5">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12">
+            <p className="font-grotesk text-xs tracking-[0.22em] uppercase text-teal-400 mb-3">How It Works</p>
+            <h2 className="font-sans font-bold text-4xl md:text-5xl text-gradient-bright tracking-tight mb-5">
+              Three steps to ship
+            </h2>
+            <p className="text-ink-secondary text-base leading-relaxed max-w-lg">
+              GitHub strips all JS and CSS from README files. readme-aura bypasses that by compiling designs into static SVGs at build time.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              ['Run init', 'npx readme-aura init — creates the GitHub Actions workflow, source template, and audits .gitignore'],
-              ['Write JSX', 'Edit readme.source.md — add React components inside ```aura code blocks'],
-              ['Preview locally', 'npx readme-aura build — JSX gets rendered to SVG via Vercel Satori'],
-              ['Push & automate', 'Push to main — the GitHub Action auto-generates your README.md on every push'],
-            ].map(([step, desc], i) => (
-              <li key={i} className="flex gap-5 items-start">
-                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-surface-highest flex items-center justify-center font-grotesk text-xs text-violet-300 mt-0.5">
-                  {i + 1}
-                </span>
-                <div>
-                  <p className="text-ink-bright font-medium mb-0.5">{step}</p>
-                  <p className="text-ink-secondary text-sm leading-relaxed">{desc}</p>
-                </div>
-              </li>
+              {
+                step: 'STEP 1',
+                title: 'Write JSX',
+                desc: 'Edit readme.source.md - add React components inside ```aura code blocks with style objects',
+                code: '```aura\n<Card />\n```',
+              },
+              {
+                step: 'STEP 2',
+                title: 'Build',
+                code: '$ readme-aura build',
+                desc: 'Satori renders JSX to SVG',
+              },
+              {
+                step: 'STEP 3',
+                title: 'Deploy',
+                desc: 'README.md with images - works on any GitHub repo',
+                extra: 'Works on any GitHub repo',
+              },
+            ].map((item, i) => (
+              <div key={i} className="card-glass rounded-2xl p-6 relative overflow-hidden group hover:border-white/[0.12] transition-all duration-200">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/[0.05] rounded-full blur-2xl pointer-events-none" />
+                <p className="font-grotesk text-[10px] tracking-[0.25em] uppercase text-teal-400/70 mb-3">{item.step}</p>
+                <h3 className="font-sans font-bold text-xl text-ink-bright mb-3 tracking-tight">{item.title}</h3>
+                {item.code && (
+                  <p className="font-mono text-xs text-emerald-400 mb-3 bg-surface-base/60 rounded-lg px-3 py-2 inline-block">
+                    {item.code}
+                  </p>
+                )}
+                <p className="text-ink-secondary text-sm leading-relaxed">{item.desc}</p>
+              </div>
             ))}
-          </ol>
+          </div>
         </div>
       </section>
 
       {/* Features grid */}
       <section id="features" className="px-6 pb-24">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="font-grotesk text-xs tracking-[0.2em] uppercase text-violet-400 mb-3">Capabilities</p>
-            <h2 className="font-serif italic text-4xl md:text-5xl text-ink-bright">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="font-grotesk text-xs tracking-[0.22em] uppercase text-teal-400 mb-3">Capabilities</p>
+            <h2 className="font-sans font-bold text-4xl md:text-5xl text-gradient-bright tracking-tight">
               Everything you need
             </h2>
           </div>
@@ -179,13 +192,13 @@ export default function Home() {
             {features.map((f, i) => (
               <div
                 key={i}
-                className="bg-surface-low rounded-2xl p-6 hover:bg-surface transition-colors duration-200 group"
+                className={`card-glass rounded-2xl p-6 hover:border-white/[0.12] transition-all duration-200 group relative overflow-hidden ${
+                  i === features.length - 1 ? 'border-gradient-accent' : ''
+                }`}
               >
-                <div className="w-10 h-10 rounded-xl bg-surface-highest flex items-center justify-center text-violet-400 text-lg mb-5 group-hover:bg-violet-500/10 transition-colors">
-                  {f.icon}
-                </div>
-                <p className="font-grotesk text-xs tracking-widest uppercase text-violet-400 mb-2">{f.label}</p>
-                <h3 className="font-serif italic text-xl text-ink-bright mb-2">{f.title}</h3>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-teal-500/[0.04] rounded-full blur-xl pointer-events-none group-hover:bg-teal-500/[0.08] transition-all duration-300" />
+                <p className="font-grotesk text-xs tracking-widest uppercase text-teal-400 mb-2">{f.label}</p>
+                <h3 className="font-sans font-bold text-lg text-ink-bright mb-2 tracking-tight">{f.title}</h3>
                 <p className="text-ink-secondary text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
@@ -194,30 +207,29 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="relative px-6 pb-24">
-        <div className="absolute inset-0 bg-violet-glow-center pointer-events-none" />
+      <section className="relative px-6 pb-28">
+        <div className="absolute inset-0 bg-teal-glow-center pointer-events-none" />
         <div className="relative max-w-3xl mx-auto text-center">
-          <Sparkle className="text-4xl mb-6 block opacity-60" />
-          <h2 className="font-serif italic font-black text-[clamp(3rem,10vw,7rem)] leading-[0.95] text-gradient-bright mb-6">
-            Ready to evolve?
+          <h2 className="font-sans font-black text-[clamp(3rem,10vw,7rem)] leading-[0.95] tracking-tight text-liquid-glass mb-6">
+            Ready to build?
           </h2>
-          <p className="font-grotesk text-xs tracking-[0.2em] uppercase text-violet-400 mb-10">
-            Step into the neon scriptorium
+          <p className="font-grotesk text-xs tracking-[0.22em] uppercase text-teal-400 mb-10">
+            Ship beautiful READMEs in minutes
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
               href="https://www.npmjs.com/package/readme-aura"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-7 py-3 bg-violet-500 hover:bg-violet-400 text-white font-grotesk text-sm rounded-full transition-all duration-200 glow-violet"
+              className="px-7 py-3 bg-teal-500 hover:bg-teal-400 text-white font-grotesk text-sm rounded-full transition-all duration-200 glow-teal"
             >
               Install via npm
             </a>
             <Link
               to="/docs"
-              className="px-7 py-3 bg-surface-high hover:bg-surface-highest text-ink-bright font-grotesk text-sm rounded-full transition-all duration-200"
+              className="px-7 py-3 bg-surface-high hover:bg-surface-highest text-ink-bright font-grotesk text-sm rounded-full transition-all duration-200 border border-white/[0.08]"
             >
-              Read the Archive
+              Read the Docs
             </Link>
           </div>
         </div>

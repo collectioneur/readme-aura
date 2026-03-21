@@ -8,8 +8,8 @@
   }
 
   body {
-    background-color: #0d0b1a;
-    color: #c4c3dc;
+    background-color: #060d1c;
+    color: #b0c8e0;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -20,40 +20,91 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #0d0b1a;
+    background: #060d1c;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #242142;
+    background: #1e2e4a;
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #a78bfa;
+    background: #06b6d4;
   }
 }
 
 @layer utilities {
-  .text-gradient-violet {
-    background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 40%, #7c3aed 100%);
+  /* Liquid glass text — Inter display headings */
+  .text-liquid-glass {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(200, 238, 255, 0.88) 28%,
+      rgba(140, 215, 255, 0.70) 58%,
+      rgba(80, 190, 255, 0.45) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 24px rgba(6, 182, 212, 0.35));
+  }
+
+  /* Subtle teal gradient for secondary headings */
+  .text-gradient-teal {
+    background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 50%, #06b6d4 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
+  /* Bright white-to-teal gradient */
   .text-gradient-bright {
-    background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 60%, #a78bfa 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #cdf4ff 55%, #67e8f9 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .glow-violet {
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.2), 0 0 80px rgba(139, 92, 246, 0.05);
+  /* Teal glow for CTAs */
+  .glow-teal {
+    box-shadow: 0 0 32px rgba(6, 182, 212, 0.35), 0 0 64px rgba(6, 182, 212, 0.10);
   }
 
+  /* Green glow for accents */
+  .glow-emerald {
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.3), 0 0 40px rgba(52, 211, 153, 0.08);
+  }
+
+  /* Glassmorphism surface */
   .surface-glass {
-    background: rgba(22, 20, 40, 0.7);
-    backdrop-filter: blur(12px);
+    background: rgba(9, 20, 40, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* Card glass — slightly lighter glass */
+  .card-glass {
+    background: rgba(15, 31, 53, 0.80);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Rainbow/gradient border for accent card */
+  .border-gradient-accent {
+    position: relative;
+  }
+
+  .border-gradient-accent::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, #06b6d4, #818cf8, #a855f7, #ec4899);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }
