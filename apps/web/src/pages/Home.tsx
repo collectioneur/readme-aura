@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import BlurGlassTitle from '../components/BlurGlassTitle'
 
 const features = [
   {
@@ -60,8 +61,8 @@ export default function Home() {
           </p>
 
           {/* Main heading — Inter, liquid glass */}
-          <h1 className="font-sans font-black text-[clamp(4rem,13vw,9rem)] leading-[0.9] tracking-tight mb-8 text-liquid-glass">
-            readme-aura
+          <h1 className="font-sans font-black text-[clamp(4rem,13vw,9rem)] leading-[0.9] tracking-tight mb-8">
+            <BlurGlassTitle>readme-aura</BlurGlassTitle>
           </h1>
 
           {/* Subtitle */}

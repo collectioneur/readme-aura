@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import BlurGlassTitle from '../components/BlurGlassTitle'
 
 const sections = [
   { id: 'how-it-works', label: 'How It Works' },
@@ -141,8 +142,8 @@ export default function Docs() {
           {/* Page title */}
           <div className="mb-12">
             <p className="font-grotesk text-xs tracking-[0.2em] uppercase text-teal-400 mb-3">Documentation</p>
-            <h1 className="font-sans font-black text-5xl md:text-6xl text-liquid-glass tracking-tight mb-4">
-              readme-aura
+            <h1 className="font-sans font-black text-5xl md:text-6xl tracking-tight mb-4">
+              <BlurGlassTitle>readme-aura</BlurGlassTitle>
             </h1>
             <p className="text-ink-secondary text-lg leading-relaxed max-w-xl">
               Write custom React/JSX components directly inside your Markdown, and readme-aura will render them into beautiful SVGs that work on GitHub.
