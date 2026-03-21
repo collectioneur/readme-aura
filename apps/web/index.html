@@ -4,6 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>readme-aura</title>
+    <script>
+      // Restore path redirected through 404.html for GitHub Pages SPA routing
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          });
+          window.history.replaceState(
+            null, null,
+            decoded.shift() + (decoded.length ? '?' + decoded.join('&') : '') + l.hash
+          );
+        }
+      }(window.location));
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700;1,900&display=swap" rel="stylesheet" />
