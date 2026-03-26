@@ -5,11 +5,8 @@ export interface TemplateContext {
   repo: string;
 }
 
-const BADGE =
-  '[![readme-aura](https://img.shields.io/badge/readme--aura-powered-8b5cf6?style=flat)](https://github.com/collectioneur/readme-aura)';
-
 export function generateSourceProfile(ctx: TemplateContext): string {
-  return `${BADGE}
+  return `
 
 \`\`\`aura width=860 height=248
 <div style={{ width: '100%', height: '100%', background: '#08080c', display: 'flex', flexDirection: 'column', fontFamily: 'Inter', position: 'relative', overflow: 'hidden', borderRadius: 16, border: '1px solid rgba(110,80,220,0.18)' }}>
@@ -47,18 +44,13 @@ export function generateSourceProfile(ctx: TemplateContext): string {
     </div>
   </div>
   </div>
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', paddingBottom: 10, paddingTop: 4 }}>
-    <span style={{ fontSize: 11, color: 'rgba(150,140,200,0.55)', fontWeight: 500, letterSpacing: '0.4px' }}>powered by readme-aura</span>
-  </div>
 </div>
 \`\`\`
 
-## About Me
-
-Write something about yourself here.
-
-## Projects
-
-Check out my pinned repositories below.
+\`\`\`aura width=860 height=248
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', paddingBottom: 10, paddingTop: 4 }}>
+    <span style={{ fontSize: 11, color: 'rgba(150,140,200,0.55)', fontWeight: 500, letterSpacing: '0.4px' }}>powered by readme-aura</span>
+  </div>
+\`\`\`
 `;
 }
