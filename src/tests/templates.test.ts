@@ -49,9 +49,10 @@ describe('generateSourceProfile', () => {
     expect(md).toContain('alice');
   });
 
-  it('includes StatsCard component', () => {
+  it('includes hero banner and footer attribution', () => {
     const md = generateSourceProfile({ owner: 'alice', repo: 'alice' });
-    expect(md).toContain('StatsCard');
+    expect(md).toContain('float-slow');
+    expect(md).toContain('powered by readme-aura');
   });
 });
 
@@ -72,8 +73,9 @@ describe('generateSourceProject', () => {
     expect(md).toContain('cool-lib');
   });
 
-  it('does not include StatsCard by default', () => {
+  it('includes hero banner and footer attribution', () => {
     const md = generateSourceProject({ owner: 'bob', repo: 'cool-lib' });
-    expect(md).not.toContain('StatsCard');
+    expect(md).toContain('repo?.name');
+    expect(md).toContain('powered by readme-aura');
   });
 });

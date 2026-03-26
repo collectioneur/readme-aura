@@ -116,11 +116,7 @@ describe('parseSource', () => {
   });
 
   it('wraps image in link when link meta is present', async () => {
-    const source = [
-      '```aura link="https://example.com"',
-      '<div>Linked</div>',
-      '```',
-    ].join('\n');
+    const source = ['```aura link="https://example.com"', '<div>Linked</div>', '```'].join('\n');
     const filePath = await createFixture('source.md', source);
     const assetsDir = join(tempDir, '.github/assets');
 

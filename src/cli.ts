@@ -159,14 +159,11 @@ program
           console.log(`  Loaded ${fonts.length} default font(s)`);
         }
 
-        // Build context that will be injected into JSX
-        const context: Record<string, unknown> = {};
-        if (github) {
-          context.github = github;
-        }
-        if (repoData) {
-          context.repo = repoData;
-        }
+        // Build context that will be injected into JSX (always bind github/repo so optional chaining works in aura blocks)
+        const context: Record<string, unknown> = {
+          github: github ?? null,
+          repo: repoData ?? null,
+        };
         // Inject built-in components (available in every aura block)
         context.StatsCard = makeStatsCard(createElement);
         context.MockupPhone = makeMockupPhone(createElement);

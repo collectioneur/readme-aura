@@ -74,3 +74,10 @@ Each entry follows the ADR-lite format.
 - **Decision**: Added `resolveLocalImages(element, basePath)` in `renderer.ts`. It walks the element tree before Satori, finds `<img>` elements with local `src` paths, reads files from disk, and converts to base64 data URIs. Called from `renderBlock` with `process.cwd()` as base path. This keeps source files clean (just `src="assets/logo.png"`) while the build handles resolution.
 - **Alternatives**: Hosting images on a CDN (doesn't work for local preview). Embedding base64 directly in source (bloats file, hard to maintain).
 - **Avoid**: Don't embed large base64 strings in `readme.source.md`. Always use relative file paths and let the renderer resolve them.
+
+## 2026-03-26: Init templates — liquid hero + JSX context always bound
+
+- **Context**: Profile/project starter `readme.source.md` needed a single hero block matching the liquid/glow aesthetic, a centered `powered by readme-aura` footer, and safe fallbacks when API data is missing. Aura JSX used `github`/`repo` identifiers that were only injected when data existed, so optional chaining could throw `ReferenceError`.
+- **Decision**: (1) Extract shared glow SVG + keyframe CSS to `src/templates/aura-hero-assets.ts` and compose profile/project heroes from it. (2) Always pass `github: github ?? null` and `repo: repoData ?? null` in the build JSX context so `github?.` / `repo?.` work in every block. (3) Interpolate `owner`/`repo` into generated source for static fallbacks (e.g. avatar URL, display name). (4) Omit `z-index` in new templates — Satori does not support it.
+- **Alternatives**: Duplicate full hero markup in each template only (rejected — harder to maintain). Require users to guard with `typeof github !== 'undefined'` (rejected — too noisy).
+- **Avoid**: Don't reference `github` or `repo` in aura blocks without ensuring they are bound in context (always bind, even to `null`).

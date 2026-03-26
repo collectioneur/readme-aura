@@ -69,6 +69,8 @@ describe('initProject', () => {
       const content = await readFile(join(dir, 'readme.source.md'), 'utf-8');
       expect(content).toContain('```aura');
       expect(content).toContain('my-repo');
+      expect(content).toContain('repo?.name');
+      expect(content).toContain('powered by readme-aura');
     });
 
     it('uses profile template when owner === repo', async () => {
@@ -76,7 +78,8 @@ describe('initProject', () => {
       await initProject({ cwd: dir });
 
       const content = await readFile(join(dir, 'readme.source.md'), 'utf-8');
-      expect(content).toContain('StatsCard');
+      expect(content).toContain('powered by readme-aura');
+      expect(content).toContain('github?.user');
     });
 
     it('respects --template override', async () => {
@@ -84,7 +87,8 @@ describe('initProject', () => {
       await initProject({ cwd: dir, template: 'profile' });
 
       const content = await readFile(join(dir, 'readme.source.md'), 'utf-8');
-      expect(content).toContain('StatsCard');
+      expect(content).toContain('powered by readme-aura');
+      expect(content).toContain('github?.user');
     });
 
     it('skips source if it already exists and force is false', async () => {
