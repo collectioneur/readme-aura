@@ -38,10 +38,10 @@ describe('generateSourceProfile', () => {
     expect(md).toContain('```aura');
   });
 
-  it('includes readme-aura badge', () => {
+  it('includes readme-aura attribution', () => {
     const md = generateSourceProfile({ owner: 'alice', repo: 'alice' });
-    expect(md).toContain('readme--aura');
-    expect(md).toContain('https://github.com/collectioneur/readme-aura');
+    expect(md).toContain('powered by readme-aura');
+    expect(md).toContain('height=22');
   });
 
   it('interpolates owner name', () => {
@@ -62,10 +62,10 @@ describe('generateSourceProject', () => {
     expect(md).toContain('```aura');
   });
 
-  it('includes readme-aura badge', () => {
+  it('includes readme-aura attribution', () => {
     const md = generateSourceProject({ owner: 'bob', repo: 'cool-lib' });
-    expect(md).toContain('readme--aura');
-    expect(md).toContain('https://github.com/collectioneur/readme-aura');
+    expect(md).toContain('powered by readme-aura');
+    expect(md).toContain('height=22');
   });
 
   it('interpolates repo name', () => {
