@@ -416,7 +416,7 @@ readme-aura ships with ready-to-use components you can drop into any `` ```aura 
 /&gt;</code></pre>
       </td>
       <td style="vertical-align: middle; text-align: center;">
-        <img src="assets/readme-aura-button.svg" alt="SocialMediaButton" width="150" />
+        <a href="https://collectioneur.github.io/readme-aura/"><img src="assets/readme-aura-button.svg" alt="SocialMediaButton" width="150" /></a>
       </td>
     </tr>
   </tbody>
