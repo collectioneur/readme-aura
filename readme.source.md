@@ -379,7 +379,10 @@ jobs:
 
 ## Components
 
-readme-aura ships with ready-to-use components you can drop into any `` ```aura `` block — no imports needed. They are automatically available in the JSX context.
+readme-aura ships with ready-to-use components you can drop into any `` ```aura `` block - no imports needed. They are automatically available in the JSX context.
+
+
+### SocialMediaButton
 
 <table style="width: 100%; table-layout: fixed; border-collapse: collapse;">
   <colgroup>
@@ -413,7 +416,7 @@ readme-aura ships with ready-to-use components you can drop into any `` ```aura 
 /&gt;</code></pre>
       </td>
       <td style="vertical-align: middle; text-align: center;">
-        <img src="assets/readme-aura-button.svg" alt="SocialMediaButton" width="320" />
+        <img src="assets/readme-aura-button.svg" alt="SocialMediaButton" width="150" />
       </td>
     </tr>
   </tbody>
