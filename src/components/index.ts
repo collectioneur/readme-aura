@@ -1,2 +1,1 @@
-export { makeStatsCard } from './StatsCard.js';
-export { makeMockupPhone } from './MockupPhone.js';
+export { makeSocialMediaButton } from './SocialMediaButton.js';

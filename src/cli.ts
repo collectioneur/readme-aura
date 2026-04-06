@@ -15,7 +15,7 @@ import {
   createMockGitHubData,
   createMockRepoData,
 } from './github.js';
-import { makeStatsCard, makeMockupPhone } from './components/index.js';
+import { makeSocialMediaButton } from './components/index.js';
 import { initProject } from './init.js';
 import type { FontConfig, GitHubData, RepositoryData } from './types.js';
 
@@ -165,8 +165,7 @@ program
           repo: repoData ?? null,
         };
         // Inject built-in components (available in every aura block)
-        context.StatsCard = makeStatsCard(createElement);
-        context.MockupPhone = makeMockupPhone(createElement);
+        context.SocialMediaButton = makeSocialMediaButton(createElement);
 
         // Render blocks to SVG (filename includes content hash for GitHub cache busting)
         console.log(`\n  Rendering ${blocks.length} block(s)...\n`);
