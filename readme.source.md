@@ -396,7 +396,7 @@ readme-aura ships with ready-to-use components you can drop into any `` ```aura 
     <tr>
       <td style="vertical-align: top; padding-right: 12px;">
         <pre style="font-size: 9px; line-height: 1.3; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;"><code>&lt;SocialMediaButton
-  icon="https://raw.githubusercontent.com/collectioneur/readme-aura/main/assets/readme-aura-logo.png"
+  icon="***image URI***"
   text="readme-aura"
   backgroundColor="#111111"
   width={150}
