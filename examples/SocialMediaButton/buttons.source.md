@@ -1,6 +1,6 @@
 # Social Media Buttons
 
-600 buttons generated from [Simple Icons](https://simpleicons.org).
+ <!-- 600 buttons generated from [Simple Icons](https://simpleicons.org).  -->
 
 ```aura width=100 height=44
 <SocialMediaButton

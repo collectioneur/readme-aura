@@ -1,6 +1,6 @@
 # Social Media Buttons
 
-600 buttons generated from [Simple Icons](https://simpleicons.org).
+<!-- 600 buttons generated from [Simple Icons](https://simpleicons.org).  -->
 
 <p>
 <img src="./buttons-assets/readme-aura-component-0-69e3351c.svg" alt="readme-aura-component-0" width="100" height="44" />
