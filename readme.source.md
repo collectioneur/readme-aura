@@ -381,17 +381,21 @@ jobs:
 
 readme-aura ships with ready-to-use components you can drop into any `` ```aura `` block — no imports needed. They are automatically available in the JSX context.
 
-<table>
+<table style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+  <colgroup>
+    <col style="width: 38%;" />
+    <col style="width: 62%;" />
+  </colgroup>
   <thead>
     <tr>
-      <th>Code</th>
-      <th>Result</th>
+      <th style="text-align: left;">Code</th>
+      <th style="text-align: left;">Result</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>
-        <pre style="font-size: 8px; line-height: 1.35; margin: 0;"><code>&lt;SocialMediaButton
+      <td style="vertical-align: top; padding-right: 12px;">
+        <pre style="font-size: 9px; line-height: 1.3; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;"><code>&lt;SocialMediaButton
   icon="https://raw.githubusercontent.com/collectioneur/readme-aura/main/assets/readme-aura-logo.png"
   text="readme-aura"
   backgroundColor="#111111"
@@ -408,7 +412,9 @@ readme-aura ships with ready-to-use components you can drop into any `` ```aura 
   iconSize="30"
 /&gt;</code></pre>
       </td>
-      <td><img src="assets/readme-aura-button.svg" alt="SocialMediaButton" /></td>
+      <td style="vertical-align: middle; text-align: center;">
+        <img src="assets/readme-aura-button.svg" alt="SocialMediaButton" width="320" />
+      </td>
     </tr>
   </tbody>
 </table>
