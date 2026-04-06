@@ -168,7 +168,7 @@ export function makeSocialMediaButton(h: H) {
           width: iconSize,
           height: iconSize,
           alt: '',
-          style: { flexShrink: 0, display: 'block' },
+          style: { flexShrink: 0, display: 'block', width: iconSize, height: iconSize },
         }),
         h(
           'span',

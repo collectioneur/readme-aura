@@ -377,6 +377,55 @@ jobs:
 - **Clickable Images** – Add a link: `` ```aura link="https://example.com" `` – clicking the image opens the URL
 - **GitHub-Compatible** – Output is pure Markdown + SVG, works everywhere
 
+## Components
+
+readme-aura ships with ready-to-use components you can drop into any `` ```aura `` block — no imports needed. They are automatically available in the JSX context.
+
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre style="font-size: 8px; line-height: 1.35; margin: 0;"><code>&lt;SocialMediaButton
+  icon="https://raw.githubusercontent.com/collectioneur/readme-aura/main/assets/readme-aura-logo.png"
+  text="readme-aura"
+  backgroundColor="#111111"
+  width={150}
+  height={44}
+  gradientStops={[
+    { offset: '0%', color: '#ffffff' },
+    { offset: '10%', color: '#111111' },
+    { offset: '50%', color: '#eeeeee' },
+    { offset: '60%', color: '#1af4ff' },
+    { offset: '80%', color: '#111111' },
+    { offset: '100%', color: '#555555' },
+  ]}
+  iconSize="30"
+/&gt;</code></pre>
+      </td>
+      <td><img src="assets/readme-aura-button.svg" alt="SocialMediaButton" /></td>
+    </tr>
+  </tbody>
+</table>
+
+| Prop | Default | Description |
+|------|---------|-------------|
+| `icon` | — | Icon image path or URL |
+| `text` | — | Button label |
+| `backgroundColor` | `#111111` | Fill color |
+| `textColor` | `#f5f5f5` | Label color |
+| `fontSize` | `13` | Label font size |
+| `width` / `height` | `150` / `40` | Button dimensions |
+| `iconSize` | `18` | Icon dimensions |
+| `borderColor` | `#AAAAAA` | Outer border color |
+| `gradientStops` | holographic | Animated gradient colors |
+| `gradientStrokeWidth` | `2` | Gradient border thickness |
+
 ## Animations
 
 You can add **CSS-based SVG animations** using the `<style>` injection mechanism. Satori renders a static frame at build time; the browser animates the SVG when it is displayed (e.g. on GitHub).
