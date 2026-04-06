@@ -1,4 +1,4 @@
-# Social Media Buttons
+# Buttons
 
 <!-- 600 buttons generated from [Simple Icons](https://simpleicons.org).  -->
 
