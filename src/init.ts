@@ -6,9 +6,15 @@ import { generateWorkflow } from './templates/workflow.js';
 import { generateSourceProfile } from './templates/source-profile.js';
 import { generateSourceProject } from './templates/source-project.js';
 
+const EXAMPLES_RAW_BASE =
+  'https://raw.githubusercontent.com/collectioneur/readme-aura/main/examples';
+const EXAMPLES_BROWSE_URL =
+  'https://github.com/collectioneur/readme-aura/tree/main/examples';
+
 export interface InitOptions {
   cwd?: string;
-  template?: 'profile' | 'project';
+  /** 'profile', 'project', or any example name from the examples/ folder (e.g. 'DarkOrbs') */
+  template?: string;
   force?: boolean;
 }
 
@@ -16,7 +22,7 @@ export interface InitResult {
   created: string[];
   skipped: string[];
   gitignoreFixed: string[];
-  template: 'profile' | 'project';
+  template: string;
   remote: GitHubRemote | null;
 }
 
@@ -51,11 +57,28 @@ function detectRemote(cwd: string): GitHubRemote | null {
   }
 }
 
-function resolveTemplate(
-  remote: GitHubRemote | null,
-  override?: 'profile' | 'project',
-): 'profile' | 'project' {
-  if (override) return override;
+async function fetchExampleTemplate(name: string): Promise<string> {
+  const url = `${EXAMPLES_RAW_BASE}/${name}/readme.source.md`;
+  let res: Response;
+  try {
+    res = await fetch(url);
+  } catch (cause) {
+    throw new Error(
+      `Could not reach GitHub to fetch example template "${name}".\n` +
+        `  Check your internet connection or browse examples at: ${EXAMPLES_BROWSE_URL}`,
+      { cause },
+    );
+  }
+  if (!res.ok) {
+    throw new Error(
+      `Example template "${name}" not found (HTTP ${res.status}).\n` +
+        `  Browse available examples: ${EXAMPLES_BROWSE_URL}`,
+    );
+  }
+  return res.text();
+}
+
+function resolveBuiltinTemplate(remote: GitHubRemote | null): 'profile' | 'project' {
   if (remote && remote.owner === remote.repo) return 'profile';
   return 'project';
 }
@@ -96,7 +119,11 @@ async function auditGitignore(cwd: string): Promise<string[]> {
 export async function initProject(opts: InitOptions = {}): Promise<InitResult> {
   const cwd = opts.cwd ?? process.cwd();
   const remote = detectRemote(cwd);
-  const template = resolveTemplate(remote, opts.template);
+
+  const isBuiltin = !opts.template || opts.template === 'profile' || opts.template === 'project';
+  const template: string = isBuiltin
+    ? (opts.template ?? resolveBuiltinTemplate(remote))
+    : (opts.template as string);
 
   const created: string[] = [];
   const skipped: string[] = [];
@@ -118,9 +145,14 @@ export async function initProject(opts: InitOptions = {}): Promise<InitResult> {
   const sourceExists = await fileExists(sourcePath);
 
   if (!sourceExists || opts.force) {
-    const ctx = { owner: remote?.owner ?? 'your-username', repo: remote?.repo ?? 'your-repo' };
-    const content =
-      template === 'profile' ? generateSourceProfile(ctx) : generateSourceProject(ctx);
+    let content: string;
+    if (isBuiltin) {
+      const ctx = { owner: remote?.owner ?? 'your-username', repo: remote?.repo ?? 'your-repo' };
+      content =
+        template === 'profile' ? generateSourceProfile(ctx) : generateSourceProject(ctx);
+    } else {
+      content = await fetchExampleTemplate(template);
+    }
     await writeFile(sourcePath, content, 'utf-8');
     created.push(sourceRelPath);
   } else {

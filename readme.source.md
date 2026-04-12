@@ -235,8 +235,21 @@ That's it. Push to `main` and the workflow will auto-generate your `README.md` o
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--template` | auto-detect | Template: `profile` or `project` |
+| `--template` | auto-detect | `profile`, `project`, or any example name (e.g. `DarkOrbs`) |
 | `--force` | `false` | Overwrite existing files |
+
+### Example Templates
+
+Pass any example name from the [`examples/`](https://github.com/collectioneur/readme-aura/tree/main/examples) folder as `--template` and `init` will fetch its `readme.source.md` directly from GitHub and write it to your project:
+
+```bash
+npx readme-aura init --template DarkOrbs
+npx readme-aura init --template PurpleGlow
+npx readme-aura init --template LightOrbs
+npx readme-aura init --template SocialMediaButton
+```
+
+No extra downloads, no local files needed — the template is pulled on the fly and placed in `readme.source.md`, ready to build. Run `npx readme-aura build` right after and you get a working README.
 
 ## What `init` Creates
 

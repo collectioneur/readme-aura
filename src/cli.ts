@@ -29,7 +29,10 @@ program
 program
   .command('init')
   .description('Scaffold readme-aura in your project (workflow, source template, gitignore audit)')
-  .option('--template <type>', 'Template: profile or project (auto-detected from git remote)')
+  .option(
+    '--template <name>',
+    'Template: profile, project (auto-detected), or an example name like DarkOrbs, PurpleGlow (fetched from GitHub)',
+  )
   .option('--force', 'Overwrite existing files', false)
   .action(async (opts) => {
     console.log('\n  readme-aura init\n');
