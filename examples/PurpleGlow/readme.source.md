@@ -101,15 +101,15 @@
    borderRadius: 48, background: 'linear-gradient(135deg, #6622ee, #0088ff)',
    display: 'flex', alignItems: 'center', justifyContent: 'center',
  }}>
-   <img src={github.user.avatarUrl} width={88} height={88} style={{ borderRadius: 44 }} />
+   <img src={(github && github.user && github.user.avatarUrl) || 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'} width={88} height={88} style={{ borderRadius: 44 }} />
  </div>
 
  <div style={{ display:'flex', flexDirection:'column', marginLeft:168, gap:8, zIndex: 10 }}>
    <div style={{ display:'flex', fontSize:38, fontWeight:800, color:'#ffffff', letterSpacing:'-1px', lineHeight:1 }}>
-     {github.user.name || github.user.login}
+     {(github && github.user && (github.user.name || github.user.login)) || 'GitHub Developer'}
    </div>
    <div style={{ display:'flex', fontSize:15, color:'rgba(180,165,255,0.8)', fontWeight:400, letterSpacing:'0.3px' }}>
-     {github.user.bio || 'Full-Stack Engineer · Competitive Programmer · Open Source'}
+     {(github && github.user && github.user.bio) || 'Full-Stack Engineer · Competitive Programmer · Open Source'}
    </div>
    <div style={{ display:'flex', gap:8, marginTop:6 }}>
      {['React', 'TypeScript', 'Next.js', 'C++'].map(function(tag) {
@@ -129,9 +129,9 @@
 ```aura width=860 height=140
 (function() {
  var stats = [
-   { label: 'Repos', value: String(github.stats.totalRepos), color: '#a78bfa' },
-   { label: 'Stars', value: String(github.stats.totalStars), color: '#60a5fa' },
-   { label: 'Commits', value: String(github.stats.totalCommits), color: '#f59e0b' },
+   { label: 'Repos', value: String((github && github.stats && github.stats.totalRepos) || 0), color: '#a78bfa' },
+   { label: 'Stars', value: String((github && github.stats && github.stats.totalStars) || 0), color: '#60a5fa' },
+   { label: 'Commits', value: String((github && github.stats && github.stats.totalCommits) || 0), color: '#f59e0b' },
  ];
 
  return (
@@ -236,7 +236,7 @@
 
 ```aura width=860 height=168
 (function() {
- var topLangs = github.languages.slice(0, 6).map(function(l) { return l.name; });
+ var topLangs = (github && github.languages && github.languages.length > 0 ? github.languages.slice(0, 6).map(function(l) { return l.name; }) : ['TypeScript', 'React', 'Next.js', 'C++', 'Go', 'Rust']);
  var categories = [
    { title: 'Languages', color: '#a78bfa', items: topLangs },
    { title: 'Frameworks', color: '#60a5fa', items: ['React Native', 'React', 'Next.js'] },
