@@ -59,7 +59,7 @@
   </svg>
 
   <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 10 }}>
-    <span style={{ fontSize: 60, fontWeight: 700, color: '#ffffff', letterSpacing: -2, lineHeight: 1 }}>collectioneur</span>
+    <span style={{ fontSize: 60, fontWeight: 700, color: '#ffffff', letterSpacing: -2, lineHeight: 1 }}>{github.user.name || github.user.login}</span>
     <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 16, letterSpacing: 5, textTransform: 'uppercase', fontWeight: 300 }}>design · code · create</span>
     <div style={{ display: 'flex', gap: 8, marginTop: 30 }}>
       <span style={{ padding: '5px 16px', background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.55)', borderRadius: 100, fontSize: 11, border: '1px solid rgba(255,255,255,0.09)', letterSpacing: 1 }}>minimalism</span>
@@ -178,7 +178,10 @@
   </svg>
   <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: 4, textTransform: 'uppercase', marginBottom: 20, zIndex: 10 }}>stack</span>
   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', zIndex: 10, maxWidth: 680 }}>
-    {['TypeScript', 'React', 'Node.js', 'Rust', 'Go', 'PostgreSQL', 'Docker', 'Figma', 'SVG', 'CSS'].map((tech, i) => (
+    {(github && github.languages && github.languages.length > 0
+      ? github.languages.slice(0, 10).map(function(l) { return l.name; })
+      : ['TypeScript', 'React', 'Node.js', 'Rust', 'Go', 'PostgreSQL', 'Docker', 'Figma', 'SVG', 'CSS']
+    ).map((tech, i) => (
       <span key={i} style={{ padding: '7px 18px', background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.65)', borderRadius: 100, fontSize: 12, border: '1px solid rgba(255,255,255,0.08)', letterSpacing: 0.5 }}>{tech}</span>
     ))}
   </div>
