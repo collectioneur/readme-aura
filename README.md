@@ -100,7 +100,40 @@ jobs:
 * **Custom Fonts** – Inter bundled by default, bring your own via `--fonts-dir`
 * **Meta Syntax** – Control dimensions: ` ```aura width=800 height=400 `
 * **Clickable Images** – Add a link: ` ```aura link="https://example.com" ` – clicking the image opens the URL
+* **Inline Blocks** – Add `inline` to render as `<img>` instead of a block. Consecutive inline blocks are automatically joined on one line. Add `align=center` to center-align the whole group inside `<p align="center">`
 * **GitHub-Compatible** – Output is pure Markdown + SVG, works everywhere
+
+### Block Parameters
+
+All parameters are written directly on the opening fence line of an ` ```aura ` block:
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `width` | number | `800` | Width of the rendered SVG in pixels |
+| `height` | number | `400` | Height of the rendered SVG in pixels |
+| `link` | string | – | URL – wraps the image in a clickable `<a>` tag |
+| `inline` | flag | – | Render as an inline `<img>` instead of a block paragraph. Consecutive inline blocks are automatically joined on one line |
+| `align` | `center` \| `left` \| `right` | – | Wrap a group of consecutive inline blocks in `<p align="...">`. Only meaningful when `inline` is set |
+
+**Example — centered row of social buttons:**
+
+```markdown
+```aura width=120 height=44 link="https://github.com/you" inline align=center
+<SocialMediaButton ... />
+` `` `
+```aura width=138 height=44 link="https://x.com/you" inline align=center
+<SocialMediaButton ... />
+` `` `
+```
+
+Output in README.md:
+```html
+<p align="center">
+<a href="https://github.com/you"><img src="./assets/component-0.svg" width="120" height="44" /></a><a href="https://x.com/you"><img src="./assets/component-1.svg" width="138" height="44" /></a>
+</p>
+```
+
+> The `align` value is read from the first block in the group that declares it. Blocks without `align` still join the same group — only the wrapper is controlled by the flag.
 
 ## Components
 

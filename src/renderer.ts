@@ -26,6 +26,15 @@ export function parseMeta(meta?: string): RenderOptions {
     defaults.link = linkMatch[1];
   }
 
+  if (/\binline\b/.test(meta)) {
+    defaults.inline = true;
+  }
+
+  const alignMatch = meta.match(/\balign=(center|left|right)\b/);
+  if (alignMatch) {
+    defaults.align = alignMatch[1] as 'left' | 'center' | 'right';
+  }
+
   return defaults;
 }
 

@@ -13,6 +13,7 @@ export interface BuildOptions {
 export interface ParseResult {
   markdown: string;
   blocks: ExtractedBlock[];
+  relAssets: string;
 }
 
 export type FontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
@@ -28,6 +29,8 @@ export interface RenderOptions {
   width: number;
   height: number;
   link?: string;
+  inline?: boolean;
+  align?: 'left' | 'center' | 'right';
 }
 
 // ── GitHub API Types ─────────────────────────────────────────────

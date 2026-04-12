@@ -5,7 +5,7 @@ import { writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { parseSource } from './parser.js';
-import { renderBlock, createElement } from './renderer.js';
+import { renderBlock, parseMeta, createElement } from './renderer.js';
 import { loadDefaultFonts, loadFontsFromDir } from './fonts.js';
 import {
   fetchGitHubData,
@@ -86,7 +86,7 @@ program
 
     try {
       const parseResult = await parseSource(sourcePath, assetsDir, outputPath);
-      const { blocks } = parseResult;
+      const { blocks, relAssets } = parseResult;
       let { markdown } = parseResult;
 
       await mkdir(resolve(assetsDir), { recursive: true });
@@ -171,6 +171,8 @@ program
         console.log(`\n  Rendering ${blocks.length} block(s)...\n`);
         const svgMap = new Map<number, string>();
         const writtenFiles: string[] = [];
+        // Tracks filenames for inline blocks (substituted after the loop)
+        const inlineFilesMap = new Map<number, string>();
         for (const block of blocks) {
           try {
             const svg = await renderBlock(block, fonts, context, process.cwd());
@@ -180,12 +182,57 @@ program
             const svgPath = resolve(assetsDir, filename);
             await writeFile(svgPath, svg, 'utf-8');
             writtenFiles.push(filename);
-            markdown = markdown.replaceAll(`readme-aura-component-${block.index}.svg`, filename);
+            const opts = parseMeta(block.meta);
+            if (opts.inline) {
+              inlineFilesMap.set(block.index, filename);
+            } else {
+              markdown = markdown.replaceAll(`readme-aura-component-${block.index}.svg`, filename);
+            }
             console.log(`    [${block.index}] Rendered -> ${filename}`);
           } catch (err) {
             console.error(`\n  Error in block ${block.index}: ${(err as Error).message}\n`);
             process.exit(1);
           }
+        }
+
+        // Replace inline placeholders with actual HTML.
+        // Consecutive placeholders were already merged onto one line by the parser,
+        // so the regex matches the whole group at once and we can apply align wrapping.
+        if (inlineFilesMap.size > 0) {
+          markdown = markdown.replace(
+            /((?:<!-- __AURA_INLINE_\d+__ -->)+)/g,
+            (groupStr) => {
+              const indexRegex = /<!-- __AURA_INLINE_(\d+)__ -->/g;
+              const indices: number[] = [];
+              let m;
+              while ((m = indexRegex.exec(groupStr)) !== null) {
+                indices.push(parseInt(m[1], 10));
+              }
+
+              const htmlParts: string[] = [];
+              let groupAlign: string | undefined;
+
+              for (const idx of indices) {
+                const block = blocks.find((b) => b.index === idx);
+                if (!block) continue;
+                const opts = parseMeta(block.meta);
+                if (opts.align && !groupAlign) groupAlign = opts.align;
+
+                const filename = inlineFilesMap.get(idx);
+                if (!filename) continue;
+
+                const imgTag = `<img src="${relAssets}/${filename}" width="${opts.width}" height="${opts.height}" />`;
+                const html = opts.link ? `<a href="${opts.link}">${imgTag}</a>` : imgTag;
+                htmlParts.push(html);
+              }
+
+              let result = htmlParts.join('');
+              if (groupAlign) {
+                result = `<p align="${groupAlign}">\n${result}\n</p>`;
+              }
+              return result;
+            },
+          );
         }
 
         // Remove old generated SVGs (not in this build)
