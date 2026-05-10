@@ -53,33 +53,17 @@ runs:
       with:
         node-version: '20'
 
-    - name: Install readme-aura
-      shell: bash
-      run: |
-        cd ${{ github.action_path }}
-        npm ci --ignore-scripts
-        npm run build
-
-    - name: Detect GitHub user
-      id: detect-user
-      shell: bash
-      run: |
-        if [ -n "${{ inputs.github_user }}" ]; then
-          echo "user=${{ inputs.github_user }}" >> "$GITHUB_OUTPUT"
-        else
-          echo "user=${{ github.repository_owner }}" >> "$GITHUB_OUTPUT"
-        fi
-
     - name: Run readme-aura build
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       run: |
-        node ${{ github.action_path }}/dist/cli.js build \
+        GITHUB_USER="${{ inputs.github_user != '' && inputs.github_user || github.repository_owner }}"
+        npx readme-aura@latest build \
           --source "${{ inputs.source }}" \
           --output "${{ inputs.output }}" \
           --assets "${{ inputs.assets_dir }}" \
-          --github-user "${{ steps.detect-user.outputs.user }}" \
+          --github-user "$GITHUB_USER" \
           --github-token "$GITHUB_TOKEN" \
           ${{ inputs.fonts_dir != '' && format('--fonts-dir "{0}"', inputs.fonts_dir) || '' }}
 
