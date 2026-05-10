@@ -103,6 +103,42 @@
 Write custom **React/JSX components** directly inside your Markdown, and readme-aura will render them into beautiful SVGs that work on GitHub.
 
 GitHub strips all JS and CSS from README files. This tool lets you bypass that limitation by compiling your designs into static SVG images at build time.
+<br/>
+<br/>
+<br/>
+
+```aura width=260 height=60 link="https://github.com/collectioneur/readme-aura/blob/main/CONTRIBUTING.md"
+<div style={{ display: 'flex', alignItems: 'center', gap: 0, width: '100%', height: '100%', background: 'linear-gradient(135deg, #120000, #200808)', border: '1px solid rgba(200,40,40,0.4)', borderRadius: 14, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden' }}>
+  <svg width="260" height="60" overflow="hidden" style={{ position: 'absolute', top: 0, left: 0 }}>
+    <defs>
+      <filter id="rbf" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+      </filter>
+    </defs>
+    <path d="M 180 30 Q 220 30 180 60 L 246 60 A 14 14 0 0 1 278 46 L 278 34 A 14 34 0 0 1 246 0 Z" fill="rgba(200,40,40,0.6)" filter="url(#rbf)" />
+    <circle cx="36" cy="30" r="4" fill="none" stroke="rgba(255,60,60,0.7)" strokeWidth="3">
+      <animate attributeName="r" values="4;28" dur="2s" repeatCount="indefinite" calcMode="linear" />
+      <animate attributeName="opacity" values="0.7;0" dur="2s" repeatCount="indefinite" calcMode="linear" />
+    </circle>
+    <circle cx="36" cy="30" r="4" fill="none" stroke="rgba(255,60,60,0.7)" strokeWidth="3">
+      <animate attributeName="r" values="4;28" dur="2s" repeatCount="indefinite" calcMode="linear" begin="0.67s" />
+      <animate attributeName="opacity" values="0.7;0" dur="2s" repeatCount="indefinite" calcMode="linear" begin="0.67s" />
+    </circle>
+    <circle cx="36" cy="30" r="4" fill="none" stroke="rgba(255,60,60,0.7)" strokeWidth="3">
+      <animate attributeName="r" values="4;28" dur="2s" repeatCount="indefinite" calcMode="linear" begin="1.33s" />
+      <animate attributeName="opacity" values="0.7;0" dur="2s" repeatCount="indefinite" calcMode="linear" begin="1.33s" />
+    </circle>
+    <circle cx="36" cy="30" r="4" fill="rgba(255,60,60,1)">
+      <animate attributeName="r" values="2.5;4;2.5" dur="1s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="36" cy="30" r="3" fill="rgba(255,100,100,1)" />
+  </svg>
+  <div style={{ width: 60, flexShrink: 0 }} />
+  <span style={{ fontSize: 14, fontWeight: 700, color: '#fafafa', letterSpacing: '0.3px', zIndex: 10 }}>Built something cool? Contribute your template.</span>
+</div>
+```
+
+Made your profile unique with readme-aura? Drop your `readme.source.md` into [`examples/custom-templates/`](https://github.com/collectioneur/readme-aura/tree/main/examples/custom-templates) and anyone will be able to install your design with a single command. See the [contributing guide](https://github.com/collectioneur/readme-aura/blob/main/CONTRIBUTING.md) for details.
 
 ## How It Works
 
