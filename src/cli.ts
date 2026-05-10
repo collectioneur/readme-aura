@@ -202,40 +202,37 @@ program
         // Consecutive placeholders were already merged onto one line by the parser,
         // so the regex matches the whole group at once and we can apply align wrapping.
         if (inlineFilesMap.size > 0) {
-          markdown = markdown.replace(
-            /((?:<!-- __AURA_INLINE_\d+__ -->)+)/g,
-            (groupStr) => {
-              const indexRegex = /<!-- __AURA_INLINE_(\d+)__ -->/g;
-              const indices: number[] = [];
-              let m;
-              while ((m = indexRegex.exec(groupStr)) !== null) {
-                indices.push(parseInt(m[1], 10));
-              }
+          markdown = markdown.replace(/((?:<!-- __AURA_INLINE_\d+__ -->)+)/g, (groupStr) => {
+            const indexRegex = /<!-- __AURA_INLINE_(\d+)__ -->/g;
+            const indices: number[] = [];
+            let m;
+            while ((m = indexRegex.exec(groupStr)) !== null) {
+              indices.push(parseInt(m[1], 10));
+            }
 
-              const htmlParts: string[] = [];
-              let groupAlign: string | undefined;
+            const htmlParts: string[] = [];
+            let groupAlign: string | undefined;
 
-              for (const idx of indices) {
-                const block = blocks.find((b) => b.index === idx);
-                if (!block) continue;
-                const opts = parseMeta(block.meta);
-                if (opts.align && !groupAlign) groupAlign = opts.align;
+            for (const idx of indices) {
+              const block = blocks.find((b) => b.index === idx);
+              if (!block) continue;
+              const opts = parseMeta(block.meta);
+              if (opts.align && !groupAlign) groupAlign = opts.align;
 
-                const filename = inlineFilesMap.get(idx);
-                if (!filename) continue;
+              const filename = inlineFilesMap.get(idx);
+              if (!filename) continue;
 
-                const imgTag = `<img src="${relAssets}/${filename}" width="${opts.width}" height="${opts.height}" />`;
-                const html = opts.link ? `<a href="${opts.link}">${imgTag}</a>` : imgTag;
-                htmlParts.push(html);
-              }
+              const imgTag = `<img src="${relAssets}/${filename}" width="${opts.width}" height="${opts.height}" />`;
+              const html = opts.link ? `<a href="${opts.link}">${imgTag}</a>` : imgTag;
+              htmlParts.push(html);
+            }
 
-              let result = htmlParts.join('');
-              if (groupAlign) {
-                result = `<p align="${groupAlign}">\n${result}\n</p>`;
-              }
-              return result;
-            },
-          );
+            let result = htmlParts.join('');
+            if (groupAlign) {
+              result = `<p align="${groupAlign}">\n${result}\n</p>`;
+            }
+            return result;
+          });
         }
 
         // Remove old generated SVGs (not in this build)

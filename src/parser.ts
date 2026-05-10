@@ -77,10 +77,7 @@ export async function parseSource(
   let prev: string;
   do {
     prev = md;
-    md = md.replace(
-      /(<!-- __AURA_INLINE_\d+__ -->)\n\n(<!-- __AURA_INLINE_\d+__ -->)/g,
-      '$1$2',
-    );
+    md = md.replace(/(<!-- __AURA_INLINE_\d+__ -->)\n\n(<!-- __AURA_INLINE_\d+__ -->)/g, '$1$2');
   } while (md !== prev);
 
   return {

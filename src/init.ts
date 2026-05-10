@@ -8,8 +8,7 @@ import { generateSourceProject } from './templates/source-project.js';
 
 const EXAMPLES_RAW_BASE =
   'https://raw.githubusercontent.com/collectioneur/readme-aura/main/examples';
-const EXAMPLES_BROWSE_URL =
-  'https://github.com/collectioneur/readme-aura/tree/main/examples';
+const EXAMPLES_BROWSE_URL = 'https://github.com/collectioneur/readme-aura/tree/main/examples';
 
 export interface InitOptions {
   cwd?: string;
@@ -148,8 +147,7 @@ export async function initProject(opts: InitOptions = {}): Promise<InitResult> {
     let content: string;
     if (isBuiltin) {
       const ctx = { owner: remote?.owner ?? 'your-username', repo: remote?.repo ?? 'your-repo' };
-      content =
-        template === 'profile' ? generateSourceProfile(ctx) : generateSourceProject(ctx);
+      content = template === 'profile' ? generateSourceProfile(ctx) : generateSourceProject(ctx);
     } else {
       content = await fetchExampleTemplate(template);
     }

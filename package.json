@@ -40,7 +40,6 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "satori": "^0.25.0",
-    "shaderui": "^0.0.2",
     "sucrase": "^3.35.1",
     "unified": "^11.0.0",
     "unist-util-visit": "^5.0.0"
@@ -59,8 +58,5 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "workspaces": [
-    "apps/*"
-  ]
+  }
 }
