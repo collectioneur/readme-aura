@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { generateWorkflow } from '../templates/workflow.js';
-import { generateSourceProfile } from '../templates/source-profile.js';
-import { generateSourceProject } from '../templates/source-project.js';
+import { generateWorkflow } from '../default-templates/workflow.js';
+import { generateSourceProfile } from '../default-templates/source-profile.js';
+import { generateSourceProject } from '../default-templates/source-project.js';
 
 describe('generateWorkflow', () => {
   it('returns valid YAML with required fields', () => {

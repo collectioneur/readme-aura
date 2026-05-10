@@ -82,7 +82,7 @@ via `.vscode/settings.json`, but always verify before committing.
 | `StatsCard.ts` | Neon/cyberpunk stats card (stars, commits, repos, forks + languages). |
 | `MockupPhone.ts` | Phone-frame mockup showing profile info, mini stats, top repos. |
 
-### Templates (`src/templates/`)
+### Default Templates (`src/default-templates/`)
 
 | File | Role |
 |------|------|

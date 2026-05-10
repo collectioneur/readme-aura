@@ -2,9 +2,9 @@ import { writeFile, readFile, mkdir, access } from 'node:fs/promises';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { parseGitHubRemote, type GitHubRemote } from './github.js';
-import { generateWorkflow } from './templates/workflow.js';
-import { generateSourceProfile } from './templates/source-profile.js';
-import { generateSourceProject } from './templates/source-project.js';
+import { generateWorkflow } from './default-templates/workflow.js';
+import { generateSourceProfile } from './default-templates/source-profile.js';
+import { generateSourceProject } from './default-templates/source-project.js';
 
 const EXAMPLES_RAW_BASE =
   'https://raw.githubusercontent.com/collectioneur/readme-aura/main/examples';
