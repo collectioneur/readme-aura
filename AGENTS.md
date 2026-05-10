@@ -124,7 +124,8 @@ via `.vscode/settings.json`, but always verify before committing.
 | Path | Purpose |
 |------|---------|
 | `readme.source.md` | Source Markdown for the project's own README (dogfooding). |
-| `examples/` | Example source/output pairs for showcase. |
+| `examples/custom-templates/` | Installable community templates (fetched by `init --template <name>`). |
+| `examples/showcases/` | Component showcases and demos (not installable via `--template`). |
 | `dist/` | Compiled JS output (gitignored in spirit, committed for Action). |
 
 ---

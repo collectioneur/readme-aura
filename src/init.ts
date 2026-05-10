@@ -7,12 +7,13 @@ import { generateSourceProfile } from './default-templates/source-profile.js';
 import { generateSourceProject } from './default-templates/source-project.js';
 
 const EXAMPLES_RAW_BASE =
-  'https://raw.githubusercontent.com/collectioneur/readme-aura/main/examples';
-const EXAMPLES_BROWSE_URL = 'https://github.com/collectioneur/readme-aura/tree/main/examples';
+  'https://raw.githubusercontent.com/collectioneur/readme-aura/main/examples/custom-templates';
+const EXAMPLES_BROWSE_URL =
+  'https://github.com/collectioneur/readme-aura/tree/main/examples/custom-templates';
 
 export interface InitOptions {
   cwd?: string;
-  /** 'profile', 'project', or any example name from the examples/ folder (e.g. 'DarkOrbs') */
+  /** 'profile', 'project', or any template name from examples/custom-templates/ (e.g. 'DarkOrbs') */
   template?: string;
   force?: boolean;
 }

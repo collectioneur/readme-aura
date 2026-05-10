@@ -34,7 +34,7 @@ program
   .description('Scaffold readme-aura in your project (workflow, source template, gitignore audit)')
   .option(
     '--template <name>',
-    'Template: profile, project (auto-detected), or an example name like DarkOrbs, PurpleGlow (fetched from GitHub)',
+    'Template: profile, project (auto-detected), or a custom template name like DarkOrbs, PurpleGlow (fetched from examples/custom-templates/ on GitHub)',
   )
   .option('--force', 'Overwrite existing files', false)
   .action(async (opts) => {

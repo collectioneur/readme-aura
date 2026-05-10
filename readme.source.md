@@ -240,13 +240,12 @@ That's it. Push to `main` and the workflow will auto-generate your `README.md` o
 
 ### Example Templates
 
-Pass any example name from the [`examples/`](https://github.com/collectioneur/readme-aura/tree/main/examples) folder as `--template` and `init` will fetch its `readme.source.md` directly from GitHub and write it to your project:
+Pass any template name from the [`examples/custom-templates/`](https://github.com/collectioneur/readme-aura/tree/main/examples/custom-templates) folder as `--template` and `init` will fetch its `readme.source.md` directly from GitHub and write it to your project:
 
 ```bash
 npx readme-aura init --template DarkOrbs
 npx readme-aura init --template PurpleGlow
 npx readme-aura init --template LightOrbs
-npx readme-aura init --template SocialMediaButton
 ```
 
 No extra downloads, no local files needed — the template is pulled on the fly and placed in `readme.source.md`, ready to build. Run `npx readme-aura build` right after and you get a working README.
