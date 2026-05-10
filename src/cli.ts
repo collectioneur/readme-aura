@@ -4,6 +4,9 @@ import { Command } from 'commander';
 import { writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+
+const { version } = createRequire(import.meta.url)('../package.json') as { version: string };
 import { parseSource } from './parser.js';
 import { renderBlock, parseMeta, createElement } from './renderer.js';
 import { loadDefaultFonts, loadFontsFromDir } from './fonts.js';
@@ -24,7 +27,7 @@ const program = new Command();
 program
   .name('readme-aura')
   .description('Next-Gen README generator - render React/JSX components to SVG inside Markdown')
-  .version('0.1.0');
+  .version(version);
 
 program
   .command('init')
@@ -82,7 +85,7 @@ program
     const outputPath = resolve(opts.output);
     const assetsDir = opts.assets;
 
-    console.log(`\n  readme-aura v0.1.0\n`);
+    console.log(`\n  readme-aura v${version}\n`);
     console.log(`  Source:  ${sourcePath}`);
     console.log(`  Output:  ${outputPath}`);
     console.log(`  Assets:  ${resolve(assetsDir)}`);
