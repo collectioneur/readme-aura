@@ -632,7 +632,7 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
 ## If You Use readme-aura
 
 - **Add the topic:** Consider adding the [readme-aura](https://github.com/topics/readme-aura) topic to your repository so others can discover it.
-- **Found a bug?** Open an [issue](https://github.com/collectioneur/readme-aura/issues) — even a one-liner helps.
+- **Found a bug?** Open an [issue](https://github.com/collectioneur/readme-aura/issues) - even a one-liner helps.
 - **Built something cool?** Drop your template into [`examples/custom-templates/`](https://github.com/collectioneur/readme-aura/tree/main/examples/custom-templates) so anyone can install it with a single command. See the [contributing guide](https://github.com/collectioneur/readme-aura/blob/main/CONTRIBUTING.md) for details.
 
 ## License
