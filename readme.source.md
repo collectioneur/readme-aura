@@ -211,7 +211,7 @@ npx readme-aura build
 
 That's it. Push to `main` and the workflow will auto-generate your `README.md` on every push.
 
-> `init` auto-detects profile repos (`username/username`) and picks the right template.
+> `init` auto-detects profile repos (`username/username`) and picks the right default template.
 
 ### Commands
 
@@ -248,7 +248,7 @@ npx readme-aura init --template PurpleGlow
 npx readme-aura init --template LightOrbs
 ```
 
-No extra downloads, no local files needed — the template is pulled on the fly and placed in `readme.source.md`, ready to build. Run `npx readme-aura build` right after and you get a working README.
+No extra downloads, no local files needed - the template is pulled on the fly and placed in `readme.source.md`, ready to build. Run `npx readme-aura build` right after and you get a working README.
 
 ## What `init` Creates
 
@@ -402,7 +402,7 @@ All parameters are written directly on the opening fence line of an `` ```aura `
 | `inline` | flag | – | Render as an inline `<img>` instead of a block paragraph. Consecutive inline blocks are automatically joined on one line |
 | `align` | `center` \| `left` \| `right` | – | Wrap a group of consecutive inline blocks in `<p align="...">`. Only meaningful when `inline` is set |
 
-**Example — centered row of social buttons:**
+**Example – centered row of social buttons:**
 
 ```markdown
 ```aura width=120 height=44 link="https://github.com/you" inline align=center
@@ -420,7 +420,7 @@ Output in README.md:
 </p>
 ```
 
-> The `align` value is read from the first block in the group that declares it. Blocks without `align` still join the same group — only the wrapper is controlled by the flag.
+> The `align` value is read from the first block in the group that declares it. Blocks without `align` still join the same group – only the wrapper is controlled by the flag.
 
 ## Components
 
@@ -469,8 +469,8 @@ readme-aura ships with ready-to-use components you can drop into any `` ```aura 
 
 | Prop | Default | Description |
 |------|---------|-------------|
-| `icon` | — | Icon image path or URL |
-| `text` | — | Button label |
+| `icon` | – | Icon image path or URL |
+| `text` | – | Button label |
 | `backgroundColor` | `#111111` | Fill color |
 | `textColor` | `#f5f5f5` | Label color |
 | `fontSize` | `13` | Label font size |
@@ -482,7 +482,7 @@ readme-aura ships with ready-to-use components you can drop into any `` ```aura 
 
 ## Animations
 
-You can add **CSS-based SVG animations** using the `<style>` injection mechanism. Satori renders a static frame at build time; the browser animates the SVG when it is displayed (e.g. on GitHub).
+You can add **CSS-based SVG animations** using the `<style>` injection mechanism, or **SMIL animations** (`<animate>`, `<animateTransform>`, `<animateMotion>`) directly on SVG elements. Satori renders a static frame at build time; the browser animates the SVG when it is displayed (e.g. on GitHub).
 
 **How it works:** Add a `<style>` block in your JSX. Define `@keyframes` and apply them to elements by `#id` or `.class`. The renderer extracts and injects the CSS into the final SVG.
 
@@ -534,7 +534,7 @@ You can add **CSS-based SVG animations** using the `<style>` injection mechanism
 </div>
 ```
 
-**Limitations:** No JavaScript, no SMIL. GitHub strips scripts but supports CSS animations. Prefer `transform` and `opacity` for best compatibility.
+**Limitations:** No JavaScript. GitHub strips scripts but supports both CSS animations and SMIL. Prefer `transform` and `opacity` for best CSS compatibility.
 
 ## Tech Stack
 
