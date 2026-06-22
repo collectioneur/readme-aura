@@ -1,6 +1,6 @@
 {
   "name": "readme-aura",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Next-Gen README generator for GitHub — render React/JSX components to SVG inside Markdown",
   "repository": {
     "type": "git",
