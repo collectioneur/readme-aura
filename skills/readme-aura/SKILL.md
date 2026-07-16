@@ -117,7 +117,3 @@ Useful build flags when the defaults don't fit: `--source`/`--output` to point a
 ## Contributing a template
 
 If asked to package a finished design for reuse: drop the `readme.source.md` into `examples/custom-templates/<Name>/` in this repo. Once merged, anyone can pull it via `npx readme-aura init --template <Name>`. See `CONTRIBUTING.md` for the full process.
-
-## Working in this repository specifically
-
-If the task is developing readme-aura itself (not just using it to build a README), see `AGENTS.md` at the repo root — it defines TDD requirements, commit conventions, and the source layout (`src/parser.ts`, `src/renderer.ts`, `src/cli.ts`, etc.) in detail.
