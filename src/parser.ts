@@ -15,8 +15,49 @@ export async function parseSource(
   sourcePath: string,
   assetsDir = '.github/assets',
   outputPath = 'README.md',
+  options: { combine?: boolean } = {},
 ): Promise<ParseResult> {
-  const source = await readFile(sourcePath, 'utf-8');
+  let source = await readFile(sourcePath, 'utf-8');
+
+  if (options.combine) {
+    const auraBlockRegex = /```aura\s+width=(\d+)\s+height=(\d+)[^\n]*\n([\s\S]*?)\n```/g;
+    let matches;
+    const extractedBlocks: { width: number; height: number; code: string }[] = [];
+    let totalHeight = 0;
+    let width = 800;
+
+    while ((matches = auraBlockRegex.exec(source)) !== null) {
+      const w = parseInt(matches[1], 10);
+      const h = parseInt(matches[2], 10);
+      const code = matches[3];
+      extractedBlocks.push({ width: w, height: h, code });
+      totalHeight += h;
+      width = w;
+    }
+
+    if (extractedBlocks.length > 0) {
+      const gap = 15;
+      totalHeight += (extractedBlocks.length - 1) * gap;
+
+      let combinedCode = `<div style={{ display: 'flex', flexDirection: 'column', gap: ${gap}, width: '100%', height: '100%', background: '#06060a' }}>\n`;
+
+      for (const block of extractedBlocks) {
+        combinedCode += `  <div style={{ width: '100%', height: ${block.height}, position: 'relative', display: 'flex' }}>\n`;
+        combinedCode +=
+          block.code
+            .trim()
+            .split('\n')
+            .map((line) => '    ' + line)
+            .join('\n') + '\n';
+        combinedCode += `  </div>\n`;
+      }
+
+      combinedCode += `</div>`;
+
+      source = `\`\`\`aura width=${width} height=${totalHeight}\n${combinedCode}\n\`\`\`\n`;
+    }
+  }
+
   const blocks: ExtractedBlock[] = [];
   let blockIndex = 0;
 

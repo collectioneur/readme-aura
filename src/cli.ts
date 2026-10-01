@@ -3,11 +3,14 @@
 import { Command } from 'commander';
 import { writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { resolve } from 'node:path';
+import { resolve, dirname } from 'node:path';
 import { createRequire } from 'node:module';
+import readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
 
 const { version } = createRequire(import.meta.url)('../package.json') as { version: string };
 import { parseSource } from './parser.js';
+import { fetchData, fetchAllTimeCommits, processData, generateSVG, mockData } from './profile.js';
 import { renderBlock, parseMeta, createElement } from './renderer.js';
 import { loadDefaultFonts, loadFontsFromDir } from './fonts.js';
 import {
@@ -40,9 +43,17 @@ program
   .action(async (opts) => {
     console.log('\n  readme-aura init\n');
 
+    const rl = readline.createInterface({ input, output });
+    const answer = await rl.question(
+      '  Do you want to combine all aura blocks into a single SVG? (y/N): ',
+    );
+    rl.close();
+    const combine = answer.toLowerCase().startsWith('y');
+
     const result = await initProject({
       template: opts.template,
       force: opts.force,
+      combine,
     });
 
     if (result.remote) {
@@ -80,6 +91,7 @@ program
   .option('-t, --github-token <token>', 'GitHub token (defaults to GITHUB_TOKEN env variable)')
   .option('--owner <owner>', 'Repository owner (auto-detected from git remote if omitted)')
   .option('--repo <repo>', 'Repository name (auto-detected from git remote if omitted)')
+  .option('--combine', 'Combine all aura blocks into a single SVG', false)
   .action(async (opts) => {
     const sourcePath = resolve(opts.source);
     const outputPath = resolve(opts.output);
@@ -91,7 +103,9 @@ program
     console.log(`  Assets:  ${resolve(assetsDir)}`);
 
     try {
-      const parseResult = await parseSource(sourcePath, assetsDir, outputPath);
+      const parseResult = await parseSource(sourcePath, assetsDir, outputPath, {
+        combine: opts.combine,
+      });
       const { blocks, relAssets } = parseResult;
       let { markdown } = parseResult;
 
@@ -259,6 +273,50 @@ program
       }
       throw err;
     }
+  });
+
+program
+  .command('profile')
+  .description('Generate a full-page profile SVG (ACE style)')
+  .option('-u, --github-user <user>', 'GitHub username')
+  .option('-t, --github-token <token>', 'GitHub token')
+  .option('-o, --output <path>', 'Output file path', '.github/assets/profile.svg')
+  .action(async (opts) => {
+    const username = opts.githubUser || process.env.GITHUB_USER || detectGitHubUser();
+    const token = opts.githubToken || process.env.GITHUB_TOKEN;
+
+    if (!username) {
+      console.error('Error: Could not detect GitHub username. Use --github-user.');
+      process.exit(1);
+    }
+
+    let data;
+    if (token) {
+      console.log(`Fetching data for @${username}...`);
+      try {
+        const user = await fetchData(username, token);
+        console.log(`  Account created: ${user.createdAt}`);
+        const allTimeCommits = await fetchAllTimeCommits(username, token, user.createdAt);
+        console.log(`  All-time commits: ${allTimeCommits}`);
+        user._allTimeCommits = allTimeCommits;
+        data = processData(user);
+      } catch (e: unknown) {
+        console.error(`Error: ${(e as Error).message}`);
+        console.log('Using mock data for fallback.');
+        data = mockData();
+      }
+    } else {
+      console.log('No GITHUB_TOKEN — using mock data for preview.');
+      data = mockData();
+    }
+
+    const svg = generateSVG(data);
+
+    const outPath = resolve(opts.output);
+    const outDir = dirname(outPath);
+    await mkdir(outDir, { recursive: true });
+    await writeFile(outPath, svg, 'utf-8');
+    console.log(`  Generated: ${outPath} (${Math.round(svg.length / 1024)}KB)`);
   });
 
 program.parse();

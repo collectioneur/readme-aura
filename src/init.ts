@@ -16,6 +16,7 @@ export interface InitOptions {
   /** 'profile', 'project', or any template name from examples/custom-templates/ (e.g. 'DarkOrbs') */
   template?: string;
   force?: boolean;
+  combine?: boolean;
 }
 
 export interface InitResult {
@@ -134,7 +135,7 @@ export async function initProject(opts: InitOptions = {}): Promise<InitResult> {
 
   if (!workflowExists || opts.force) {
     await mkdir(join(cwd, '.github/workflows'), { recursive: true });
-    await writeFile(workflowPath, generateWorkflow(), 'utf-8');
+    await writeFile(workflowPath, generateWorkflow({ combine: opts.combine }), 'utf-8');
     created.push(workflowRelPath);
   } else {
     skipped.push(workflowRelPath);
