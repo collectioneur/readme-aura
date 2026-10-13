@@ -1,4 +1,4 @@
-export function generateWorkflow(): string {
+export function generateWorkflow(options: { combine?: boolean } = {}): string {
   return `name: Generate README
 
 on:
@@ -21,6 +21,6 @@ jobs:
       - name: Generate README
         uses: collectioneur/readme-aura@main
         with:
-          github_token: \${{ secrets.GITHUB_TOKEN }}
+          github_token: \${{ secrets.GITHUB_TOKEN }}${options.combine ? "\n          combine: 'true'" : ''}
 `;
 }

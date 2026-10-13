@@ -41,6 +41,7 @@ That's it. Push to `main` and the workflow will auto-generate your `README.md` o
 |---------|-------------|
 | `npx readme-aura init` | Scaffold workflow, source template, audit `.gitignore` |
 | `npx readme-aura build` | Render ` ```aura ` blocks to SVG and generate `README.md` |
+| `npx readme-aura profile` | Generate a full-page profile SVG (ACE style) |
 
 ### Build Options
 
@@ -52,6 +53,7 @@ That's it. Push to `main` and the workflow will auto-generate your `README.md` o
 | `-f, --fonts-dir` | – | Custom fonts directory |
 | `-g, --github-user` | auto-detect | GitHub username for stats |
 | `-t, --github-token` | `$GITHUB_TOKEN` | Token for GitHub API |
+| `--combine` | `false` | Combine all blocks into a single SVG file |
 
 ### Init Options
 

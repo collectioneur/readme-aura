@@ -163,4 +163,34 @@ describe('parseSource', () => {
     expect(result.markdown).toContain('echo "hi"');
     expect(result.markdown).toContain('readme-aura-component-0.svg');
   });
+
+  it('combines multiple aura blocks when combine option is true', async () => {
+    const source = [
+      '```aura width=800 height=100',
+      '<div>First</div>',
+      '```',
+      '',
+      'Middle text.',
+      '',
+      '```aura width=800 height=200',
+      '<div>Second</div>',
+      '```',
+    ].join('\n');
+    const filePath = await createFixture('source.md', source);
+    const assetsDir = join(tempDir, '.github/assets');
+
+    // @ts-expect-error - testing new option
+    const result = await parseSource(filePath, assetsDir, join(tempDir, 'README.md'), {
+      combine: true,
+    });
+
+    expect(result.blocks).toHaveLength(1);
+    expect(result.blocks[0].index).toBe(0);
+    expect(result.blocks[0].meta).toContain('width=800');
+    expect(result.blocks[0].meta).toContain('height=315'); // 100 + 200 + 15
+    expect(result.blocks[0].content).toContain('<div>First</div>');
+    expect(result.blocks[0].content).toContain('<div>Second</div>');
+    expect(result.markdown).toContain('readme-aura-component-0.svg');
+    expect(result.markdown).not.toContain('readme-aura-component-1.svg');
+  });
 });

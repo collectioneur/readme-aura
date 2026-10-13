@@ -39,6 +39,10 @@ inputs:
     description: 'Whether to auto-commit and push generated files'
     required: false
     default: 'true'
+  combine:
+    description: 'Combine all aura blocks into a single SVG'
+    required: false
+    default: 'false'
 
 outputs:
   changed:
@@ -65,7 +69,8 @@ runs:
           --assets "${{ inputs.assets_dir }}" \
           --github-user "$GITHUB_USER" \
           --github-token "$GITHUB_TOKEN" \
-          ${{ inputs.fonts_dir != '' && format('--fonts-dir "{0}"', inputs.fonts_dir) || '' }}
+          ${{ inputs.fonts_dir != '' && format('--fonts-dir "{0}"', inputs.fonts_dir) || '' }} \
+          ${{ inputs.combine == 'true' && '--combine' || '' }}
 
     - name: Commit and push changes
       id: commit
